@@ -17,3 +17,11 @@ Para lanzar el back teneis las instrucciones en el readme del back.
 
 En el front aun no se ha añadido docker, pero se añadirá en un futuro.
 De momento se puede lanzar con npm run dev.
+
+
+No es necesario utilizar Postman para probar la api, tenemos una documentacion interactiva en localhost:8000/swagger/index.html
+
+
+##Comandos para ejecutar las migraciones de la base de datos
+dotnet ef migrations add InitialCreate
+dotnet ef database update
