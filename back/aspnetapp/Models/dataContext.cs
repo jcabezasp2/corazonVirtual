@@ -9,4 +9,5 @@ public class dataContext : DbContext
     }
 
     public DbSet<Procedure> Procedures { get; set; } = null!;
+    public DbSet<Step> Steps { get; set; } = null!;
 }
