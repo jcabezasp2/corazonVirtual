@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace aspnetapp.Models;
 
-public class dataContext : DbContext
+public class dataContext : IdentityDbContext<IdentityUser>
 {
     public dataContext(DbContextOptions<dataContext> options) : base(options)
     {
