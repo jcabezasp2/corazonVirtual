@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace aspnetapp.Models;
 
-public class dataContext : IdentityDbContext<IdentityUser>
+public class dataContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public dataContext(DbContextOptions<dataContext> options) : base(options)
     {
