@@ -13,13 +13,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
+    options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<dataContext>()
     .AddDefaultTokenProviders();
 
 
 var app = builder.Build();
-
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -39,5 +39,19 @@ namespace aspnetapp.Controllers
             user.Password = null;
             return Created("", user);
         }
+
+        // GET: api/Users/email
+        [HttpGet("{email}")]
+        public async Task<ActionResult<User>> GetUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return new User() { Name = user.UserName, Email = user.Email };
+        }
     }
 }

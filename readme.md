@@ -24,7 +24,7 @@ dotnet run
 
 No es necesario utilizar Postman para probar la api, tenemos una documentacion interactiva en <localhost:8000/swagger/index.html>
 
-##Comandos para ejecutar las migraciones de la base de datos
+<h3>Comandos para ejecutar las migraciones de la base de datos</h3>
 Cuando creeis un modelo la migracion se genera automaticamente con el comando
 
 ```console
