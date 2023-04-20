@@ -1,4 +1,47 @@
 services:
+  backend:
+    build: 
+      context: ./back
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_DATABASE: corazon_virtual
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/corazonVirtual/backend
+    depends_on:
+      - postgres
+    networks:
+      - app
+
+  frontend:
+    build: 
+      context: ./front
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - WDS_SOCKET_HOST=127.0.0.1
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      
+    tty: true
+
+    ports:
+      - 3000:3000
+
+    volumes:
+      - ./frontend:/corazonVirtual/frontend
+
+    depends_on:
+      - backend
+
+    networks:
+      - app
+
   postgres:
     container_name: postgres
     image: postgres:latest
@@ -19,3 +62,7 @@ services:
     ports:
       - "5050:80"
     restart: always
+
+networks:
+    app:
+      driver: bridge
