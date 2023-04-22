@@ -6,7 +6,7 @@ using aspnetapp.Services;
 
 namespace aspnetapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -16,7 +16,6 @@ namespace aspnetapp.Controllers
         public UsersController(
             UserManager<IdentityUser> userManager,
             JwtService jwtService
-
         )
         {
             _userManager = userManager;
@@ -25,7 +24,9 @@ namespace aspnetapp.Controllers
 
         // POST: api/Users
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        //[Route("[action]")]
+        [Route("register")]
+        public async Task<ActionResult<User>> Register(User user)
         {
             if (!ModelState.IsValid)
             {
