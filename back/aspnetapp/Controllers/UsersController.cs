@@ -27,7 +27,6 @@ namespace aspnetapp.Controllers
 
         // POST: register
         [HttpPost]
-        //[Route("[action]")]
         [Route("register")]
         public async Task<ActionResult<User>> Register(User user)
         {
@@ -46,23 +45,16 @@ namespace aspnetapp.Controllers
                 return BadRequest(result.Errors);
             }
 
-            user.Password = "The password is not returned";
-            return Created("", user);
-        }
-        // TODO Borrar este método, es solo para probar
-        // GET: api/Users/email
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpGet("{email}"), Authorize]
-        public async Task<ActionResult<User>> GetUser(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
+            var createdUser = await _userManager.FindByEmailAsync(user.Email);
 
-            if (user == null)
+            if(createdUser == null)
             {
-                return NotFound();
+                return BadRequest("User not found");
             }
 
-            return new User() { Name = user.UserName, Email = user.Email, Password = "The password is not returned" };
+            var token = _jwtService.CreateToken(createdUser);
+
+            return Ok(token);
         }
 
         // POST: userdata
@@ -76,8 +68,8 @@ namespace aspnetapp.Controllers
             return new User() { Name = user.Identity.Name, Email = user.Identity.Name, Password = "The password is not returned" };
         }
 
-        // POST: api/Users/BearerToken
-        [HttpPost("BearerToken")]
+        // POST: login
+        [HttpPost("login")]
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
@@ -103,7 +95,7 @@ namespace aspnetapp.Controllers
 
             return Ok(token);
         }
-
+        // NO esta en funcionamiento aun
         // POST: api/Users/ApiKey
         [HttpPost("ApiKey")]
         public async Task<ActionResult> CreateApiKey(AuthenticationRequest request)

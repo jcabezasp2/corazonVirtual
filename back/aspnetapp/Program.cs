@@ -47,7 +47,7 @@ builder.Services.AddScoped<aspnetapp.Services.JwtService>();
 builder.Services.AddScoped<aspnetapp.Services.ApiKeyService>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
-    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789-._@+/ ";
     options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<dataContext>()
