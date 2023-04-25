@@ -64,5 +64,35 @@ namespace aspnetapp.Services
         ),
         SecurityAlgorithms.HmacSha256
     );
+
+    //GetUserIdFromToken
+    public string GetUserIdFromToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+
+        tokenHandler.ValidateToken(token, new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = false,
+        }, out SecurityToken validatedToken);
+
+        var jwtToken = (JwtSecurityToken)validatedToken;
+
+        if(jwtToken == null)
+        {
+            return null;
+        }
+
+        var userId = jwtToken.Claims
+            .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)
+            .Value;
+
+        return userId;
+    }
+
     }
 }

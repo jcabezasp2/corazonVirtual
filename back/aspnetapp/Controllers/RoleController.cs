@@ -23,7 +23,7 @@ namespace aspnetapp.Controllers
             _roleManager = roleManager;
         }
 
-
+        // POST: create
         [HttpPost]
         [Route("create")]
         public async Task<ActionResult<Role>> Create(Role role)
@@ -45,6 +45,7 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
+        // POST: delete
         [HttpPost]
         [Route("delete")]
         public async Task<ActionResult<Role>> Delete(Role role)
@@ -85,6 +86,36 @@ namespace aspnetapp.Controllers
             var result = await _userManager.AddToRoleAsync(
                 user,
                 userRole.RoleName
+            );
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok();
+        }
+
+        // POST: addclaim
+        [HttpPost]
+        [Route("addPermission")]
+        public async Task<ActionResult<Role>> AddPermissionToRole(AddClaimToRole permission)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var role = await _roleManager.FindByIdAsync(permission.RoleId);
+
+            if (role == null)
+            {
+                return BadRequest("Role not found");
+            }
+
+            var result = await _roleManager.AddClaimAsync(
+                role,
+                new System.Security.Claims.Claim(permission.Type, permission.Value)
             );
 
             if (!result.Succeeded)
