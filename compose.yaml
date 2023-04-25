@@ -3,16 +3,12 @@ services:
     build: 
       context: ./back
       dockerfile: Dockerfile
-    environment:
-      DB_HOST: postgres
-      DB_DATABASE: corazon_virtual
-      DB_USERNAME: root
-      DB_PASSWORD: root
+
     restart: always
     ports:
       - 8000:8000
     volumes:
-      - ./backend:/corazonVirtual/backend
+      - ./back:/corazonVirtual/backend
     depends_on:
       - postgres
     networks:
@@ -34,7 +30,7 @@ services:
       - 3000:3000
 
     volumes:
-      - ./frontend:/corazonVirtual/frontend
+      - ./front:/corazonVirtual/frontend
 
     depends_on:
       - backend
@@ -52,6 +48,8 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    networks:
+      - app
 
   pgadmin:
     container_name: pgadmin
@@ -62,6 +60,10 @@ services:
     ports:
       - "5050:80"
     restart: always
+    depends_on:
+      - postgres
+    networks:
+      - app
 
 networks:
     app:

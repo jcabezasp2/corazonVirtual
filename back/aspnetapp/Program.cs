@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
+builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=postgres:5432; Database=corazon_virtual; Username=root; Password=root"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -29,4 +29,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run("http://localhost:8000");
+app.Run("http://*:8000");
