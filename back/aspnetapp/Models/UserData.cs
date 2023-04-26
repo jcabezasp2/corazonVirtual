@@ -11,7 +11,7 @@ namespace aspnetapp.Models
         public string Email { get; set; }
 
         public string Role { get; set; }
-        public ICollection<AddClaimToRole> Claims { get; set; }
+        public ICollection<System.Security.Claims.Claim> RoleClaims { get; set; }
 
     }
 }

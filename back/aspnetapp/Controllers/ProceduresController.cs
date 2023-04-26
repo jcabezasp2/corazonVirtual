@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProceduresController : ControllerBase
     {
@@ -116,6 +116,59 @@ namespace aspnetapp.Controllers
 
             return NoContent();
         }
+
+        // GET: api/Procedures/5/Steps
+        [HttpGet("{id}/Steps")]
+        public async Task<ActionResult<IEnumerable<Step>>> GetProcedureSteps(int id)
+        {
+            if (_context.Procedures == null)
+            {
+                return NotFound();
+            }
+
+            var procedure = await _context.Procedures.FindAsync(id);
+            
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+
+            var stepsIds = await _context.Procedures
+                .Where(p => p.Id == id)
+                .SelectMany(p => p.Steps.Select(s => s.Id))
+                .ToListAsync();
+
+            var steps = await _context.Steps.Where(s => stepsIds.Contains(s.Id)).ToListAsync();
+
+            return steps;
+
+        }
+
+        // POST: api/Procedures/5/Steps
+        [HttpPost("{id}/Steps")]
+        public async Task<IActionResult> PostProcedureStep(int id, List<int> stepIds)
+        {
+            if (_context.Procedures == null)
+            {
+                return NotFound();
+            }
+
+            var procedure = await _context.Procedures.FindAsync(id);
+
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+
+            var steps = await _context.Steps.Where(s => stepIds.Contains(s.Id)).ToListAsync();
+            // TODO hacer el modelo intermedio y terminar de implementar el método
+            //var addSteps = _context.Procedures.Steps.addSteps(steps);                
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
 
         private bool ProcedureExists(int id)
         {

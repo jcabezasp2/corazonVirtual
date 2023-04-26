@@ -84,6 +84,7 @@ namespace aspnetapp.Controllers
                 Name = user.UserName,
                 Email = user.Email,
                 Role = role[0],
+                RoleClaims = roleClaims,
             };
 
             return Ok(result);
