@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ykBjy9QfRxX1kW5//KlejCLtXI34iC03X0Bsiwg0xTmcZ+D0abe5uYIAg0Rd+Z8GYG9SHkTmbXVhlKadv+gH/g==",
+  "dgSpecHash": "UPbRnvmG0bAmezGy8u88SXLskh8b3+4EeczDX5iMBLBcXPICd3bSQQPpkOXqtVn0Bej+HTGEe4E6MPPGyyzSRg==",
   "success": true,
   "projectFilePath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.authentication.cookies/2.2.0/microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.authentication.core/2.2.0/microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
+    "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/7.0.5/microsoft.aspnetcore.authentication.jwtbearer.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.cryptography.internal/7.0.5/microsoft.aspnetcore.cryptography.internal.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/7.0.5/microsoft.aspnetcore.cryptography.keyderivation.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.aspnetcore.dataprotection/2.2.0/microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",

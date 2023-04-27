@@ -7,6 +7,6 @@ namespace aspnetapp.Models
         public string Description { get; set; } = null!;
         public string Image { get; set; } = null!;
         public string duration { get; set; } = null!;
-        public List<Procedure> Procedures { get; set; } = null!;
+        public ICollection<Procedure>? Procedures { get; }
     }
 }

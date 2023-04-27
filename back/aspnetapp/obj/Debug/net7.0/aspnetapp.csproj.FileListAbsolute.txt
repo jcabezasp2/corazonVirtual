@@ -284,3 +284,4 @@
 /Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/bin/Debug/net7.0/Microsoft.Extensions.Identity.Core.dll
 /Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/bin/Debug/net7.0/Microsoft.Extensions.Identity.Stores.dll
 /Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/bin/Debug/net7.0/Microsoft.Extensions.Options.dll
+/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
