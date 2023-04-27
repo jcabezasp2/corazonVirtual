@@ -63,8 +63,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "http://localhost:8000",
-            ValidAudience = "http://localhost:8000",
+            ValidIssuer = "http://*:8000",
+            ValidAudience = "http://*:8000",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my custom Secret key for authnetication"))
         };
     });

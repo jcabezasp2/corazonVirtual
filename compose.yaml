@@ -3,7 +3,11 @@ services:
     build: 
       context: ./back
       dockerfile: Dockerfile
-
+    environment:
+      DB_HOST: postgres
+      DB_DATABASE: corazon_virtual
+      DB_USERNAME: root
+      DB_PASSWORD: root
     restart: always
     ports:
       - 8000:8000
