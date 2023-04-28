@@ -9,7 +9,7 @@ using aspnetapp.Models;
 
 namespace aspnetapp.Controllers
 {
-    [Route("Procedures")]
+    [Route("procedures")]
     [ApiController]
     public class ProcedureStepController : ControllerBase
     {
@@ -25,6 +25,7 @@ namespace aspnetapp.Controllers
         public async Task<ActionResult<IEnumerable<Step>>> GetSteps(int procedureId)
         {
             var procedure = await _context.Procedures.FindAsync(procedureId);
+
             if (procedure == null)
             {
                 return NotFound();

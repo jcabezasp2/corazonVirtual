@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("[controller]")]
+    [Route("procedures")]
     [ApiController]
     public class ProceduresController : ControllerBase
     {
@@ -116,33 +116,6 @@ namespace aspnetapp.Controllers
 
             return NoContent();
         }
-
-/*         // GET: api/Procedures/5/Steps
-        [HttpGet("{id}/Steps")]
-        public async Task<ActionResult<IEnumerable<Step>>> GetProcedureSteps(int id)
-        {
-            if (_context.Procedures == null)
-            {
-                return NotFound();
-            }
-
-            var procedure = await _context.Procedures.FindAsync(id);
-            
-            if (procedure == null)
-            {
-                return NotFound();
-            }
-
-            var stepsIds = await _context.Procedures
-                .Where(p => p.Id == id)
-                .SelectMany(p => p.Steps.Select(s => s.Id))
-                .ToListAsync();
-
-            var steps = await _context.Steps.Where(s => stepsIds.Contains(s.Id)).ToListAsync();
-
-            return steps;
-
-        } */
 
         private bool ProcedureExists(int id)
         {
