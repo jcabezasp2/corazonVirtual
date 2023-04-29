@@ -9,7 +9,7 @@ using aspnetapp.Models;
 
 namespace aspnetapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("steps")]
     [ApiController]
     public class StepsController : ControllerBase
     {
