@@ -12,13 +12,8 @@ using aspnetapp.Models;
 namespace aspnetapp.Migrations
 {
     [DbContext(typeof(dataContext))]
-<<<<<<< HEAD:back/aspnetapp/Migrations/20230429062201_Sol.Designer.cs
-    [Migration("20230429062201_Sol")]
-    partial class Sol
-=======
-    [Migration("20230423184638_InitialCreate")]
-    partial class InitialCreate
->>>>>>> docker:back/aspnetapp/Migrations/20230423184638_InitialCreate.Designer.cs
+    [Migration("20230429113959_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
