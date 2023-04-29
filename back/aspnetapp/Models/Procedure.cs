@@ -7,5 +7,5 @@ public class Procedure
     public string? Name { get; set; }
     public string? Image { get; set; }
 
-    public ICollection<Step> Steps { get; } = new List<Step>();
+    public virtual ICollection<Step> Steps { get; set;} = new List<Step>();
 }

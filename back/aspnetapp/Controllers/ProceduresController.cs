@@ -121,5 +121,52 @@ namespace aspnetapp.Controllers
         {
             return (_context.Procedures?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        // GET: api/Procedures/5/steps
+        [HttpGet("{id}/steps")]
+        public async Task<ActionResult<IEnumerable<Step>>> GetProcedureSteps(int id)
+        {
+          if (_context.Procedures == null)
+          {
+              return NotFound();
+          }
+            var procedure = await _context.Procedures.FindAsync(id);
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+            var steps = await _context.Steps.Where(s => s.Procedures.Contains(procedure)).ToListAsync();
+            if (steps == null)
+            {
+                return NotFound();
+            }
+            return steps;
+        }
+
+        // POST api/Procedures/5/steps
+        [HttpPost("{id}/steps")]
+        public async Task<ActionResult<Procedure>> PostProcedureStep(int id, int[] stepIds)
+        {
+          if (_context.Procedures == null)
+          {
+              return NotFound();
+          }
+            var procedure = await _context.Procedures.FindAsync(id);
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+            var steps = await _context.Steps.Where(s => stepIds.Contains(s.Id)).ToListAsync();
+            if (steps == null)
+            {
+                return NotFound();
+            }
+            foreach (var step in steps)
+            {
+                procedure.Steps.Add(step);
+            }
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
