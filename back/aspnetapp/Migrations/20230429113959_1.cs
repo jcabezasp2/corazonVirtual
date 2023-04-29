@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -283,6 +282,39 @@ namespace aspnetapp.Migrations
                 table: "UserApiKeys",
                 column: "Value",
                 unique: true);
+
+            // Seed data
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1", "1", "Admin", "ADMIN" },
+                    { "2", "2", "Teacher", "TEACHER" },
+                    { "3", "3", "Student", "STUDENT" }
+
+                });
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "TwoFactorEnabled","PhoneNumberConfirmed", "LockoutEnabled", "AccessFailedCount", "PasswordHash"},
+                values: new object[,]
+                {
+                    { "1", "admin", "ADMIN", "admin@example.es", "ADMIN@EXAMPLE.ES", false, false, false, true, 0,"AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw=="  },
+                    { "2", "teacher", "TEACHER", "teacher@example.es", "TEACHER@EXAMPLE.ES", false, false, false, true, 0,"AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==" },
+                    { "3", "student", "STUDENT", "student@example.es", "STUDENT@EXAMPLE.ES", false , false, false, true, 0,"AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==" }
+                }
+            );
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[,]
+                {
+                    { "1", "1" },
+                    { "2", "2" },
+                    { "3", "3" }
+                }
+            );
+
         }
 
         /// <inheritdoc />

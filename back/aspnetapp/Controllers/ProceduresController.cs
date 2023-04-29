@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("procedures")]
+    [Route("procedimentos")]
     [ApiController]
     public class ProceduresController : ControllerBase
     {
