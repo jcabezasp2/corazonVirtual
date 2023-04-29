@@ -15,6 +15,8 @@ builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=po
 // Config para localhost
 // builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=pruebas; Username=root; Password=root"));
 
+// Iniciliazcion de base de datos
+var db = builder.Services.BuildServiceProvider().GetService<dataContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
@@ -75,6 +77,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 var app = builder.Build();
+
+db.Database.Migrate();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();

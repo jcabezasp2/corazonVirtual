@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UPbRnvmG0bAmezGy8u88SXLskh8b3+4EeczDX5iMBLBcXPICd3bSQQPpkOXqtVn0Bej+HTGEe4E6MPPGyyzSRg==",
+  "dgSpecHash": "Lv86MvAdurCZe4O50IIJCc95mi/BDOKYv7EUy1fsxdcYbD+jXcPHmNS2i4UxQILwFXlsMUOK4agBfZ+TYSzcIw==",
   "success": true,
-  "projectFilePath": "/back/aspnetapp.csproj",
+  "projectFilePath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
   "expectedPackageFiles": [
     "/Users/javiercabezaspena/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",
@@ -56,7 +56,7 @@
     "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore/7.0.5/microsoft.entityframeworkcore.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.5/microsoft.entityframeworkcore.abstractions.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore.analyzers/7.0.5/microsoft.entityframeworkcore.analyzers.7.0.5.nupkg.sha512",
-    "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore.design/7.0.0/microsoft.entityframeworkcore.design.7.0.0.nupkg.sha512",
+    "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore.design/7.0.5/microsoft.entityframeworkcore.design.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore.relational/7.0.5/microsoft.entityframeworkcore.relational.7.0.5.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.entityframeworkcore.sqlserver/7.0.0/microsoft.entityframeworkcore.sqlserver.7.0.0.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
