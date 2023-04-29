@@ -2,7 +2,7 @@
   "version": 2,
   "dgSpecHash": "UPbRnvmG0bAmezGy8u88SXLskh8b3+4EeczDX5iMBLBcXPICd3bSQQPpkOXqtVn0Bej+HTGEe4E6MPPGyyzSRg==",
   "success": true,
-  "projectFilePath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
+  "projectFilePath": "/back/aspnetapp.csproj",
   "expectedPackageFiles": [
     "/Users/javiercabezaspena/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/Users/javiercabezaspena/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",

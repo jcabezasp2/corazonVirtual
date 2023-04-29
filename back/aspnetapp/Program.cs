@@ -15,6 +15,7 @@ builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=po
 // Config para localhost
 // builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=pruebas; Username=root; Password=root"));
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options => {
@@ -66,8 +67,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "http://localhost:8000",
-            ValidAudience = "http://localhost:8000",
+            ValidIssuer = "http://*:8000",
+            ValidAudience = "http://*:8000",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my custom Secret key for authnetication"))
         };
     });

@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj": {}
+    "/back/aspnetapp.csproj": {}
   },
   "projects": {
-    "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj": {
+    "/back/aspnetapp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
+        "projectUniqueName": "/back/aspnetapp.csproj",
         "projectName": "aspnetapp",
-        "projectPath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
-        "packagesPath": "/Users/javiercabezaspena/.nuget/packages/",
-        "outputPath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/obj/",
+        "projectPath": "/back/aspnetapp.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/back/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/javiercabezaspena/.nuget/NuGet/NuGet.Config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -59,7 +58,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[7.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -97,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.202/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
         }
       }
     }
