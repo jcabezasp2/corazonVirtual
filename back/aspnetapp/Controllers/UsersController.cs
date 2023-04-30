@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using aspnetapp.Models;
 using aspnetapp.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+
 namespace aspnetapp.Controllers
 {
-    [Route("")]
+    [Route("usuarios")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -30,7 +32,7 @@ namespace aspnetapp.Controllers
 
         // POST: register
         [HttpPost]
-        [Route("register")]
+        [Route("registrar")]
         public async Task<ActionResult<User>> Register(User user)
         {
             if (!ModelState.IsValid)
@@ -55,15 +57,50 @@ namespace aspnetapp.Controllers
                 return BadRequest("User not found");
             }
 
-            var token = _jwtService.CreateToken(createdUser);
+            await _userManager.AddToRoleAsync(createdUser, "student");
 
-            return Ok(token);
+            var token = _jwtService.CreateToken(createdUser).ToString();
+
+            var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync("student"));
+
+            createdUser.PasswordHash = "The password is hidden";
+
+            var retorn = new UserData()  // retorn es un objeto de tipo UserData
+            {
+                user = createdUser,
+                Token = token,
+                Role = "user",
+                RoleClaims = roleClaims,
+            };
+
+            return Ok(retorn);
+        }
+
+        // GET: getAll
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet]
+        [Route("getAll")]
+        public async Task<ActionResult<User>> GetAll()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            if (users == null)
+            {
+                return BadRequest("Users not found");
+            }
+
+            users.ForEach(async user =>
+            {
+                user.PasswordHash = "The password is hidden";
+            });
+
+            return Ok(users);
         }
 
         // POST: userdata
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
-        [Route("userdata")]
+        [Route("getUsuario")]
         public async Task<ActionResult<User>> GetUserData()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -73,16 +110,17 @@ namespace aspnetapp.Controllers
             var claims = await _userManager.GetClaimsAsync(user);
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
 
-
             if (user == null)
             {
                 return BadRequest("User not found");
             }
 
+            user.PasswordHash = "The password is hidden";
+
             var result = new UserData()
             {
-                Name = user.UserName,
-                Email = user.Email,
+                user = user,
+                Token = token,
                 Role = role[0],
                 RoleClaims = roleClaims,
             };
@@ -173,5 +211,37 @@ namespace aspnetapp.Controllers
             return Ok();
         }
         
+        //PUT: updateUsuario
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPut]
+        [Route("updateUsuario")]
+        public async Task<ActionResult<User>> UpdateUser(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            var userToUpdate = await _userManager.FindByIdAsync(_jwtService.GetUserIdFromToken(token));
+
+            if (userToUpdate == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            userToUpdate.UserName = user.Name;
+            userToUpdate.Email = user.Email;
+
+            var result = await _userManager.UpdateAsync(userToUpdate);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok();
+        }
     }
 }

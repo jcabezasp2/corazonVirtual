@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -283,6 +282,115 @@ namespace aspnetapp.Migrations
                 table: "UserApiKeys",
                 column: "Value",
                 unique: true);
+
+            // Seed data
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1", "1", "Admin", "ADMIN" },
+                    { "2", "2", "Teacher", "TEACHER" },
+                    { "3", "3", "Student", "STUDENT" }
+
+                });
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "TwoFactorEnabled","PhoneNumberConfirmed", "LockoutEnabled", "AccessFailedCount", "PasswordHash"},
+                values: new object[,]
+                {
+                    { "1", "admin", "ADMIN", "admin@example.es", "ADMIN@EXAMPLE.ES", false, false, false, true, 0,"AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw=="  },
+                    { "2", "teacher", "TEACHER", "teacher@example.es", "TEACHER@EXAMPLE.ES", false, false, false, true, 0,"AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==" },
+                    { "3", "student", "STUDENT", "student@example.es", "STUDENT@EXAMPLE.ES", false , false, false, true, 0,"AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==" }
+                }
+            );
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[,]
+                {
+                    { "1", "1" },
+                    { "2", "2" },
+                    { "3", "3" }
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Procedures",
+                columns: new[] { "Id", "Name", },
+                values: new object[,]
+                {
+                    { 1, "Cateterismo" },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Steps",
+                columns: new[] { "Id", "Name", "Description",  "duration", "Image" },
+                values: new object[,]
+                {
+                    { 1, "Estudio de imagen preoperatorio", "Una vez elegido al paciente para TAVI no femoral, se realiza un análisis de la tomografía computarizada para establecer varios objetivos. La adquisición de las imágenes para el análisis de la raíz aórtica debe realizarse de manera sincronizada con el electrocardiograma para evitar artefactos de movimiento, optando por una sincronización retrospectiva en los casos de fibrilación auricular o frecuencias cardiacas elevadas. Para disminuir esos artefactos y mejorar la calidad de las imágenes, es importante titular la dosis de betabloqueante por vía oral o calcioantagonista no dihidropiridínico hasta conseguir frecuencias cardiacas en torno a 60 latidos por minuto en reposo.", "50", "default"
+                     },
+                    { 2, "Valoración y medición del anillo aórtico", "La medición del anillo aórtico requiere la manipulación y el posprocesado de las imágenes hasta conseguir una imagen que se corresponda con el anillo basal de la válvula aórtica, que se define por el nivel situado inmediatamente por debajo de los 3 puntos de inserción más bajos de las cúspides aórticas. Estas medidas necesarias para la selección del tamaño adecuado de la prótesis, incluyen: 1. Medición del diámetro mayor (Dmayor) y menor (Dmenor) del anillo aórtico para el cálculo del diámetro medio (D) que se obtiene promediando los 2 valores (D = [Dmayor+Dmenor]/2). 2. Medición del perímetro del anillo aórtico. 3. Planimetría del área anillo aórtico. Para la válvula Edwards Sapien (Edwards Lifesciences), el anillo debe medir entre 18 -25mm, mientras que para la válvula CoreValve (Medtronic) el anillo debe medir entre 20-27mm.", "45", "default"
+                    },
+                    { 3, "Valoración del calcio a nivel de anillo aórtico y plano valvular.", "La TCMD (Tomografía Computerizada Multidetector) es la técnica de imagen de elección para la detección y la cuantificación de calcio. El grado de calcificación de los velos aórticos valorado en la TCMD previo al implante se correlaciona significativamente con el riesgo de complicaciones durante el TAVI. La fuga paravalvulvar se ve favorecida por el incorrecto despliegue de la prótesis contra la pared aórtica en presencia de calcio, incluso tras el inflado o balonización de la prótesis.", "25", "default"
+                    },
+                    { 4, "Valoración de las arterias coronarias", "La distancia del plano aórtico origen de ambas arterias coronarias es una medida relevante en el estudio preimplantación de la prótesis percutánea aórtica. A diferencia de lo que ocurre durante el reemplazo quirúrgico valvular aórtico en el cual las valvas son reseccionadas, durante el TAVI las valvas nativas son desplazadas y aplastadas por la prótesis, pudiendo ocasionar complicaciones tan graves como una oclusión coronaria o lesión de la raíz aórtica, así como el riesgo de obstrucción del flujo coronario por el propio stent de la válvula aórtica. Se indican valores de distancia mínimos de 10-14mm entre el origen de las arterias coronarias y la inserción de las valvas para evitar complicaciones en el implante de ambas prótesis.", "100", "default"
+                    },
+                    { 5, "Valoración de la posición del plano de implantación", "Durante la implantación de la prótesis percutánea aórtica puede ser necesaria la realización de múltiples proyecciones angiográficas hasta encontrar un plano en el que todas las cúspides de los senos de Valsalva queden alineadas perpendicularmente en el mismo plano. La mayoría de los operadores prefieren una proyección en la que la cúspide coronaria derecha es central, mientras que la no coronariana e izquierda están situadas simétricamente a cada lado. Diversos estudios han demostrado que el TCMD predice correctamente la proyección angiográfica perpendicular al plano valvular aórtico, que ayuda a guiar el proceso y correcto posicionamiento de la prótesis percutánea aórtica.", "100", "default"
+                    },
+                    { 6, "Anestesia y monitorización", "Se emplea anestesia general, se canalizan las vías venosas central y periférica, y se procede a la monitorización arterial invasiva. Se dispone el campo quirúrgico dejando preparadas las dos regiones inguinales y el tórax de forma completa por si se necesita reconvertir el procedimiento a una cirugía convencional.", "100", "default"
+                    },
+                    { 7, "Administración de heparina e incisión inguinal", "Se administra heparina sódica a dosis de 5.000 UI y se realiza una pequeña incisión en la ingle derecha para la introducción de un electrodo de marcapasos por la vena femoral, usando un electrodo de fijación pasiva.", "75", "default"
+                    },
+                    { 8, "Canalización de la arteria femoral", "Se canaliza la arteria femoral derecha y se introduce un pigtail centimetrado que ayuda a la localización del plano valvular, la realización de aortografías y a confirmar la distancia desde el punto de punción en la aorta ascendente hasta el anillo aórtico.", "200", "default"
+                    },
+                    { 9, "Colocación del sistema de radioscopia", "Se coloca el sistema de radioscopia según el ángulo prefijado por la tomografía computarizada y se comprueba la correcta alineación de los velos mediante la realización de una aortografía.", "152", "default"
+                    },
+                    { 10, "Miniesternotomía", "Se realiza una miniincisión en la piel de 4 cm y con la ayuda de una sierra oscilante se practica una miniesternotomía en J hasta el segundo espacio intercostal.", "200", "default"
+                    },
+                    { 11, "Apertura del pericardio.", "Se coloca un miniseparador esternal, se abre el pericardio y se aplican puntos de tracción del mismo hacia arriba que nos faciliten la exposición de la aorta distal. Se emplean dos suturas en bolsa de tabaco apoyadas en teflón sobre la aorta ascendente tras la palpación y comprobación radiológica de la distancia del sitio de punción al anillo aórtico.", "200", "default"
+                    },
+                    { 12, "Introducción del catéter a través de la válvula aórtica", "Se realiza una punción en el centro de la bolsa de tabaco y se inserta un introductor arterial de 6F. Las maniobras para cruzar retrógradamente la válvula aórtica se realizan con el empleo de una guía teflonada recta de 35’ y de 260cm de largo, siendo a veces necesario el uso de guías hidrofílicas.", "200", "default"
+                    },
+                    { 13, "Introducción de la guía extrastiff en el ventrículo", "Una vez que el catéter ha cruzado la válvula aórtica, se intercambia dicha guía por una guía extrastiff. Actualmente se usan guías preformadas como la Confida o en ocasiones, también con muy buenos resultados, la Safari. Es importante que la guía rígida haga una curva suave y se adapte al ventrículo, siendo necesario con frecuencia usar un pigtail para su correcta colocación.", "200", "default"
+                    },
+                    { 14, "Colocación del introductor Certitude en la aorta", "Se retira el introductor de 6F y se coloca el introductor Certitude dentro de la aorta asta la marca de 2 cm. Es interesante emplear un tope visible en la marca de 2cm que nos ayuda a controlar la hemostasia y la cantidad de introductor que se localiza dentro de la aorta. Las maniobras de retirada e introducción de catéteres deben ser muy suaves y controladas, ya que, a diferencia de la vía apical, disponemos de muy poca guía dentro del ventrículo y es muy fácil su dislocación en caso de maniobras intempestivas", "200", "default"
+                    },
+                    { 15, "Práctica de la valvuloplastia", "Se introduce el catéter balón de valvuloplastia y con previa sobreestimulación se realiza esta práctica. La retirada de dicho catéter se debe hacer con sumo cuidado, ya que en esta maniobra es muy fácil la dislocación de la guía e incluso su salida del ventrículo, lo que nos obligaría a repetir todo un repertorio de maniobras para recolocarla en el ventrículo.", "200", "default"
+                    },
+                    { 16, "Colocación y expansión de la prótesis", "Se introduce la prótesis hasta el plano anular guiados por el pigtail. El punto del centro debe quedar un poco por encima del plano anular para minimizar el bloqueo aurículo-ventricular. Se practica sobreestimulación y tras la caída de la presión arterial se realiza una aortografía que nos permite confirmar la adecuada colocación de la prótesis, la cuál se expande con un inflado muy lento del balón, que nos permite pequeños reajustes en el implante en caso de ser necesario.", "200", "default"
+                    },
+                    { 17, "Comprobación del funcionamiento de la prótesis valvular y cirre de la herida quirúrgica", "Se comprueba con ecocardiografía el normofuncionamiento de la prótesis valvular implantada y se retiran la guía, el catéter balón y el introductor, procediendo al anudado de las bolsas de tabaco y al cierre convencional de la esternotomía y la herida quirúrgica.", "200", "default"
+                     }
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "ProcedureStep",
+                columns: new[] { "ProceduresId", "StepsId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 },
+                    { 1, 3},
+                    { 1, 4},
+                    { 1, 5},
+                    { 1, 6},
+                    { 1, 7},
+                    { 1, 8},
+                    { 1, 9},
+                    { 1, 10},
+                    { 1, 11},
+                    { 1, 12},
+                    { 1, 13},
+                    { 1, 14},
+                    { 1, 15},
+                    { 1, 16},
+                    { 1, 17}
+                }
+            );
+
         }
 
         /// <inheritdoc />
