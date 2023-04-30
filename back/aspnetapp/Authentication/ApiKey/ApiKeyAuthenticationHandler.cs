@@ -27,6 +27,11 @@ namespace aspnetapp.Authentication.ApiKey
             _context = context;
         }
 
+        internal static void ApiKeySchema(AuthenticationOptions obj)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             if (!Request.Headers.ContainsKey(API_KEY_HEADER))

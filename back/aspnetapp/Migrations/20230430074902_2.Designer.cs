@@ -12,7 +12,7 @@ using aspnetapp.Models;
 namespace aspnetapp.Migrations
 {
     [DbContext(typeof(dataContext))]
-    [Migration("20230429191733_2")]
+    [Migration("20230430074902_2")]
     partial class _2
     {
         /// <inheritdoc />
@@ -88,10 +88,6 @@ namespace aspnetapp.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -142,10 +138,6 @@ namespace aspnetapp.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -244,6 +236,31 @@ namespace aspnetapp.Migrations
                     b.ToTable("ProcedureStep");
                 });
 
+            modelBuilder.Entity("aspnetapp.Models.ApplicationUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUsers");
+                });
+
             modelBuilder.Entity("aspnetapp.Models.Procedure", b =>
                 {
                     b.Property<int>("Id")
@@ -316,22 +333,6 @@ namespace aspnetapp.Migrations
                         .IsUnique();
 
                     b.ToTable("UserApiKeys");
-                });
-
-            modelBuilder.Entity("aspnetapp.Models.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Photo")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Surname")
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

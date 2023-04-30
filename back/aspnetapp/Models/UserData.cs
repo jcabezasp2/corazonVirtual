@@ -10,5 +10,7 @@ namespace aspnetapp.Models
         public string Role { get; set; }
         public ICollection<System.Security.Claims.Claim> RoleClaims { get; set; }
 
+        public ApplicationUser ApplicationUser { get; set; }
+
     }
 }
