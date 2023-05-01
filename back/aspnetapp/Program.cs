@@ -30,6 +30,15 @@ builder.Services.AddSwaggerGen(
         BearerFormat = "JWT",
         Scheme = "Bearer"
         });
+        options.AddSecurityDefinition("ApiKey", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "ApiKey",
+        Name = "Api-Key",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "ApiKey"
+        });
+        {
         options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
         {
             {
@@ -47,7 +56,24 @@ builder.Services.AddSwaggerGen(
                 new List<string>()
             }
         });
-    }
+        options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+        {
+            {
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                    {
+                        Id = "ApiKey",
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme
+                    },
+
+                    Name = "ApiKey",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                },
+                new List<string>()
+            }
+        });
+    }}
 );
 builder.Services.AddScoped<aspnetapp.Services.JwtService>();
 builder.Services.AddScoped<aspnetapp.Services.ApiKeyService>();
@@ -72,7 +98,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = "http://*:8000",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my custom Secret key for authnetication"))
         };
-    });
+    }).AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>("ApiKey", options => { }
+    );
+
+
 
 
 var app = builder.Build();

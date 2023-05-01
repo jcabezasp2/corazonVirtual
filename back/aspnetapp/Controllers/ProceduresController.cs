@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("procedimentos")]
+    [Route("procedimientos")]
     [ApiController]
     public class ProceduresController : ControllerBase
     {
@@ -22,6 +22,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: api/Procedures
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Procedure>>> GetProcedures()
         {
@@ -33,6 +34,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: api/Procedures/5
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Procedure>> GetProcedure(int id)
         {
@@ -51,7 +53,7 @@ namespace aspnetapp.Controllers
         }
 
         // PUT: api/Procedures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProcedure(int id, Procedure procedure)
         {
@@ -82,7 +84,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST: api/Procedures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         public async Task<ActionResult<Procedure>> PostProcedure(Procedure procedure)
         {
@@ -123,6 +125,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: api/Procedures/5/steps
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}/steps")]
         public async Task<ActionResult<IEnumerable<Step>>> GetProcedureSteps(int id)
         {
@@ -144,6 +147,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST api/Procedures/5/steps
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost("{id}/steps")]
         public async Task<ActionResult<Procedure>> PostProcedureStep(int id, int[] stepIds)
         {

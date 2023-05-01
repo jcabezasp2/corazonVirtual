@@ -24,6 +24,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST: create
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("create")]
         public async Task<ActionResult<Role>> Create(Role role)
@@ -46,6 +47,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST: delete
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("delete")]
         public async Task<ActionResult<Role>> Delete(Role role)
@@ -67,6 +69,8 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
+        // POST: adduser
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("adduser")]
         public async Task<ActionResult<Role>> AddUserToRole(UserRole userRole)
@@ -96,7 +100,8 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
-        // POST: addclaim
+        // POST: addPermission
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("addPermission")]
         public async Task<ActionResult<Role>> AddPermissionToRole(AddClaimToRole permission)

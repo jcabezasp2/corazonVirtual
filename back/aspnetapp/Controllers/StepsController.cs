@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
@@ -21,6 +22,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: api/Steps
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Step>>> GetSteps()
         {
@@ -32,6 +34,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: api/Steps/5
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Step>> GetStep(int id)
         {
@@ -50,7 +53,7 @@ namespace aspnetapp.Controllers
         }
 
         // PUT: api/Steps/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStep(int id, Step step)
         {
@@ -81,7 +84,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST: api/Steps
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         public async Task<ActionResult<Step>> PostStep(Step step)
         {
@@ -96,6 +99,7 @@ namespace aspnetapp.Controllers
         }
 
         // DELETE: api/Steps/5
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStep(int id)
         {

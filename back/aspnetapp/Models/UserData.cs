@@ -12,5 +12,6 @@ namespace aspnetapp.Models
 
         public ApplicationUser ApplicationUser { get; set; }
 
+        public aspnetapp.Models.UserApiKey UserApiKey { get; set; }
     }
 }

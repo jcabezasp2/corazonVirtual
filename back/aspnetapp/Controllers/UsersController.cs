@@ -77,7 +77,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: getAll
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<User>> GetAll()
@@ -98,14 +98,14 @@ namespace aspnetapp.Controllers
         }
 
         // POST: userdata
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("getUsuario")]
         public async Task<ActionResult<User>> GetUserData()
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            var user = await _userManager.FindByIdAsync(_jwtService.GetUserIdFromToken(token));
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var role = await _userManager.GetRolesAsync(user);
             var claims = await _userManager.GetClaimsAsync(user);
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
@@ -120,7 +120,6 @@ namespace aspnetapp.Controllers
             var result = new UserData()
             {
                 user = user,
-                Token = token,
                 Role = role[0],
                 RoleClaims = roleClaims,
             };
@@ -128,8 +127,8 @@ namespace aspnetapp.Controllers
             return Ok(result);
         }
 
-        // POST: login
-        [HttpPost("login")]
+        // POST: token
+        [HttpPost("token")]
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
@@ -157,7 +156,7 @@ namespace aspnetapp.Controllers
         }
         // NO esta en funcionamiento aun
         // POST: api/Users/ApiKey
-        [HttpPost("ApiKey")]
+        [HttpPost("login")]
         public async Task<ActionResult> CreateApiKey(AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
@@ -181,10 +180,27 @@ namespace aspnetapp.Controllers
 
             var token = _apiKeyService.CreateApiKey(user);
 
-            return Ok(token);
+            user.PasswordHash = "The password is hidden";
+
+            var role = await _userManager.GetRolesAsync(user);
+
+            var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
+
+
+
+            var retorn = new UserData()  // retorn es un objeto de tipo UserData
+            {
+                user = user,
+                UserApiKey = token,
+                Role = role.ToArray()[0],
+                RoleClaims = roleClaims,
+            };
+
+            return Ok(retorn);
         }
 
         //POST: addClaim
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("addClaim")]
         public async Task<ActionResult<User>> AddClaimToUSer(AddClaimToUSer permission)
@@ -212,7 +228,7 @@ namespace aspnetapp.Controllers
         }
         
         //PUT: updateUsuario
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut]
         [Route("updateUsuario")]
         public async Task<ActionResult<User>> UpdateUser(User user)
@@ -222,9 +238,7 @@ namespace aspnetapp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            var userToUpdate = await _userManager.FindByIdAsync(_jwtService.GetUserIdFromToken(token));
+            var userToUpdate = await _userManager.FindByIdAsync(user.Id);
 
             if (userToUpdate == null)
             {
@@ -233,7 +247,9 @@ namespace aspnetapp.Controllers
 
             userToUpdate.UserName = user.Name;
             userToUpdate.Email = user.Email;
+            userToUpdate.PasswordHash = user.Password;
 
+            
             var result = await _userManager.UpdateAsync(userToUpdate);
 
             if (!result.Succeeded)
