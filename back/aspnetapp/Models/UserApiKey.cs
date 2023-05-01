@@ -12,13 +12,13 @@ namespace aspnetapp.Models
         public int ID { get; set; }
 
         [Required]
-        public string Value { get; set; }
+        public string Value { get; set; } = null!;
 
         [JsonIgnore]
         [Required]
-        public string UserID { get; set; }
+        public string UserID { get; set; } = null!;
 
         [JsonIgnore]
-        public IdentityUser User { get; set; }
+        public IdentityUser User { get; set; } = null!;
     }
 }

@@ -1,18 +1,12 @@
-using System.ComponentModel.DataAnnotations;
+namespace aspnetapp.Models;
 
-
-namespace aspnetapp.Models
-{
 public class Tool
 {
-    [Required]
+    public int Id { get; set; }
     public string Name { get; set; }
-    [Required]
-    public string Description { get; set; }
-    [Required]
-    public String Modelo3D { get; set; }
-    
 
-}
+    public string Description { get; set; }
+
+    public string Modelo { get; set; }
 
 }

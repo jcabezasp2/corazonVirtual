@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aspnetapp</name>
+    </assembly>
+    <members>
+        <member name="M:aspnetapp.Controllers.ProceduresController.GetProcedures">
+             <summary>
+             Get all procedures
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /procedimientos
+            
+             </remarks>
+             <returns>Array of procedures</returns>
+             <response code="200">Returns the array of procedures</response>
+             <response code="404">If the procedures array is null</response>
+             <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.Register(aspnetapp.Models.User)">
+             <summary>
+             Register an user
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /usuarios/registrar
+                 {
+                    "name": "user",
+                    "email": "user@example",
+                    "password": "123456"
+                 }
+            
+            </remarks>
+             <returns>The user data and the ApiKey</returns>
+             <response code="200">Returns the user data and the ApiKey</response>
+             <response code="400">If the user data is not valid</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.GetAll">
+             <summary>
+             Return all users
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /usuarios/getAll
+            
+            </remarks>
+             <returns>All users</returns>
+             <response code="200">Returns all users</response>
+             <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.GetUserData">
+             <summary>
+             Return the user data and the ApiKey
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /usuarios/getUsuario
+             
+            </remarks>
+             <returns>The user data and the ApiKey</returns>
+             <response code="200">Returns the user data and the ApiKey</response>
+             <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.CreateBearerToken(aspnetapp.Models.AuthenticationRequest)">
+             <summary>
+             Login a user and return the user data and the Token
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /usuarios/login
+                 {
+                    "email": "user@example",
+                    "password": "123456"
+                 }
+            </remarks>
+             <returns>The token and the expiration date</returns>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.CreateApiKey(aspnetapp.Models.AuthenticationRequest)">
+             <summary>
+             Login a user and return the user data and the ApiKey
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /usuarios/login
+                 {
+                    "email": "user@example",
+                    "password": "123456"
+                 }
+            </remarks>
+             <returns>The user data and the ApiKey</returns>
+             <response code="200">Returns the user data and the ApiKey</response>
+             <response code="400">Error in the request</response>
+             <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.AddClaimToUSer(aspnetapp.Models.AddClaimToUSer)">
+             <summary>
+             Add a claim to a user
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /usuarios/addClaim
+                 {
+                    "userId": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+                    "type": "type",
+                    "value": "value"
+                 }
+            </remarks>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the user is null or the password is invalid</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.UpdateUser(aspnetapp.Models.User)">
+             <summary>
+             uptade the user data
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 PUT /usuarios/updateUsuario
+                 {
+                    "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+                    "name": "name",
+                    "email": "email",
+                    "password": "password"
+                 }
+            </remarks>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the user is null or the password is invalid</response>
+             <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="T:aspnetapp.Migrations._1">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._1.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._1.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._1.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._2">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._2.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._2.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._2.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._3">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._3.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._3.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._3.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
