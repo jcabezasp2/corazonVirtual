@@ -21,7 +21,19 @@ namespace aspnetapp.Controllers
             _context = context;
         }
 
-        // GET: api/Procedures
+        /// <summary>
+        /// Get all procedures
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /procedimientos
+        ///
+        /// </remarks>
+        /// <returns>Array of procedures</returns>
+        /// <response code="200">Returns the array of procedures</response>
+        /// <response code="404">If the procedures array is null</response>
+        /// <response code="401">If the user is not authenticated</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Procedure>>> GetProcedures()
@@ -30,7 +42,14 @@ namespace aspnetapp.Controllers
           {
               return NotFound();
           }
-            return await _context.Procedures.ToListAsync();
+
+            var procedures = await _context.Procedures.ToListAsync();
+
+            procedures.ForEach(p => {
+                p.Steps = _context.Steps.Where(s => s.Procedures.Contains(p)).ToList();
+            });
+
+            return procedures;
         }
 
         // GET: api/Procedures/5
@@ -48,6 +67,8 @@ namespace aspnetapp.Controllers
             {
                 return NotFound();
             }
+
+            procedure.Steps = _context.Steps.Where(s => s.Procedures.Contains(procedure)).ToList();
 
             return procedure;
         }

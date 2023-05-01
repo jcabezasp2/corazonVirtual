@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using aspnetapp.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ var db = builder.Services.BuildServiceProvider().GetService<dataContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options => {
-        options.SwaggerDoc("v1", new() { Title = "CoRAzón Virtual", Version = "v1" });
+        options.SwaggerDoc("v1", new OpenApiInfo { Title = "Corazon Virtual API", Version = "v1" });
         options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
         {
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
@@ -38,6 +39,9 @@ builder.Services.AddSwaggerGen(
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
         Scheme = "ApiKey"
         });
+
+        var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         {
         options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
         {
@@ -101,7 +105,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     }).AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>("ApiKey", options => { }
     );
 
-
+//Cors allow all
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 
 var app = builder.Build();
@@ -110,7 +123,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.UseAuthentication();
 

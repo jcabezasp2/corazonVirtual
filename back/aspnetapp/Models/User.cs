@@ -11,6 +11,6 @@ namespace aspnetapp.Models
         public string Password { get; set; }
         [Required]
         public string Email { get; set; }
-        public string Id { get; internal set; }
+        public string? Id { get; internal set; }
     }
 }
