@@ -7,6 +7,7 @@ public class Tool
 
     public string Description { get; set; }
 
-    public string Modelo { get; set; }
+    public string Modelo { get; set; }   
 
+    public virtual ICollection<Step>? Steps { get; set; }
 }
