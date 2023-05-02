@@ -9,7 +9,7 @@ import './css/LightTheme.css';
     
 //core
 import "primereact/resources/primereact.min.css";
-// import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 //icons
