@@ -1,0 +1,23 @@
+.p-button{
+    background: transparent !important;
+    border: none !important;
+    color: transparent !important;
+}
+
+.p-button:hover{
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: var(--primary-color) !important;
+}
+
+.p-button:focus{
+    background-color: none !important;
+    border-color: none !important;
+    box-shadow: none !important
+}
+
+.boxlogo{
+    background-image: url('../img/logo1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}

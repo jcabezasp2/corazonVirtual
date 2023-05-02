@@ -1,0 +1,100 @@
+body {
+    /* padding: 4rem; */
+    background-image: linear-gradient(6deg, rgba(2,0,36,1) 0%, rgb(50, 93, 117) 44%, rgb(94, 149, 184) 76%, rgb(112, 189, 236) 100%);
+    height: 100vh;
+  
+  }
+
+  .wrapper{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+    padding: 4em 2em 0 0;
+  }
+  
+  .cor {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    grid-column: 1 ;
+    gap: 20em;
+    width: 100%;
+  }
+ 
+
+#loader{
+  display: flex;
+  align-items:center;
+  justify-content: center;
+   position:absolute; 
+  width: 100%;
+  height: 92%;
+}
+
+
+svg {
+    height: 100%;
+    width: 90%;
+}
+
+  .pacho path {
+    stroke: #fff;
+    stroke-width: 0.5px;
+    fill: none;
+    stroke-dasharray: 150, 200;
+    stroke-dashoffset: 0;
+    animation: pulse 10s infinite linear;
+  }
+
+@keyframes pulse {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  25% {
+    stroke-dashoffset: 250;
+  }
+  50% {
+    stroke-dashoffset: 500;
+  }
+  75% {
+    stroke-dashoffset: 780;
+  }
+  100% {
+    stroke-dashoffset: 1050;
+  }
+}
+
+
+
+.corazon {
+  animation-name: latido;
+  animation-duration: 2.4s;
+  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation-iteration-count: infinite;
+  animation-delay: 0.6s;
+  background-image: url("../img/corazon2-removebg-preview.png");
+  background-size: cover;
+  width: 15em;
+  height: 15em;
+  position: relative;
+  right: 8em;
+}
+
+@keyframes latido {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

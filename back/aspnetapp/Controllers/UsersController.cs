@@ -30,7 +30,23 @@ namespace aspnetapp.Controllers
             _roleManager = roleManager;
         }
 
-        // POST: register
+        /// <summary>
+        /// Register an user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /usuarios/registrar
+        ///     {
+        ///        "name": "user",
+        ///        "email": "user@example",
+        ///        "password": "123456"
+        ///     }
+        ///
+        ///</remarks>
+        /// <returns>The user data and the ApiKey</returns>
+        /// <response code="200">Returns the user data and the ApiKey</response>
+        /// <response code="400">If the user data is not valid</response>
         [HttpPost]
         [Route("registrar")]
         public async Task<ActionResult<User>> Register(User user)
@@ -59,7 +75,7 @@ namespace aspnetapp.Controllers
 
             await _userManager.AddToRoleAsync(createdUser, "student");
 
-            var token = _jwtService.CreateToken(createdUser).ToString();
+            var token = _apiKeyService.CreateApiKey(createdUser);
 
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync("student"));
 
@@ -68,7 +84,7 @@ namespace aspnetapp.Controllers
             var retorn = new UserData()  // retorn es un objeto de tipo UserData
             {
                 user = createdUser,
-                Token = token,
+                UserApiKey = token,
                 Role = "user",
                 RoleClaims = roleClaims,
             };
@@ -76,8 +92,19 @@ namespace aspnetapp.Controllers
             return Ok(retorn);
         }
 
-        // GET: getAll
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        /// <summary>
+        /// Return all users
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /usuarios/getAll
+        ///
+        ///</remarks>
+        /// <returns>All users</returns>
+        /// <response code="200">Returns all users</response>
+        /// <response code="401">If the user is not authenticated</response>
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<User>> GetAll()
@@ -97,15 +124,25 @@ namespace aspnetapp.Controllers
             return Ok(users);
         }
 
-        // POST: userdata
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        /// <summary>
+        /// Return the user data and the ApiKey
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /usuarios/getUsuario
+        /// 
+        ///</remarks>
+        /// <returns>The user data and the ApiKey</returns>
+        /// <response code="200">Returns the user data and the ApiKey</response>
+        /// <response code="401">If the user is not authenticated</response>
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("getUsuario")]
         public async Task<ActionResult<User>> GetUserData()
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            var user = await _userManager.FindByIdAsync(_jwtService.GetUserIdFromToken(token));
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var role = await _userManager.GetRolesAsync(user);
             var claims = await _userManager.GetClaimsAsync(user);
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
@@ -120,7 +157,6 @@ namespace aspnetapp.Controllers
             var result = new UserData()
             {
                 user = user,
-                Token = token,
                 Role = role[0],
                 RoleClaims = roleClaims,
             };
@@ -128,8 +164,20 @@ namespace aspnetapp.Controllers
             return Ok(result);
         }
 
-        // POST: login
-        [HttpPost("login")]
+        /// <summary>
+        /// Login a user and return the user data and the Token
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /usuarios/login
+        ///     {
+        ///        "email": "user@example",
+        ///        "password": "123456"
+        ///     }
+        ///</remarks>
+        /// <returns>The token and the expiration date</returns>
+        [HttpPost("token")]
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
@@ -155,9 +203,25 @@ namespace aspnetapp.Controllers
 
             return Ok(token);
         }
-        // NO esta en funcionamiento aun
-        // POST: api/Users/ApiKey
-        [HttpPost("ApiKey")]
+        
+
+        /// <summary>
+        /// Login a user and return the user data and the ApiKey
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /usuarios/login
+        ///     {
+        ///        "email": "user@example",
+        ///        "password": "123456"
+        ///     }
+        ///</remarks>
+        /// <returns>The user data and the ApiKey</returns>
+        /// <response code="200">Returns the user data and the ApiKey</response>
+        /// <response code="400">Error in the request</response>
+        /// <response code="401">If the user is not authenticated</response>
+        [HttpPost("login")]
         public async Task<ActionResult> CreateApiKey(AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
@@ -181,10 +245,43 @@ namespace aspnetapp.Controllers
 
             var token = _apiKeyService.CreateApiKey(user);
 
-            return Ok(token);
+            user.PasswordHash = "The password is hidden";
+
+            var role = await _userManager.GetRolesAsync(user);
+
+            var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
+
+
+
+            var retorn = new UserData()
+            {
+                user = user,
+                UserApiKey = token,
+                Role = role.ToArray()[0],
+                RoleClaims = roleClaims,
+            };
+
+            return Ok(retorn);
         }
 
-        //POST: addClaim
+        /// <summary>
+        /// Add a claim to a user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /usuarios/addClaim
+        ///     {
+        ///        "userId": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+        ///        "type": "type",
+        ///        "value": "value"
+        ///     }
+        ///</remarks>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the user is null or the password is invalid</response>
+
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("addClaim")]
         public async Task<ActionResult<User>> AddClaimToUSer(AddClaimToUSer permission)
@@ -211,8 +308,25 @@ namespace aspnetapp.Controllers
             return Ok();
         }
         
-        //PUT: updateUsuario
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        /// <summary>
+        /// uptade the user data
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /usuarios/updateUsuario
+        ///     {
+        ///        "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+        ///        "name": "name",
+        ///        "email": "email",
+        ///        "password": "password"
+        ///     }
+        ///</remarks>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the user is null or the password is invalid</response>
+        /// <response code="401">If the user is not authenticated</response>
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut]
         [Route("updateUsuario")]
         public async Task<ActionResult<User>> UpdateUser(User user)
@@ -222,9 +336,7 @@ namespace aspnetapp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            var userToUpdate = await _userManager.FindByIdAsync(_jwtService.GetUserIdFromToken(token));
+            var userToUpdate = await _userManager.FindByIdAsync(user.Id);
 
             if (userToUpdate == null)
             {
@@ -233,7 +345,9 @@ namespace aspnetapp.Controllers
 
             userToUpdate.UserName = user.Name;
             userToUpdate.Email = user.Email;
+            userToUpdate.PasswordHash = user.Password;
 
+            
             var result = await _userManager.UpdateAsync(userToUpdate);
 
             if (!result.Succeeded)

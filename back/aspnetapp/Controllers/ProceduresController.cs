@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("procedimentos")]
+    [Route("procedimientos")]
     [ApiController]
     public class ProceduresController : ControllerBase
     {
@@ -21,7 +21,20 @@ namespace aspnetapp.Controllers
             _context = context;
         }
 
-        // GET: api/Procedures
+        /// <summary>
+        /// Get all procedures
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /procedimientos
+        ///
+        /// </remarks>
+        /// <returns>Array of procedures</returns>
+        /// <response code="200">Returns the array of procedures</response>
+        /// <response code="404">If the procedures array is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Procedure>>> GetProcedures()
         {
@@ -29,10 +42,18 @@ namespace aspnetapp.Controllers
           {
               return NotFound();
           }
-            return await _context.Procedures.ToListAsync();
+
+            var procedures = await _context.Procedures.ToListAsync();
+
+            procedures.ForEach(p => {
+                p.Steps = _context.Steps.Where(s => s.Procedures.Contains(p)).ToList();
+            });
+
+            return procedures;
         }
 
         // GET: api/Procedures/5
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Procedure>> GetProcedure(int id)
         {
@@ -47,11 +68,13 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
+            procedure.Steps = _context.Steps.Where(s => s.Procedures.Contains(procedure)).ToList();
+
             return procedure;
         }
 
         // PUT: api/Procedures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProcedure(int id, Procedure procedure)
         {
@@ -82,7 +105,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST: api/Procedures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         public async Task<ActionResult<Procedure>> PostProcedure(Procedure procedure)
         {
@@ -123,6 +146,7 @@ namespace aspnetapp.Controllers
         }
 
         // GET: api/Procedures/5/steps
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}/steps")]
         public async Task<ActionResult<IEnumerable<Step>>> GetProcedureSteps(int id)
         {
@@ -144,6 +168,7 @@ namespace aspnetapp.Controllers
         }
 
         // POST api/Procedures/5/steps
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost("{id}/steps")]
         public async Task<ActionResult<Procedure>> PostProcedureStep(int id, int[] stepIds)
         {

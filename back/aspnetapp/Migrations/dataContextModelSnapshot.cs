@@ -270,6 +270,7 @@ namespace aspnetapp.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -304,6 +305,31 @@ namespace aspnetapp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Steps");
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Tool", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tools");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.UserApiKey", b =>
