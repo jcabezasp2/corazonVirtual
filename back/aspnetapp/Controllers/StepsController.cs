@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("steps")]
+    [Route("pasos")]
     [ApiController]
     public class StepsController : ControllerBase
     {
@@ -21,7 +21,20 @@ namespace aspnetapp.Controllers
             _context = context;
         }
 
-        // GET: api/Steps
+        /// <summary>
+        /// Get all steps
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /pasos
+        ///
+        /// </remarks>
+        /// <returns>Array of steps</returns>
+        /// <response code="200">Returns the array of steps</response>
+        /// <response code="404">If the array of steps is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Step>>> GetSteps()
@@ -33,7 +46,21 @@ namespace aspnetapp.Controllers
             return await _context.Steps.ToListAsync();
         }
 
-        // GET: api/Steps/5
+        /// <summary>
+        /// Get a step by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /pasos/1
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns>A step</returns>
+        /// <response code="200">Returns the step</response>
+        /// <response code="404">If the step is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Step>> GetStep(int id)
@@ -52,35 +79,53 @@ namespace aspnetapp.Controllers
             return step;
         }
 
-        // PUT: api/Steps/5
+        /// <summary>
+        /// Update a step
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /pasos/1
+        ///     {
+        ///        "name": "Step 1",
+        ///        "description": "Description of step 1",
+        ///        "image": file,
+        ///        "duration": "10"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <param name="step"></param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="400">If the id is not equal to the step id</response>
+        /// <response code="404">If the step is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStep(int id, Step step)
         {
-            if (id != step.Id)
+            if(_context.Steps == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(step).State = EntityState.Modified;
+            var oldStep = await _context.Steps.FindAsync(id);
 
-            try
+            if (oldStep == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StepExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+            oldStep.Name = step.Name;
+            oldStep.Description = step.Description;
+            oldStep.Image = step.Image;
+            oldStep.duration = step.duration;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Steps
@@ -98,7 +143,21 @@ namespace aspnetapp.Controllers
             return CreatedAtAction("GetStep", new { id = step.Id }, step);
         }
 
-        // DELETE: api/Steps/5
+        /// <summary>
+        /// Delete a step
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /pasos/1
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Sucess</response>
+        /// <response code="404">If the step is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStep(int id)
@@ -116,7 +175,7 @@ namespace aspnetapp.Controllers
             _context.Steps.Remove(step);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool StepExists(int id)

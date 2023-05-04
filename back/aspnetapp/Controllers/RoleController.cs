@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetapp.Controllers
 {
-    [Route("/role")]
+    [Route("/roles")]
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -23,7 +23,24 @@ namespace aspnetapp.Controllers
             _roleManager = roleManager;
         }
 
-        // POST: create
+        /// <summary>
+        /// Create a role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /rol/create
+        ///     {
+        ///        "name": "admin"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="role"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the role is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("create")]
@@ -46,7 +63,24 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
-        // POST: delete
+        /// <summary>
+        /// Delete a role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /rol/delete
+        ///     {
+        ///        "name": "admin"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="role"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the role is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("delete")]
@@ -69,7 +103,25 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
-        // POST: adduser
+        /// <summary>
+        /// Add a user to a role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /rol/adduser
+        ///     {
+        ///        "userEmail": "admin@admin",
+        ///        "roleName": "admin"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="userRole"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the user or role is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("adduser")]
@@ -100,7 +152,26 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
-        // POST: addPermission
+        /// <summary>
+        /// add permission to a role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /rol/addPermission
+        ///     {
+        ///        "roleId": "admin",
+        ///        "type": "permission",
+        ///        "value": "value"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="permission"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the role is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         [Route("addPermission")]
