@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="..\build\aspnetapp.props" />
+  <Import Project="../build/aspnetapp.props" />
 </Project>

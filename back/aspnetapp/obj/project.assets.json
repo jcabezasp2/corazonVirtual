@@ -11820,24 +11820,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lara\\.nuget\\packages\\": {}
+    "/Users/javiercabezaspena/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lara\\Desktop\\DAW_2\\corazonVirtualFinal-1\\back\\aspnetapp\\aspnetapp.csproj",
+      "projectUniqueName": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
       "projectName": "aspnetapp",
-      "projectPath": "C:\\Users\\Lara\\Desktop\\DAW_2\\corazonVirtualFinal-1\\back\\aspnetapp\\aspnetapp.csproj",
-      "packagesPath": "C:\\Users\\Lara\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lara\\Desktop\\DAW_2\\corazonVirtualFinal-1\\back\\aspnetapp\\obj\\",
+      "projectPath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/aspnetapp.csproj",
+      "packagesPath": "/Users/javiercabezaspena/.nuget/packages/",
+      "outputPath": "/Users/javiercabezaspena/Downloads/proyecto_final/corazonVirtualFinal/back/aspnetapp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Lara\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/javiercabezaspena/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11914,7 +11915,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.202/RuntimeIdentifierGraph.json"
       }
     }
   }

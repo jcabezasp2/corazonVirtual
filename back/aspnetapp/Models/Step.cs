@@ -8,5 +8,7 @@ namespace aspnetapp.Models
         public string Image { get; set; } = null!;
         public string duration { get; set; } = null!;
         public virtual ICollection<Procedure>? Procedures { get; set; }
+
+        public virtual ICollection<Tool>? Tools { get; set; }
     }
 }
