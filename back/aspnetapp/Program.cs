@@ -13,7 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// Linea para que funcione el docker
 builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=postgres:5432; Database=corazon_virtual; Username=root; Password=root"));
+
+// Linea para que funcionen las migraciones
+// builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
+
 
 // Iniciliazcion de base de datos
 var db = builder.Services.BuildServiceProvider().GetService<dataContext>();
