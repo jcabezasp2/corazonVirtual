@@ -128,7 +128,27 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
-        // POST: api/Steps
+        /// <summary>
+        /// Create a step
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /pasos
+        ///     {
+        ///        "name": "Step 1",
+        ///        "description": "Description of step 1",
+        ///        "image": file,
+        ///        "duration": "10"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="step"></param>
+        /// <returns>A newly created step</returns>
+        /// <response code="201">Returns the newly created step</response>
+        /// <response code="400">If the step is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         public async Task<ActionResult<Step>> PostStep(Step step)

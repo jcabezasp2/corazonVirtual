@@ -262,7 +262,7 @@ namespace aspnetapp.Controllers
         /// <response code="401">If the user is not authenticated</response>
         /// <response code="500">If there is a connection failure with the database </response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        [HttpPost("{id}pasos")]
+        [HttpPost("{id}/pasos")]
         public async Task<ActionResult<Procedure>> PostProcedureStep(int id, int[] stepIds)
         {
           if (_context.Procedures == null)

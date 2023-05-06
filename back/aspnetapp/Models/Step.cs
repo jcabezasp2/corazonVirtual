@@ -7,6 +7,8 @@ namespace aspnetapp.Models
         public string Description { get; set; } = null!;
         public string Image { get; set; } = null!;
         public string duration { get; set; } = null!;
+
+        public Boolean? PreviousStep { get; set; }
         public virtual ICollection<Procedure>? Procedures { get; set; }
 
         public virtual ICollection<Tool>? Tools { get; set; }

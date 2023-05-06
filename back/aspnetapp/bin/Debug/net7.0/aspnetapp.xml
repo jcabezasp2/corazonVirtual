@@ -5,24 +5,45 @@
     </assembly>
     <members>
         <member name="M:aspnetapp.Controllers.PracticeController.GetPractices">
-            <summary>
-            Get all practices
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:aspnetapp.Controllers.PracticeController.GetPractice(System.String)">
-            <summary>
-            Get a practice by student id
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
+             <summary>
+             Get all practices
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /practicas
+            
+             </remarks>
+             <returns>An array with all the practices</returns>
+             <response code="200">Returns the practices</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="500">Internal server error</response>
         </member>
         <member name="M:aspnetapp.Controllers.PracticeController.PostPractice(aspnetapp.Models.Practice)">
-            <summary>
-            Create a practice
-            </summary>
-            <param name="practice"></param>
-            <returns></returns>
+             <summary>
+             Create a practice
+             </summary>
+             <param name="practice"></param>
+             <remarks>
+             Sample request:
+            
+                 POST /practicas
+                 {
+                    "date": "2021-05-05T00:00:00",
+                    "observations": "Observations",
+                    "duration": 60,
+                    "procedureId": 1,
+                    "stepId": 1
+                 }
+            
+             </remarks>
+             <returns>The practice saved</returns>
+             <response code="201">Returns the practice saved</response>
+             <response code="400">Bad request</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="500">Internal server error</response>
         </member>
         <member name="M:aspnetapp.Controllers.ProceduresController.GetProcedures">
              <summary>
@@ -431,6 +452,23 @@
              <response code="400">If the user is null or the password is invalid</response>
              <response code="401">If the user is not authenticated</response>
         </member>
+        <member name="M:aspnetapp.Controllers.UsersController.GetPractice(System.String)">
+             <summary>
+             Get a practice by student id
+             </summary>
+             <param name="id"></param>
+             <remarks>
+             Sample request:
+            
+                 GET usuarios/3/practicas/
+            
+             </remarks>
+             <returns>An array with all the practices of the student</returns>
+             <response code="200">Returns the practices</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="500">Internal server error</response>
+        </member>
         <member name="T:aspnetapp.Migrations._1">
             <inheritdoc />
         </member>
@@ -465,6 +503,18 @@
             <inheritdoc />
         </member>
         <member name="M:aspnetapp.Migrations._3.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._4">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._4.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._4.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._4.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

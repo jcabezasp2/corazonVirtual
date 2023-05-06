@@ -16,18 +16,21 @@ namespace aspnetapp.Controllers
         private readonly JwtService _jwtService;
         private readonly ApiKeyService _apiKeyService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly dataContext _context;
 
         public UsersController(
             UserManager<IdentityUser> userManager,
             JwtService jwtService,
             ApiKeyService apiKeyService,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            dataContext context
         )
         {
             _userManager = userManager;
             _jwtService = jwtService;
             _apiKeyService = apiKeyService;
             _roleManager = roleManager;
+            _context = context;
         }
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace aspnetapp.Controllers
 
             var createdUser = await _userManager.FindByEmailAsync(user.Email);
 
-            if(createdUser == null)
+            if (createdUser == null)
             {
                 return BadRequest("User not found");
             }
@@ -203,7 +206,7 @@ namespace aspnetapp.Controllers
 
             return Ok(token);
         }
-        
+
 
         /// <summary>
         /// Login a user and return the user data and the ApiKey
@@ -307,7 +310,7 @@ namespace aspnetapp.Controllers
 
             return Ok();
         }
-        
+
         /// <summary>
         /// uptade the user data
         /// </summary>
@@ -347,7 +350,7 @@ namespace aspnetapp.Controllers
             userToUpdate.Email = user.Email;
             userToUpdate.PasswordHash = user.Password;
 
-            
+
             var result = await _userManager.UpdateAsync(userToUpdate);
 
             if (!result.Succeeded)
@@ -356,6 +359,44 @@ namespace aspnetapp.Controllers
             }
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Get a practices by student id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET usuarios/3/practicas/
+        ///
+        /// </remarks>
+        /// <returns>An array with all the practices of the student</returns>
+        /// <response code="200">Returns the practices</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("{id}/practicas")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        public async Task<ActionResult<IEnumerable<Practice>>> GetPractice(string id)
+        {
+
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var practices = await _context.Practices.Where(p => p.UserId == user.Id).ToListAsync();
+
+            if (practices == null)
+            {
+                return NotFound();
+            }
+
+            return practices;
         }
     }
 }
