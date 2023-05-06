@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -11,6 +12,22 @@ namespace aspnetapp.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicationUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Surname = table.Column<string>(type: "text", nullable: true),
+                    Photo = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUsers", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -56,7 +73,7 @@ namespace aspnetapp.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Image = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -78,6 +95,21 @@ namespace aspnetapp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Steps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tools",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Modelo = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tools", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,6 +239,41 @@ namespace aspnetapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Practices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Observations = table.Column<string>(type: "text", nullable: true),
+                    Duration = table.Column<int>(type: "integer", nullable: false),
+                    ProcedureId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    StepId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Practices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Practices_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Practices_Procedures_ProcedureId",
+                        column: x => x.ProcedureId,
+                        principalTable: "Procedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Practices_Steps_StepId",
+                        column: x => x.StepId,
+                        principalTable: "Steps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProcedureStep",
                 columns: table => new
                 {
@@ -226,6 +293,30 @@ namespace aspnetapp.Migrations
                         name: "FK_ProcedureStep_Steps_StepsId",
                         column: x => x.StepsId,
                         principalTable: "Steps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StepTool",
+                columns: table => new
+                {
+                    StepsId = table.Column<int>(type: "integer", nullable: false),
+                    ToolsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StepTool", x => new { x.StepsId, x.ToolsId });
+                    table.ForeignKey(
+                        name: "FK_StepTool_Steps_StepsId",
+                        column: x => x.StepsId,
+                        principalTable: "Steps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StepTool_Tools_ToolsId",
+                        column: x => x.ToolsId,
+                        principalTable: "Tools",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,9 +359,29 @@ namespace aspnetapp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Practices_ProcedureId",
+                table: "Practices",
+                column: "ProcedureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Practices_StepId",
+                table: "Practices",
+                column: "StepId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Practices_UserId",
+                table: "Practices",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProcedureStep_StepsId",
                 table: "ProcedureStep",
                 column: "StepsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StepTool_ToolsId",
+                table: "StepTool",
+                column: "ToolsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserApiKeys_UserID",
@@ -390,12 +501,14 @@ namespace aspnetapp.Migrations
                     { 1, 17}
                 }
             );
-
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationUsers");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -412,7 +525,13 @@ namespace aspnetapp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Practices");
+
+            migrationBuilder.DropTable(
                 name: "ProcedureStep");
+
+            migrationBuilder.DropTable(
+                name: "StepTool");
 
             migrationBuilder.DropTable(
                 name: "UserApiKeys");
@@ -425,6 +544,9 @@ namespace aspnetapp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Steps");
+
+            migrationBuilder.DropTable(
+                name: "Tools");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

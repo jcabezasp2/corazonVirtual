@@ -12,8 +12,8 @@ using aspnetapp.Models;
 namespace aspnetapp.Migrations
 {
     [DbContext(typeof(dataContext))]
-    [Migration("20230501194904_3")]
-    partial class _3
+    [Migration("20230506072543_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,6 +236,21 @@ namespace aspnetapp.Migrations
                     b.ToTable("ProcedureStep");
                 });
 
+            modelBuilder.Entity("StepTool", b =>
+                {
+                    b.Property<int>("StepsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ToolsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("StepsId", "ToolsId");
+
+                    b.HasIndex("ToolsId");
+
+                    b.ToTable("StepTool");
+                });
+
             modelBuilder.Entity("aspnetapp.Models.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
@@ -259,6 +274,43 @@ namespace aspnetapp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationUsers");
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Practice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Observations")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProcedureId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StepId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcedureId");
+
+                    b.HasIndex("StepId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Practices");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.Procedure", b =>
@@ -427,6 +479,46 @@ namespace aspnetapp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StepTool", b =>
+                {
+                    b.HasOne("aspnetapp.Models.Step", null)
+                        .WithMany()
+                        .HasForeignKey("StepsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("aspnetapp.Models.Tool", null)
+                        .WithMany()
+                        .HasForeignKey("ToolsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Practice", b =>
+                {
+                    b.HasOne("aspnetapp.Models.Procedure", "Procedure")
+                        .WithMany("Practices")
+                        .HasForeignKey("ProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("aspnetapp.Models.Step", "Step")
+                        .WithMany("Practices")
+                        .HasForeignKey("StepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Procedure");
+
+                    b.Navigation("Step");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("aspnetapp.Models.UserApiKey", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -436,6 +528,16 @@ namespace aspnetapp.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Procedure", b =>
+                {
+                    b.Navigation("Practices");
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Step", b =>
+                {
+                    b.Navigation("Practices");
                 });
 #pragma warning restore 612, 618
         }

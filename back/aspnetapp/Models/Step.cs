@@ -10,5 +10,7 @@ namespace aspnetapp.Models
         public virtual ICollection<Procedure>? Procedures { get; set; }
 
         public virtual ICollection<Tool>? Tools { get; set; }
+
+        public virtual ICollection<Practice>? Practices { get; set;} = new List<Practice>();
     }
 }

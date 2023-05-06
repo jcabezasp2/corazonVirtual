@@ -273,6 +273,42 @@ namespace aspnetapp.Migrations
                     b.ToTable("ApplicationUsers");
                 });
 
+            modelBuilder.Entity("aspnetapp.Models.Practice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Observations")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProcedureId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StepId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcedureId");
+
+                    b.HasIndex("StepId");
+
+                    b.ToTable("Practices");
+                });
+
             modelBuilder.Entity("aspnetapp.Models.Procedure", b =>
                 {
                     b.Property<int>("Id")
@@ -454,6 +490,21 @@ namespace aspnetapp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("aspnetapp.Models.Practice", b =>
+                {
+                    b.HasOne("aspnetapp.Models.Procedure", null)
+                        .WithMany("Practices")
+                        .HasForeignKey("ProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("aspnetapp.Models.Step", null)
+                        .WithMany("Practices")
+                        .HasForeignKey("StepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("aspnetapp.Models.UserApiKey", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -463,6 +514,16 @@ namespace aspnetapp.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Procedure", b =>
+                {
+                    b.Navigation("Practices");
+                });
+
+            modelBuilder.Entity("aspnetapp.Models.Step", b =>
+                {
+                    b.Navigation("Practices");
                 });
 #pragma warning restore 612, 618
         }

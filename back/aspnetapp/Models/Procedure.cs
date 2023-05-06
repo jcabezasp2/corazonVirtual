@@ -9,4 +9,6 @@ public class Procedure
     public string? Image { get; set; }
 
     public virtual ICollection<Step>? Steps { get; set;} = new List<Step>();
+
+    public virtual ICollection<Practice>? Practices { get; set;} = new List<Practice>();
 }

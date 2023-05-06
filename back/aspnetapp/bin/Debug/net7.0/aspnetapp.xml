@@ -4,6 +4,26 @@
         <name>aspnetapp</name>
     </assembly>
     <members>
+        <member name="M:aspnetapp.Controllers.PracticeController.GetPractices">
+            <summary>
+            Get all practices
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aspnetapp.Controllers.PracticeController.GetPractice(System.String)">
+            <summary>
+            Get a practice by student id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aspnetapp.Controllers.PracticeController.PostPractice(aspnetapp.Models.Practice)">
+            <summary>
+            Create a practice
+            </summary>
+            <param name="practice"></param>
+            <returns></returns>
+        </member>
         <member name="M:aspnetapp.Controllers.ProceduresController.GetProcedures">
              <summary>
              Get all procedures
@@ -18,6 +38,280 @@
              <response code="200">Returns the array of procedures</response>
              <response code="404">If the procedures array is null</response>
              <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.ProceduresController.GetProcedure(System.Int32)">
+             <summary>
+             Get a procedure by id
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /procedimientos/1
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>A procedure</returns>
+             <response code="200">Returns the procedure</response>
+             <response code="404">If the procedure is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.ProceduresController.PutProcedure(System.Int32,aspnetapp.Models.Procedure)">
+             <summary>
+             Update a procedure
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 PUT /procedimientos/1
+                 {
+                    "name": "string",
+                    "image": file
+                 }
+            
+             </remarks>
+             <param name="id"></param>
+             <param name="procedure"></param>
+             <returns>Nothing</returns>
+             <response code="200">Ok</response>
+             <response code="400">If the id is not equal to the procedure id</response>
+             <response code="404">If the procedure is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.ProceduresController.PostProcedure(aspnetapp.Models.Procedure)">
+             <summary>
+             Create a procedure
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /procedimientos
+                 {
+                    "name": "string",
+                    "image": file,
+                 }
+            
+             </remarks>
+             <param name="procedure"></param>
+             <returns>A procedure</returns>
+             <response code="201">Returns the procedure</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.ProceduresController.DeleteProcedure(System.Int32)">
+             <summary>
+             Delete a procedure
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 DELETE /procedimientos/1
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>Nothing</returns>
+             <response code="204">Success</response>
+             <response code="404">If the procedure is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.ProceduresController.GetProcedureSteps(System.Int32)">
+             <summary>
+             Get all steps of a procedure
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /procedimientos/1/pasos
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>Array of steps</returns>
+             <response code="200">Returns the array of steps</response>
+             <response code="404">If the procedure is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.ProceduresController.PostProcedureStep(System.Int32,System.Int32[])">
+             <summary>
+             Add steps to a procedure
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /procedimientos/1/pasos
+               [
+                  0,1,2
+               ]
+            
+             </remarks>
+             <param name="id"></param>
+             <param name="stepIds"></param>
+             <returns>Nothing</returns>
+             <response code="200">Returns nothing</response>
+             <response code="404">If the procedure or the steps are null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
+        <member name="M:aspnetapp.Controllers.RoleController.Create(aspnetapp.Models.Role)">
+             <summary>
+             Create a role
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /rol/create
+                 {
+                    "name": "admin"
+                 }
+            
+             </remarks>
+             <param name="role"></param>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the role is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.RoleController.Delete(aspnetapp.Models.Role)">
+             <summary>
+             Delete a role
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /rol/delete
+                 {
+                    "name": "admin"
+                 }
+            
+             </remarks>
+             <param name="role"></param>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the role is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.RoleController.AddUserToRole(aspnetapp.Models.UserRole)">
+             <summary>
+             Add a user to a role
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /rol/adduser
+                 {
+                    "userEmail": "admin@admin",
+                    "roleName": "admin"
+                 }
+            
+             </remarks>
+             <param name="userRole"></param>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the user or role is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.RoleController.AddPermissionToRole(aspnetapp.Models.AddClaimToRole)">
+             <summary>
+             add permission to a role
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /rol/addPermission
+                 {
+                    "roleId": "admin",
+                    "type": "permission",
+                    "value": "value"
+                 }
+            
+             </remarks>
+             <param name="permission"></param>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the role is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.StepsController.GetSteps">
+             <summary>
+             Get all steps
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /pasos
+            
+             </remarks>
+             <returns>Array of steps</returns>
+             <response code="200">Returns the array of steps</response>
+             <response code="404">If the array of steps is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.StepsController.GetStep(System.Int32)">
+             <summary>
+             Get a step by id
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /pasos/1
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>A step</returns>
+             <response code="200">Returns the step</response>
+             <response code="404">If the step is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.StepsController.PutStep(System.Int32,aspnetapp.Models.Step)">
+             <summary>
+             Update a step
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 PUT /pasos/1
+                 {
+                    "name": "Step 1",
+                    "description": "Description of step 1",
+                    "image": file,
+                    "duration": "10"
+                 }
+            
+             </remarks>
+             <param name="id"></param>
+             <param name="step"></param>
+             <returns>Nothing</returns>
+             <response code="200">Ok</response>
+             <response code="400">If the id is not equal to the step id</response>
+             <response code="404">If the step is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.StepsController.DeleteStep(System.Int32)">
+             <summary>
+             Delete a step
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 DELETE /pasos/1
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>Nothing</returns>
+             <response code="200">Sucess</response>
+             <response code="404">If the step is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
         </member>
         <member name="M:aspnetapp.Controllers.UsersController.Register(aspnetapp.Models.User)">
              <summary>
@@ -171,30 +465,6 @@
             <inheritdoc />
         </member>
         <member name="M:aspnetapp.Migrations._3.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:aspnetapp.Migrations._5">
-            <inheritdoc />
-        </member>
-        <member name="M:aspnetapp.Migrations._5.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:aspnetapp.Migrations._5.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:aspnetapp.Migrations._5.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:aspnetapp.Migrations._6">
-            <inheritdoc />
-        </member>
-        <member name="M:aspnetapp.Migrations._6.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:aspnetapp.Migrations._6.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:aspnetapp.Migrations._6.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
