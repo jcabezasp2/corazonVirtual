@@ -9,7 +9,7 @@ namespace aspnetapp.Models
         public string duration { get; set; } = null!;
 
         public Boolean? PreviousStep { get; set; }
-        public virtual ICollection<Procedure>? Procedures { get; set; }
+        public virtual ICollection<ProcedureStep>? Procedures { get; set; }
 
         public virtual ICollection<Tool>? Tools { get; set; }
 

@@ -16,4 +16,5 @@ public class dataContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     public DbSet<UserApiKey> UserApiKeys { get; set; } = null!;
     public DbSet<Tool> Tools {get; set; } = null!;
     public DbSet<Practice> Practices { get; set; } = null!;
+    public DbSet<ProcedureStep> ProcedureStep { get; set; } = null!;
 }

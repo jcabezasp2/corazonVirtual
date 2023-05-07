@@ -2,7 +2,7 @@
 import React from "react"
 import TxtEditor from "../../components/form/TxtEditor"
 import Toggle from "../../components/form/Toggle";
-import Select from "../../components/form/Select";
+import File from "../../components/form/File";
 
 class Iprops{
 
@@ -44,7 +44,7 @@ export default function StepForm(props: Iprops){
                 onChange={handlePreviousStep}
             />
 
-            <Select />
+            <File />
         </div>
     )
 }
