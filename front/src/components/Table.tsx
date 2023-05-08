@@ -3,34 +3,29 @@ import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
-// TODO implementar
-interface Product {
-    id: string;
-    code: string;
-    name: string;
-    description: string;
-    image: string;
-    price: number;
-    category: string;
-    quantity: number;
-    inventoryStatus: string;
-    rating: number;
+
+
+class Iprops {
+
+    dataElements!: any[];
 }
 
-export default function Table() {
-    const [products, setProducts] = useState<Product[]>([]);
+function DataColumn (field: string, header: string, style: any) {
+    return <Column field={field} header={header} sortable style={style}></Column>
+}
+
+export default function Table(props: Iprops) {
+
+    const [dataElements, setDataElements] = useState(props.dataElements);
 
     useEffect(() => {
-        //ProductService.getProductsMini().then(data => setProducts(data));
     }, []);
 
+   
     return (
-        <div className="card">
-            <DataTable value={products} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}>
-                <Column field="code" header="Code" sortable style={{ width: '25%' }}></Column>
-                <Column field="name" header="Name" sortable style={{ width: '25%' }}></Column>
-                <Column field="category" header="Category" sortable style={{ width: '25%' }}></Column>
-                <Column field="quantity" header="Quantity" sortable style={{ width: '25%' }}></Column>
+        <div>
+            <DataTable value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}>
+                {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string) => { return DataColumn(key, key, { width: '10rem' }) })}
             </DataTable>
         </div>
     );

@@ -1,13 +1,15 @@
 import React from "react"
-import * as endpoints from "../assets/endpoints"
+import { appContext } from "../App";
 import Login from '../components/Login';
 import "../css/Home.css";
 
 export default function Home() {
 
+  const context = React.useContext(appContext);
+
   const initialize = async () => {
 
-    console.log( await endpoints.login('admin@example.es', 'aA1551-'))
+    console.log( await context.apiCalls.login('admin@example.es', 'aA1551-'))
 
   }
 
