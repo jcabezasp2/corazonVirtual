@@ -2,6 +2,14 @@
     background: transparent !important;
     border: none !important;
     color: transparent !important;
+    box-shadow: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 3rem;
+    height: 3rem;
+    padding: 4rem;
+    
 }
 
 .p-button:hover{
@@ -13,11 +21,11 @@
 .p-button:focus{
     background-color: none !important;
     border-color: none !important;
-    box-shadow: none !important
+    box-shadow: none !important;
 }
 
-.boxlogo{
-    background-image: url('../img/logo1.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-}
+
+ 
+.logo{
+    align-self: baseline;
+} 

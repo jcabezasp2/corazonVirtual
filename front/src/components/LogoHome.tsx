@@ -2,6 +2,7 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { Image } from 'primereact/image';
 import logo1 from '../img/logo1.png';
+import logoIcon from '../img/heart-pulse-solid.svg';
 import '../css/logohome.css';
 export default function LogoHome() {
 
@@ -9,20 +10,23 @@ export default function LogoHome() {
 
 
     return (
-        <div >           
+        // <div >           
                 
-                <Button className=" p-button-icon-only p-button-rounded p-c boxlogo" onClick={()=>navigate('/')}>
+                <Button className="p-button p-button-rounded p-c boxlogo" onClick={()=>navigate('/')} link>
                         <Image 
-                                width="50em"                          
-                               src={logo1}
+                                                         
+                               src={logoIcon}
+                               width="28em"
                                className="p-button-icon logo"
-                               alt='CoRAzón Virtual'                               
-                            // onClick={()=>{navigate('/')}}
+                               alt='CoRAzón Virtual'                      
+                               onClick={()=>navigate('/')} 
                                />
+                        
+                   
                    
                 </Button>
  
-       </div>
+    //    </div>
     );  
 }
 

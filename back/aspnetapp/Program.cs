@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=postgres:5432; Database=corazon_virtual; Username=root; Password=root"));
 
 // Linea para que funcionen las migraciones
-//builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
+// builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
 
 
 

@@ -1,0 +1,33 @@
+
+
+.variablesLightTheme{
+
+
+/*Variables colores */
+/*Uso: background-color: var(--primary-color);*/
+
+/*--primary-color*/ color:#2c5772;
+/* --primary-color-text*/ color:#cfcece;
+/* --text-color */ color:#2f5983;
+/* --text-color-secondary */ color: #708da9;
+/* --surface-50 */  color: #f1f4f6;
+/* --surface-100 */ color: #e2e8ee;
+/* --surface-200 */ color: #c6d1dd;
+/* --surface-300 */ color: #a9bbcb;
+/* --surface-400 */ color: #8da4ba;
+/* --surface-500 */ color: #708da9;
+/* --surface-600 */ color: #5a7187;
+/* --surface-700 */ color: #435565;
+/* --surface-800 */ color: #2d3844;
+/* --surface-900 */ color: #161c22;
+/* --highlight-text-color */ color: #3a7092;
+
+
+
+
+
+/* Fuente */
+/*Uso: font-family: var(--primary-color);*/
+}
+
+
