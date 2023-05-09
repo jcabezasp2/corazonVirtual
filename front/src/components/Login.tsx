@@ -16,16 +16,27 @@ export default function Login() {
     const [password, setPassword] = useState<string>('');
 
     async function signin(email:string, password:string) {
+        console.log('entrando en el signin')
+        // const res = await endpoints.login(email, password);
         const res = await endpoints.login(email, password);
         console.log(email, password)
-        console.log(endpoints.login(email, password))
+        
         if(res != null){
-            console.log('No se ha logueado')
+            console.log('se ha logueado')
+
         }else{
-            console.log('Se ha logueado')
+            console.log('no se ha logueado')
         }
+        console.log(res)
     }
 
+    const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
+          console.log("entrando en el submit")
+        e.preventDefault();
+        console.log("entrando en el submit 2")
+        signin(email, password);
+        
+    }
 
 
     return (
@@ -45,7 +56,7 @@ export default function Login() {
                 </span>
              <div className='button-demo '>
              <div className='template '>
-                <Button label='Sign in' className="signin p-p-0" onClick={(e)=> signin}>  
+                <Button label='Sign in' className="signin p-p-0" onClick={handleSubmit}>  
                 </Button>
                  </div>  
                  </div>                 

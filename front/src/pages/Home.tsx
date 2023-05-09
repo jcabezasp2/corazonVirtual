@@ -1,7 +1,7 @@
 import React from "react"
 import { appContext } from "../App";
 import Login from '../components/Login';
-import "../css/Home.css";
+import "../css/home.css";
 
 export default function Home() {
 
