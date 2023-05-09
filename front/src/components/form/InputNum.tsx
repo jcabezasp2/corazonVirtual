@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
-import '../css/inputs.css';
+import '../../css/inputs.css';
 export default function InputNum() {
     const [value, setValue] = useState<number | null>(null);
 

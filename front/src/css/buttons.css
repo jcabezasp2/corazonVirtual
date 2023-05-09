@@ -4,6 +4,9 @@
 .button-demo .p-button {
     /* margin: 0.5rem ; */
 }
+.button{
+    line-height: 0 !important;
+}
 .button-demo .p-buttonset .p-button {
     margin-right: 0 ;
 }
@@ -22,6 +25,7 @@
     width: 100% !important;
     height: fit-content;
     padding: 0.5rem 2rem 0.5rem 2rem !important;
+    
 }
 .button-demo .template .p-button.signin:hover {
     background-position: left bottom !important;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { InputText } from 'primereact/inputtext';
 
 
-export default function InputTxt() {
+export default function InputTxt({}) {
     const [value, setValue] = useState<string>('');
 
     return (
