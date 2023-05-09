@@ -2,7 +2,6 @@ import React from "react"
 import { appContext } from "../App";
 import Login from '../components/Login';
 import "../css/home.css";
-
 export default function Home() {
 
   const context = React.useContext(appContext);
@@ -44,7 +43,7 @@ export default function Home() {
                           <div className='corazon col-4'>
                           
                           </div>
-
+                          
                       </div>
                           <Login />
                   </div>

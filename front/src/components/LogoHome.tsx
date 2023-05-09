@@ -12,7 +12,7 @@ export default function LogoHome() {
     return (
         // <div >           
                 
-                <Button className="p-button p-button-rounded p-c boxlogo" onClick={()=>navigate('/')} link>
+                <Button className="p-buttonLogo p-button-rounded p-c boxlogo" onClick={()=>navigate('/')} link>
                         <Image 
                                                          
                                src={logoIcon}

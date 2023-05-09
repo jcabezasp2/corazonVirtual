@@ -1,4 +1,4 @@
-.p-button{
+.p-buttonLogo{
     background: transparent !important;
     border: none !important;
     color: transparent !important;
@@ -12,13 +12,13 @@
     
 }
 
-.p-button:hover{
+.p-buttonLogo:hover{
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
     box-shadow: var(--primary-color) !important;
 }
 
-.p-button:focus{
+.p-buttonLogo:focus{
     background-color: none !important;
     border-color: none !important;
     box-shadow: none !important;
