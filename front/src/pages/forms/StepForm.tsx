@@ -1,12 +1,15 @@
-
-import React from "react"
+import { Status } from '../../assets/constants';
+import React, { useRef } from 'react';
 import TxtEditor from "../../components/form/TxtEditor"
 import Toggle from "../../components/form/Toggle";
 import File from "../../components/form/File";
+import SubmitButton from "../../components/form/SubmitButton";
 
 class Iprops{
 
 }
+
+
 
 
 export default function StepForm(props: Iprops){
@@ -14,6 +17,8 @@ export default function StepForm(props: Iprops){
     const [description, setDescription] = React.useState<string>('');
 
     const [previousStep, setpreviousStep] = React.useState<boolean>(false);
+
+    const [status, setStatus] = React.useState<Status>(Status.error);
 
     const handleDescription = (e: string) => {
         setDescription(e);
@@ -26,6 +31,8 @@ export default function StepForm(props: Iprops){
     React.useEffect(() => {
         console.log(previousStep)
     }, [previousStep])
+
+
 
 
     return(
@@ -45,6 +52,11 @@ export default function StepForm(props: Iprops){
             />
 
             <File />
+
+            <SubmitButton 
+                status={status}
+                message="Mensaje de prueba"
+            />
         </div>
     )
 }
