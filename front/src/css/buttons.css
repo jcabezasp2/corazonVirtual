@@ -5,7 +5,7 @@
     /* margin: 0.5rem ; */
 }
 .button{
-    line-height: 0 !important;
+    line-height: 1 !important;
 }
 .button-demo .p-buttonset .p-button {
     margin-right: 0 ;
