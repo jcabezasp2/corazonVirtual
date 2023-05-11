@@ -17,7 +17,6 @@ export default function Login() {
 
     async function signin(email:string, password:string) {
         console.log('entrando en el signin')
-        // const res = await endpoints.login(email, password);
         const res = await endpoints.login(email, password);
         console.log(email, password)
         
