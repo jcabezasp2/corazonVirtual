@@ -58,7 +58,7 @@ export default function SubmitButton(props : Iprops) {
     return (
         <div>
             <Toast ref={toast} />
-            <Button label="Enviar" icon="pi pi-check" loading={loading} onClick={load} />
+            <Button label="Enviar" icon="pi pi-check" loading={loading} onClick={load} loadingIcon="pi pi-spin pi-cog" />
         </div>
     )
 }

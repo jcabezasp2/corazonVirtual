@@ -28,6 +28,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <LogoHome/>
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pasos" element={<Steps />} />
