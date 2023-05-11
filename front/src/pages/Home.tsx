@@ -21,16 +21,17 @@ export default function Home() {
   return (   
  
       <div >
-          <div className='container'>
+          <div className='container grid'>
                           
           <div>
 
               <div className=" selection:bg-red-500 selection:text-white ">
                   <div className='wrapper'>
-
-                      <div className='cor row'>
-
-                          <div id="loader" className='row col-12'>
+                       
+                      <div className='cor row'> 
+                    
+                        <div id="loader" className='row col-12'>
+                          
                               <svg id="pachos" className='pacho' viewBox="10 0 310 60">
 
                                   <path id='pacho' className="st0 pacho" d="M297.5,41.2h-76.6c-0.5,0-0.9,0.4-1,0.8l-1.6,11.3l-3.1-32c0-0.5-0.4-0.9-0.9-0.9c-0.5,0-0.9,0.3-1,0.8
@@ -45,7 +46,9 @@ export default function Home() {
                           </div>
                           
                       </div>
-                          <Login />
+                          
+                            <Login />
+                          
                   </div>
                  
               </div>

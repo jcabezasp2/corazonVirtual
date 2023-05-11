@@ -40,7 +40,7 @@ export default function Login() {
 
 
     return (
-        <div>
+     
             <div className="login ">
            
                              <h3 className="h3 text-4xl font-bold text-center ">Iniciar sesión</h3>                 
@@ -61,7 +61,7 @@ export default function Login() {
                  </div>                   
                  </div>                 
             </div>           
-        </div>
+           
    
     )
 }

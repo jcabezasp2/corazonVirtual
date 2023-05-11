@@ -5,6 +5,7 @@ import LogoHome from './components/LogoHome'
 import StepForm from './pages/forms/StepForm';
 import Page404 from './pages/Page404';
 import Steps from './pages/Steps';
+import ToolForm from './pages/forms/ToolForm';
 import * as endpoints from "../src/assets/endpoints"
 
 interface context {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pasos" element={<Steps />} />
           <Route path="/pasos/formulario" element={<StepForm />} />
+          <Route path="/herramientas/formulario" element={<ToolForm />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>

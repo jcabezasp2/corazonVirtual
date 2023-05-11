@@ -1,17 +1,28 @@
 import React, { useState } from "react";
-import { InputText } from 'primereact/inputtext';
+import { InputText, InputTextProps  } from 'primereact/inputtext';
+import '../../css/inputs.css';
 
 
-export default function InputTxt({}) {
-    const [value, setValue] = useState<string>('');
+class Iprops {
+    handleName!: Function;
+    name!: string;
+    labelname!: string;
+}
 
+export default function InputTxt(props : Iprops) {
+//    const [name, setName] = useState<string>('');
+    // const handleName = (e: string) => {
+    //     setName(e);
+    // }
+    console.log(props.name)
+    console.log(name)
     return (
         <div className="card flex justify-content-center">
             <span className="p-float-label">
-                <InputText id="username" value={value} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)} />
-                <label htmlFor="username">Username</label>
+                <InputText id="name" value={props.name} onChange={(e) => props.handleName} />
+                <label htmlFor="name">{props.labelname}</label>
             </span>
         </div>
     )
 }
-        
+
