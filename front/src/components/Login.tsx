@@ -1,4 +1,4 @@
-
+import { Status } from '../assets/constants';
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
@@ -6,36 +6,19 @@ import { Divider } from 'primereact/divider';
 import { Button } from 'primereact/button';
 import '../css/buttons.css';
 import '../css/login.css';
-import * as endpoints from "../assets/endpoints"
+import SubmitButton from "../components/form/SubmitButton"
+import { appContext } from "../App";
+import User from "../models/User";
 
 
 export default function Login() {
+
+    const context = React.useContext(appContext);
 
     // type datos = React.FormEvent<HTMLFormElement>;
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    async function signin(email:string, password:string) {
-        console.log('entrando en el signin')
-        const res = await endpoints.login(email, password);
-        console.log(email, password)
-        
-        if(res != null){
-            console.log('se ha logueado')
-
-        }else{
-            console.log('no se ha logueado')
-        }
-        console.log(res)
-    }
-
-    const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
-          console.log("entrando en el submit")
-        e.preventDefault();
-        console.log("entrando en el submit 2")
-        signin(email, password);
-        
-    }
 
 
     return (
@@ -50,13 +33,18 @@ export default function Login() {
                 </span>
 
                 <span className='p-float-label'>
-                <Password className='inputtext'  id="password" value={password} onKeyDown={(e) => e.key === 'Enter' && signin} onChange={(e: React.ChangeEvent<HTMLInputElement>)  => setPassword(e.target.value)} toggleMask feedback={false} />
+                <Password className='inputtext'  id="password" value={password} onKeyDown={(e) => e.key === 'Enter' && console.log('')} onChange={(e: React.ChangeEvent<HTMLInputElement>)  => setPassword(e.target.value)} toggleMask feedback={false} />
                 <label htmlFor="password">Password</label>
                 </span>
              <div className='button-demo '>
              <div className='template '>
-                <Button label='Sign in' className="button signin p-p-0" onClick={handleSubmit}>  
-                </Button>
+{/*                 <Button label='Sign in' className="button signin p-p-0" onClick={handleSubmit}>  
+                </Button> */}
+                <SubmitButton
+                    onclik={context.apiCalls.login}
+                    ctx= {{email: email, password : password}}
+                    isLogin={true}
+                />
                  </div>                   
                  </div>                 
             </div>           

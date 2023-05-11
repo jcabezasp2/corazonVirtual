@@ -1,42 +1,73 @@
 import { Status } from "./../../assets/constants";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import { appContext } from "../../App";
+import User from "../../models/User";
+
 
 
 
 class Iprops{
-    status! : Status;
-    message! : string;
+    onclik! : Function;
+    ctx! : Object;
+    isLogin! : boolean;
 }
 
 export default function SubmitButton(props : Iprops) {
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const context = React.useContext(appContext);
+
     const toast = useRef<Toast>(null);
+    const [status, setStatus] = useState<Status>(Status.error);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
 
     const showSuccess = () => {
-        toast.current?.show({severity:'success', summary: 'Exito', detail:`${props.message}`, life: 3000});
+        toast.current?.show({severity:'success', summary: 'Exito', detail:`${message}`, life: 3000});
     }
 
     const showInfo = () => {
-        toast.current?.show({severity:'info', summary: 'Informacion', detail:`${props.message}`, life: 3000});
+        toast.current?.show({severity:'info', summary: 'Informacion', detail:`${message}`, life: 3000});
     }
 
     const showWarn = () => {
-        toast.current?.show({severity:'warn', summary: 'Atencion', detail:`${props.message}`, life: 3000});
+        toast.current?.show({severity:'warn', summary: 'Atencion', detail:`${message}`, life: 3000});
     }
 
     const showError = () => {
-        toast.current?.show({severity:'error', summary: 'Error', detail:`${props.message}`, life: 3000});
+        toast.current?.show({severity:'error', summary: 'Error', detail:`${message}`, life: 3000});
     }
 
-    const load = () => {
-        setLoading(true); //TODO : Cambiar por llamada a API
+    //TODO arreglar este horror
+    const load = async () => {
+        setLoading(true);
+        let response;
+        let res;
+        if(props.isLogin === true){
+            response = await props.onclik(props.ctx);
+            if (response.status === 200){
+                res = await response.json();
+                console.log(res);
+                context.user = new User(res.user.id, res.user.userName, res.user.email, res.userApiKey.value, res.role, res.roleClaims );
+                console.log(context.user);
+            }
+        }else{
+            response = await props.onclik(props.ctx);
+            res = await response.json();
+        }
+        // TODO mostrar mensaje en funcion de la respuesta
+        if(response.status === 200){
+            setStatus(Status.success);
+            setMessage(response);
+            showSuccess();
+        }else{
+            setStatus(Status.error);
+            setMessage(response.response);
+            showError();
+        }
 
-        setTimeout(() => {
-            setLoading(false);
-            switch(props.status){
+/*             switch(status){
                 case Status.success:
                     showSuccess();
                     break;
@@ -51,8 +82,8 @@ export default function SubmitButton(props : Iprops) {
                     break;
                 default:
                     break;
-            }
-        }, 2000);
+            } */
+        setLoading(false);
     };
 
     return (

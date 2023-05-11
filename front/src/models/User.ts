@@ -9,8 +9,8 @@ export default class User {
     private _apiKey :string;
     private _role :string;
     private _permissions :string[];
-
-    constructor(id :number, name :string, email :string, apiKey :string, role :string, permissions :string[]) {
+    //TODO que el constructor reciba un objeto con todos los atributos
+    constructor(id :number = 0, name :string = 'undefined', email :string = 'undefined', apiKey :string = 'undefined', role :string = 'undefined', permissions :string[] = []) {
         this._id = id;
         this._userName = name;
         this._email = email;

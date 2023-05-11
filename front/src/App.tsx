@@ -7,9 +7,11 @@ import Page404 from './pages/Page404';
 import Steps from './pages/Steps';
 import ToolForm from './pages/forms/ToolForm';
 import * as endpoints from "../src/assets/endpoints"
+import User from './models/User';
 
 interface context {
   apiCalls: any;
+  user : User;
 }
 
 export const appContext = createContext({} as context);
@@ -21,8 +23,8 @@ function App() {
 
   return (
     <appContext.Provider value={{
-      apiCalls: endpoints
-
+      apiCalls: endpoints,
+      user: new User()
     }}>
 
     <div className="App">
