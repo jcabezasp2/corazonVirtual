@@ -10,10 +10,16 @@ interface City {
     name: string;
     code: string;
 }
+interface Steps {
+    nameSelect: string;
+    code: number;
+    allcodes: [];
+    handleSelect: Function;
+}
+export default function Select(props : Steps) {
 
-export default function Select(props : Iprops) {
-
-    const [selectedCity, setSelectedCity] = useState<City | null>(null);
+    //const [selectedCity, setSelectedCity] = useState<City | null>(null);
+    const [selectedStep, setSelectedStep] = useState<Steps | null>(null);
 
     const cities: City[] = [
         { name: 'New York', code: 'NY' },
@@ -23,9 +29,12 @@ export default function Select(props : Iprops) {
         { name: 'Paris', code: 'PRS' }
     ];
 
+    
+
+
     return (
         <div className="card flex justify-content-center">
-            <Dropdown value={selectedCity} onChange={(e: DropdownChangeEvent) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
+            <Dropdown value={selectedStep} onChange={(e: DropdownChangeEvent) => selectedStep(e.value)} options={cities} optionLabel="name" 
                 placeholder="Select a City" className="w-full md:w-14rem" />
         </div>
     )

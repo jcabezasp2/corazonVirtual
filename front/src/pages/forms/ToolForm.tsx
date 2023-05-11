@@ -26,6 +26,9 @@ export default function ToolForm(props: Iprops) {
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
     const [labelnumb, setLabelnumb] = React.useState<string>('Número de pasos en los que se usa la herramienta');
+    const [nameSelect, setNameSelect] = React.useState<string>('Selecciona una herramienta');
+    const [code, setCode] = React.useState<number>(0);
+    const [allCode, setAllCode] = React.useState<[]>([] as any);
 
     const handleName = (e: string) => {
         setName(e);
@@ -36,46 +39,14 @@ export default function ToolForm(props: Iprops) {
     const handleNum = (e: number) => {
         setNum(e);
     }
-    // const toast = useRef<Toast>(null);
-
-    // const showSuccess = () => {
-    //     toast.current?.show({ severity: 'success', summary: 'Exito', detail: `Se ha creado la herramienta ${name}`, life: 3000 });
-    // }
-
-    // const showInfo = () => {
-    //     toast.current?.show({ severity: 'info', summary: 'Informacion', detail: `Se ha creado la herramienta ${name}`, life: 3000 });
-    // }
-
-    // const showWarn = () => {
-    //     toast.current?.show({ severity: 'warn', summary: 'Atencion', detail: `Se ha creado la herramienta ${name}`, life: 3000 });
-    // }
-
-    // const showError = () => {
-    //     toast.current?.show({ severity: 'error', summary: 'Error', detail: `Se ha creado la herramienta ${name}`, life: 3000 });
-    // }
-
-    // const load = () => {
-    //     switch (status) {
-    //         case Status.success:
-    //             showSuccess();
-    //             break;
-    //         case Status.info:
-    //             showInfo();
-    //             break;
-    //         case Status.warn:
-    //             showWarn();
-    //             break;
-    //         case Status.error:
-    //             showError();
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
+    const handleSelect = (e: string) => {
+        setNameSelect(e);
+        // setAllCode(        );
+    }
 
     return (
         <div>
-            {/* <Toast ref={toast} /> */}
+            
             <Row>
                 <Col>
                     <div className="p-fluid">
@@ -83,9 +54,7 @@ export default function ToolForm(props: Iprops) {
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>
                         </div>
                         <div className="p-field">
-                            <Select>
-                                
-                            </Select>
+                            <Select nameSelect={nameSelect} handleSelect={handleSelect}/>
                             <InputNum  num={num} handleNum={handleNum} labelnumb={labelnumb}/>
                         </div>
                         <div className="p-field">
