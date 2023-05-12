@@ -2,18 +2,18 @@ import React from "react"
 import { appContext } from "../App";
 import Login from '../components/Login';
 import "../css/home.css";
+import User from "../models/User";
 
 
 export default function Home() {
 
   const context = React.useContext(appContext);
 
+
   const initialize = async () => {
 
-    //console.log( await context.apiCalls.login('admin@example.es', 'aA1551-'))
 
   }
-
 
   React.useEffect(() => {
     initialize();
@@ -49,7 +49,7 @@ export default function Home() {
                           
                       </div>
                           
-                            <Login />
+                           {context.user.id == 0 && <Login />}
                           
                   </div>
                  

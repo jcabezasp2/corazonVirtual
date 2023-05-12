@@ -223,6 +223,7 @@ namespace aspnetapp.Controllers
         /// <returns>The user data and the ApiKey</returns>
         /// <response code="200">Returns the user data and the ApiKey</response>
         /// <response code="400">Error in the request</response>
+        /// <response code="404">If the user is not found</response>
         /// <response code="401">If the user is not authenticated</response>
         [HttpPost("login")]
         public async Task<ActionResult> CreateApiKey(AuthenticationRequest request)
@@ -236,14 +237,14 @@ namespace aspnetapp.Controllers
 
             if (user == null)
             {
-                return BadRequest("Bad credentials");
+                return NotFound("El usuario no existe");
             }
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!isPasswordValid)
             {
-                return BadRequest("Bad credentials");
+                return Unauthorized("La contraseña es incorrecta");
             }
 
             var token = _apiKeyService.CreateApiKey(user);

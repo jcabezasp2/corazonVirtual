@@ -18,13 +18,6 @@ export const login = async (ctx :{email : string, password: string}) => {
     const res = await fetch(`${constants.API_URL}usuarios/login`, opciones);
 
     return res;
-    
-    const data = await res.json();
-    
-    const apiKey = data.userApiKey.value;
-    console.log(data)
-    sessionStorage.setItem('apiKey', apiKey);
-    return data
 
 }
 
