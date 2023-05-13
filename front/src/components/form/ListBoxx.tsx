@@ -12,7 +12,7 @@ interface List {
 export default function ListBoxx(props : List) {
     const [selected, setSelected] = useState<List | null>(null);
     const options: List[] = [
-        { name: {props.nameSelect}, code: {props.code} },
+       // { name: {props.nameSelect}, code: {props.code} },
         // { name: 'Rome', code: 'RM' },
         // { name: 'London', code: 'LDN' },
         // { name: 'Istanbul', code: 'IST' },

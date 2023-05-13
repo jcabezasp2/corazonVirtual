@@ -38,7 +38,7 @@ export default function SelectMulti(props: Iprops) {
                 placeholder={props.placeholder}
                 maxSelectedLabels={3}
                 className="w-full md:w-20rem"
-                options={props.nameSelect}
+                /* options={props.nameSelect} */
             />
         </div>
     );

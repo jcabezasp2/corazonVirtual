@@ -1,3 +1,5 @@
+import IStep from './Step';
+
 export default interface ITool {
     id: number;
     name: string;

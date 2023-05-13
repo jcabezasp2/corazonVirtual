@@ -131,7 +131,11 @@ export default function ToolForm(props: Iprops) {
                             <File />
                         </div>
                         <div className="p-field">
-                            <SubmitButton status={status} message={`Se ha creado la herramienta ${name}`} />
+                            <SubmitButton
+                                onclik={() => console.log("click")}
+                                ctx={{}}
+                                isLogin={false}
+                              />
                         </div>
                     </div>
                 {/* </Col> */}

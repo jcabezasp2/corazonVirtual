@@ -53,9 +53,10 @@ export default function StepForm(props: Iprops){
 
             <File />
 
-            <SubmitButton 
-                status={status}
-                message="Mensaje de prueba"
+            <SubmitButton
+                onclik={() => console.log("click")}
+                ctx={{}}
+                isLogin={false}
             />
         </div>
     )

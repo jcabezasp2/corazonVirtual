@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React, { useState, createContext, useEffect } from 'react';
-import Home from './pages/Home'
-import UserHome from './pages/UserHome'
+import Home from './pages/Home';
 import LogoHome from './components/LogoHome'
 import StepForm from './pages/forms/StepForm';
 import Page404 from './pages/Page404';

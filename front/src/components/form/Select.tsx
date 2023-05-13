@@ -33,8 +33,8 @@ export default function Select(props : Iprops) {
 
     return (
         <div className="card flex justify-content-center">
-            <Dropdown value={props.code} onChange={(e: DropdownChangeEvent) => props.handleSelect(e.value)} options={props.nameSelect} optionLabel="name" 
-                placeholder="Select a City" className="w-full md:w-14rem" />
+            {/* <Dropdown value={props.code} onChange={(e: DropdownChangeEvent) => props.handleSelect(e.value)} options={props.nameSelect} optionLabel="name" 
+                placeholder="Select a City" className="w-full md:w-14rem" /> */}
         </div>
     )
 }
