@@ -25,10 +25,6 @@ function App() {
     setUser(user);
   }
 
-  React.useEffect(() => {
-    console.log(user);
-  }, [user])
-
   return (
     <appContext.Provider value={{
       apiCalls: endpoints,

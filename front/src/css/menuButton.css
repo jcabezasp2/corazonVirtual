@@ -1,0 +1,20 @@
+.p-speeddial-button{
+    background-color: transparent !important;
+    border: 0 !important;
+}
+
+/* TODO quitar el circulo del boton */
+button :focus{
+    background-color: transparent !important;
+    border: 0 !important;
+}
+
+
+
+.p-speeddial-item > a{
+    background-color: transparent;
+}
+
+.p-speeddial-item > a:hover{
+    background-color: transparent !important;
+}
