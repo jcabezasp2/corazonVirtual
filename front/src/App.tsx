@@ -1,28 +1,40 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import Home from './pages/Home'
+import UserHome from './pages/UserHome'
 import LogoHome from './components/LogoHome'
 import StepForm from './pages/forms/StepForm';
 import Page404 from './pages/Page404';
 import Steps from './pages/Steps';
 import ToolForm from './pages/forms/ToolForm';
 import * as endpoints from "../src/assets/endpoints"
+import User from './models/User';
 
 interface context {
   apiCalls: any;
+  user : User;
+  changeUSer: (user: User) => void;
 }
 
 export const appContext = createContext({} as context);
 
-
 function App() {
 
- 
+  const [user, setUser] = useState<User>(new User());
+
+  const changeUSer = (user: User) => {
+    setUser(user);
+  }
+
+  React.useEffect(() => {
+    console.log(user);
+  }, [user])
 
   return (
     <appContext.Provider value={{
-      apiCalls: endpoints
-
+      apiCalls: endpoints,
+      user: user,
+      changeUSer: changeUSer
     }}>
 
     <div className="App">

@@ -1,7 +1,10 @@
+import React from 'react';
 import * as constants from './constants';
+import { appContext } from "../App";
+import User from '../models/User';
 
 // Calls to the user API endpoints
-export const login = async (email :string, password :string) => {
+export const login = async (ctx :{email : string, password: string}) => {
 
     let opciones = {
         method: 'POST',
@@ -9,18 +12,12 @@ export const login = async (email :string, password :string) => {
             'Content-type': 'application/json',
             'Accept': 'application/json',
         },
-        body: JSON.stringify({ "email": email, "password": password })
+        body: JSON.stringify({ "email": ctx.email, "password": ctx.password })
     };
 
     const res = await fetch(`${constants.API_URL}usuarios/login`, opciones);
 
-    if(res.status === 400) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    
-    const apiKey = data.userApiKey.value;
-
-    sessionStorage.setItem('apiKey', apiKey);
-    return data
+    return res;
 
 }
 
