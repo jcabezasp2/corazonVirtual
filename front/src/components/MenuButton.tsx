@@ -65,8 +65,9 @@ export default function MenuButton() {
   //TODO poner estilos en hoja de estilos
   return (
     <div className="card">
-      <div style={{ position: "fixed", top: "2%", left: "97%" }}>
+      <div style={{ position: "relative", top: "2%", left: "97%"  }} >
         <SpeedDial
+          mask={true}  
           model={items}
           direction="down"
           transitionDelay={80}
