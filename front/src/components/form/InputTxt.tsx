@@ -15,7 +15,7 @@ export default function InputTxt(props : Iprops) {
     //     setName(e);
     // }
     console.log(props.name)
-    console.log(name)
+   
     return (
         <div className="card flex justify-content-center">
             <span className="p-float-label">
