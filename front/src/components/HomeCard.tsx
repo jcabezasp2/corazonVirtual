@@ -11,7 +11,7 @@ class Iprops {
 }
 
 
-export default function LoggedHome(props : Iprops) {
+export default function HomeCard(props : Iprops) {
   const navigate = useNavigate();
 
   return (

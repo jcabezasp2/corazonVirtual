@@ -8,9 +8,25 @@
 }
 
 .logo{
-    height: 80%;
+    height: 10%;
     z-index: 1;
     position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo1 svg{
+    width: 50%;
+}
+
+.logo1 .icon{
+    display: flex;
+    justify-content: end;
+}
+
+.logo1 h1{
+    align-self: center;
 }
 
 .container {

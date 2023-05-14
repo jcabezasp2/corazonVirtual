@@ -28,4 +28,25 @@
  
 .logo{
     align-self: baseline;
-} 
+}
+
+
+.logo1{
+    font-size: 2rem !important;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    display:flex
+}
+
+.logo1:hover h1{
+    cursor: pointer;
+    color: black;
+    text-shadow: 0 0 0  !important;
+}
+
+.logo1:hover svg{
+    cursor: pointer;
+    fill:#fff;
+    text-shadow: 0 0 10px #fff;
+}

@@ -46,14 +46,23 @@ export const register = async (email :string, password :string, name :string, ) 
 
 
 // Calls to the procedures API endpoints
-export const getProcedimientos = () => {
-    
+export const getProcedures = () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = fetch(`${constants.API_URL}procedimientos`, opciones);
+    return res
 }
 
 
 // Calls to the Steps API endpoints
 export const getSteps = async () => {
-    console.log('getSteps')
     const apiKey = sessionStorage.getItem('apiKey');
     console.log(apiKey)
     let opciones :any = {

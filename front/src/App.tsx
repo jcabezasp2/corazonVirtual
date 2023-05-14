@@ -5,9 +5,11 @@ import LogoHome from './components/LogoHome'
 import StepForm from './pages/forms/StepForm';
 import Page404 from './pages/Page404';
 import Steps from './pages/Steps';
+import Procedures from './pages/Procedures';
 import ToolForm from './pages/forms/ToolForm';
 import * as endpoints from "../src/assets/endpoints"
 import User from './models/User';
+import { Role } from './assets/constants';
 
 interface context {
   apiCalls: any;
@@ -37,9 +39,10 @@ function App() {
       <LogoHome/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/pasos" element={<Steps />} />
-          <Route path="/pasos/formulario" element={<StepForm />} />
-          <Route path="/herramientas/formulario" element={<ToolForm />} />
+          <Route path="/pasos" element={user.role != Role.Guest? <Steps /> : <Home />} />
+          <Route path="/pasos/formulario" element={user.role != Role.Teacher? <StepForm /> : <Home />} />
+          <Route path="/herramientas/formulario" element={user.role != Role.Teacher?<ToolForm /> : <Home /> } />
+          <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
