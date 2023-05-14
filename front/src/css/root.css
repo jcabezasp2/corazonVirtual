@@ -1,0 +1,22 @@
+#root{
+    height: 100vh;
+    overflow: hidden;
+}
+
+.App {
+    height: 100%;
+}
+
+.logo{
+    height: 80%;
+    z-index: 1;
+    position: absolute;
+}
+
+.container {
+    height: 100% !important;
+}
+
+.container-son{
+    height: 100% !important;
+}

@@ -10,7 +10,7 @@ export default function LogoHome() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div className="logo">
       <Button
         className="p-buttonLogo p-button-rounded p-c boxlogo"
         onClick={() => navigate("/")}
