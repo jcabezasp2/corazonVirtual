@@ -53,8 +53,9 @@ export const getProcedimientos = () => {
 
 // Calls to the Steps API endpoints
 export const getSteps = async () => {
+    console.log('getSteps')
     const apiKey = sessionStorage.getItem('apiKey');
-
+    console.log(apiKey)
     let opciones :any = {
         method: 'GET',
         headers: {
@@ -68,6 +69,65 @@ export const getSteps = async () => {
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data        
+}
+
+export const editStep = async (id :number, name :string, description :string, image :string, duration :string, previousStep :boolean) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'PUT',
+        headers: {
+
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep })
+    };
+
+    const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+export const createStep = async (name :string, description :string, image :string, duration :string, previousStep :boolean) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep })
+    };
+
+    const res = await fetch(`${constants.API_URL}pasos`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+export const deleteStep = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'DELETE',
+        headers: {
+
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
 }
 
 

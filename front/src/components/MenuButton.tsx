@@ -86,6 +86,13 @@ export default function MenuButton() {
         navigate("/estudiantes");
       },
     },
+    {
+      label: "Pasos",
+      icon: <Icon type={Icons.Steps} text="Estudiantes"/>,
+      command: () => {
+        navigate("/pasos");
+      },
+    },
   ];
 
   const adminItems: MenuItem[] = [

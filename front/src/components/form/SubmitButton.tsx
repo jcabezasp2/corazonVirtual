@@ -64,6 +64,9 @@ export default function SubmitButton(props : Iprops) {
           res.role,
           res.roleClaims
         );
+        const apiKey = res.userApiKey.value;
+        sessionStorage.setItem('apiKey', apiKey);
+
         context.changeUSer(newUser);
         setStatus(Status.success);
       } else if (response.status === 200) {
