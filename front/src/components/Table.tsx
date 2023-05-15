@@ -8,6 +8,7 @@ import { appContext } from "../App";
 class Iprops {
 
     dataElements!: any[];
+    showOptions?: boolean;
 }
 
 function DataColumn (field: string, header: string, style: any) {
@@ -29,7 +30,7 @@ export default function Table(props: Iprops) {
         <div>
             <DataTable value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}>
                 {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string) => { return DataColumn(key, key, { width: '10rem' }) })}
-                <Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={context.apiCalls.deleteStep} onEdit={`/steps/${rowData.Id}`} />} style={{ width: '20%' }} />
+                {props.showOptions &&<Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={context.apiCalls.deleteStep} onEdit={`/steps/${rowData.Id}`} />} style={{ width: '20%' }} />}
             </DataTable>
         </div>
     );

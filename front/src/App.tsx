@@ -7,6 +7,8 @@ import Page404 from './pages/Page404';
 import Steps from './pages/Steps';
 import Procedures from './pages/Procedures';
 import ToolForm from './pages/forms/ToolForm';
+import Practices from './pages/Practices';
+import Students from './pages/Students';
 import * as endpoints from "../src/assets/endpoints"
 import User from './models/User';
 import { Role } from './assets/constants';
@@ -43,6 +45,8 @@ function App() {
           <Route path="/pasos/formulario" element={user.role != Role.Teacher? <StepForm /> : <Home />} />
           <Route path="/herramientas/formulario" element={user.role != Role.Teacher?<ToolForm /> : <Home /> } />
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
+          <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
+          <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
