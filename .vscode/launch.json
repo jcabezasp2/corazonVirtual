@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/back/bin/Debug/net7.0/back.dll",
+            "program": "${workspaceFolder}/back/aspnetapp/bin/Debug/net7.0/aspnetapp.dll",
             "args": [],
             "cwd": "${workspaceFolder}/back",
             "stopAtEntry": false,

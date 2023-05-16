@@ -37,7 +37,7 @@ export default function Steps(props: Iprops) {
   return (
     <div>
       <h1>Steps</h1>
-        <Table dataElements={steps} />
+        <Table dataElements={steps} showOptions/>
     </div>
   );
 }

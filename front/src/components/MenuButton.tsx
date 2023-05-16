@@ -119,9 +119,6 @@ export default function MenuButton() {
     },
   ];
 
-  React.useEffect(() => {
-    setItems(publicItems);
-    }, []);
 
   //TODO poner estilos en hoja de estilos
   return (

@@ -42,6 +42,22 @@ export const register = async (email :string, password :string, name :string, ) 
     return data
 }
 
+export const getAllUsers = async () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/getAll`, opciones);
+    console.log(res)
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
 
 
 
@@ -230,6 +246,31 @@ export const deleteTool = async (id :number) => {
     };
 
     const res = await fetch(`${constants.API_URL}herramientas/${id}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data        
+}
+
+// Call to the Practices API endpoints
+//All user practices
+export const getStudentPractices = async () => {
+
+}
+
+//All practices
+export const getPractices = async () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}practicas`, opciones);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data        
