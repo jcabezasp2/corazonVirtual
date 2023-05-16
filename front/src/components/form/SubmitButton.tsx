@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { appContext } from "../../App";
 import User from "../../models/User";
+import '../../css/buttons.css';
 
 
 
@@ -86,7 +87,7 @@ export default function SubmitButton(props : Iprops) {
     return (
         <div>
             <Toast ref={toast} />
-            <Button label="Enviar" icon="pi pi-check" loading={loading} onClick={load} loadingIcon="pi pi-spin pi-cog" />
+            <Button className="button allbutton" label="Enviar" icon="pi pi-check" loading={loading} onClick={load} loadingIcon="pi pi-spin pi-cog" />
         </div>
     )
 }

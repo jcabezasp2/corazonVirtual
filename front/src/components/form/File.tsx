@@ -7,6 +7,8 @@ import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
 import { Tag } from 'primereact/tag';
 import '../../css/buttons.css';
+
+
 export default function File() {
     const toast = useRef(null);
     const [totalSize, setTotalSize] = useState(0);
@@ -45,7 +47,7 @@ export default function File() {
 
     const headerTemplate = (options :any) => {
         const { className, chooseButton, uploadButton, cancelButton } = options;
-        const value = totalSize / 10000;
+        const value = totalSize / 100000;
         const formatedValue = fileUploadRef && fileUploadRef.current ? fileUploadRef.current.formatSize(totalSize) : '0 B';
 
         return (
@@ -54,7 +56,7 @@ export default function File() {
                 {/* {uploadButton} */}
                 {cancelButton}
                 <div className="flex align-items-center gap-3 ml-auto">
-                    <span>{formatedValue} / 1 MB</span>
+                    <span>{formatedValue} / 10 MB</span>
                     <ProgressBar value={value} showValue={false} style={{ width: '10rem', height: '12px' }}></ProgressBar>
                 </div>
             </div>
@@ -93,7 +95,7 @@ export default function File() {
     const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
 
     return (
-        <div>
+       <div>
             <Toast ref={toast}></Toast>
 
             <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
@@ -106,7 +108,7 @@ export default function File() {
                 chooseOptions={chooseOptions} 
                 // uploadOptions={uploadOptions} 
                 cancelOptions={cancelOptions} />
-        </div>
+       </div>
     )
 }
         

@@ -38,10 +38,12 @@ export default function StepForm(props: Iprops){
     return(
         <div>
             <h1>StepForm</h1>
+         
             <TxtEditor 
                 handleDescription={handleDescription}
                 description={description}
             />
+           
             <Toggle 
                 onText="Es un paso previo"
                 offText="No es un paso previo"
@@ -58,6 +60,6 @@ export default function StepForm(props: Iprops){
                 ctx={{}}
                 isLogin={false}
             />
-        </div>
+         </div>
     )
 }

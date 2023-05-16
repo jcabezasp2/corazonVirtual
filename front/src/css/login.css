@@ -9,9 +9,9 @@
     grid-row: 6; */
     background-color: #ffffffd2;
     border-radius: 1rem;
-    padding: 2rem;  
+    padding: 3rem 2rem 3rem 2rem;  
     margin: 0 4rem 0 0;
-    gap: 1.5rem;
+    gap: 2rem;
     box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem var(--surface-700);
     
 }

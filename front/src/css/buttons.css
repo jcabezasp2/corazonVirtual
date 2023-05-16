@@ -4,7 +4,7 @@
 .button-demo .p-button {
     /* margin: 0.5rem ; */
 }
-.button{
+/* .button{
     line-height: 1 !important;
 }
 .button-demo .p-buttonset .p-button {
@@ -14,7 +14,7 @@
     line-height: 2.25rem ;
 }
 
-.button-demo .template .p-button.signin {
+.button-demo .template .p-button.allbutton {
     background: linear-gradient(to left, var(--surface-800) 50%, var(--surface-900) 50%) !important;
     background-size: 200% 100% !important;
     background-position: right bottom !important;
@@ -27,13 +27,14 @@
     padding: 0.5rem 2rem 0.5rem 2rem !important;
     
 }
-.button-demo .template .p-button.signin:hover {
+
+.button-demo .template .p-button.allbutton:hover {
     background-position: left bottom !important;
-}
-/* .button-demo .template .p-button.signin i {
+} */
+/* .button-demo .template .p-button.allbutton i {
     background-color: var(--bluegray-800);
 } */
-.button-demo .template .p-button.signin:focus {
+.button-demo .template .p-button.allbutton:focus {
     box-shadow: 0 0 0 1px var(--surface-700) !important;
 }
 @media screen and (max-width: 960px) {
@@ -48,3 +49,24 @@
         margin-bottom: 0 !important;
     }
 }
+
+
+
+.allbutton{
+    background: linear-gradient(to left, var(--surface-800) 50%, var(--surface-900) 50%) !important;
+    background-size: 200% 100% !important;
+    background-position: right bottom !important;
+    transition: background-position .5s ease-out !important;  
+    color: #fff !important;
+    border-color: var(--surface-700) !important;
+    border-radius: 1.5rem !important;
+    width: 100% !important;
+    height: fit-content;
+    padding: 1rem 2rem 1rem 2rem !important;
+}
+.allbutton:focus {
+    box-shadow: 0 0 0 1px var(--surface-700) !important;
+}
+.allbutton:hover {
+    background-position: left bottom !important;
+} 

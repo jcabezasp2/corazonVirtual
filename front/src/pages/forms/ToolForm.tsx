@@ -101,25 +101,25 @@ export default function ToolForm(props: Iprops) {
 
 
 
-    return (
-        <div className="grid">
-            
+    return (      
+        <div className='formgrid ui-grid'>           
           
                 {/* <Col className="col-6"> */}
-                    <div className="p-fluid col-6">
-                        <div className="p-field">
+                    <div className="p-fluid ui-grid-col-8">
+                        <div className="p-field field col-8">
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>
+                        
                         </div>
                         <div className="p-field">
-                            {/* <SelectMulti nameSelect={nameSelect} code={code} allcodes={allcodes} handleSelect={handleSelect} placeholder={placeholder} options={nameSelect}/> */}
                             <ListBox
                             id="items"
                             value={nameList}
-                            options={[
-                                { label: {nameList}, value: {codeList} },
-                                // { label: "Option 2", value: "option2" },
-                                // { label: "Option 3", value: "option3" },
-                            ]}
+                            // options={[
+                            //     { label: {nameList}, value: {codeList} },
+                            //     // { label: "Option 2", value: "option2" },
+                            //     // { label: "Option 3", value: "option3" },
+                            // ]}
+                            options={options}
                             onChange={handleList}
                             multiple
                             />
@@ -140,7 +140,8 @@ export default function ToolForm(props: Iprops) {
                     </div>
                 {/* </Col> */}
        
-        </div>
+                </div>
+       
     );
 }
 
