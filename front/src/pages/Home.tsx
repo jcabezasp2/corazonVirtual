@@ -1,7 +1,7 @@
 import React from "react";
 import { appContext } from "../App";
 import Login from "../components/Login";
-import "../css/home.css";
+import "../css/Home.css";
 import User from "../models/User";
 import { Role } from "../assets/constants"
 import LoggedHome from "../components/LoggedHome";
