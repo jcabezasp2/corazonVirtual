@@ -8,7 +8,12 @@ using aspnetapp.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.OpenApi.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationOptions options = new WebApplicationOptions {
+    WebRootPath = "/app/public",
+};
+
+
+var builder = WebApplication.CreateBuilder(options);
 
 // Add services to the container.
 
@@ -18,7 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=postgres:5432; Database=corazon_virtual; Username=root; Password=root"));
 
 // Linea para que funcionen las migraciones
-//builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
+// builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
 
 
 
@@ -128,6 +133,7 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseStaticFiles("/app/public"); 
 
 app.UseCors("AllowAll");
 app.UseAuthorization();
