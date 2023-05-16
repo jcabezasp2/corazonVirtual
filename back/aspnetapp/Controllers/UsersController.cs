@@ -223,6 +223,7 @@ namespace aspnetapp.Controllers
         /// <returns>The user data and the ApiKey</returns>
         /// <response code="200">Returns the user data and the ApiKey</response>
         /// <response code="400">Error in the request</response>
+        /// <response code="404">If the user is not found</response>
         /// <response code="401">If the user is not authenticated</response>
         [HttpPost("login")]
         public async Task<ActionResult> CreateApiKey(AuthenticationRequest request)
@@ -236,14 +237,14 @@ namespace aspnetapp.Controllers
 
             if (user == null)
             {
-                return BadRequest("Bad credentials");
+                return NotFound("El usuario no existe");
             }
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!isPasswordValid)
             {
-                return BadRequest("Bad credentials");
+                return Unauthorized("La contraseña es incorrecta");
             }
 
             var token = _apiKeyService.CreateApiKey(user);
@@ -330,35 +331,46 @@ namespace aspnetapp.Controllers
         /// <response code="400">If the user is null or the password is invalid</response>
         /// <response code="401">If the user is not authenticated</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        [HttpPut]
-        [Route("updateUsuario")]
-        public async Task<ActionResult<User>> UpdateUser(User user)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<User>> UpdateUser(string id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var userToUpdate = await _userManager.FindByIdAsync(user.Id);
+            var userToUpdate = await _userManager.FindByIdAsync(id);
 
             if (userToUpdate == null)
             {
-                return BadRequest("User not found");
+                return BadRequest("Usuario no encontrado");
             }
 
-            userToUpdate.UserName = user.Name;
-            userToUpdate.Email = user.Email;
-            userToUpdate.PasswordHash = user.Password;
-
-
-            var result = await _userManager.UpdateAsync(userToUpdate);
-
-            if (!result.Succeeded)
+            if(user.Name != userToUpdate.UserName)
             {
-                return BadRequest(result.Errors);
+                _userManager.SetUserNameAsync(userToUpdate, user.Name);
             }
 
-            return Ok();
+            if(user.Email != userToUpdate.Email)
+            {
+                _userManager.SetEmailAsync(userToUpdate, user.Email);
+            }
+
+            if(user.Password != null)
+            {
+                _userManager.RemovePasswordAsync(userToUpdate);
+                _userManager.AddPasswordAsync(userToUpdate, user.Password);
+            }
+
+            var result = _userManager.UpdateAsync(userToUpdate);
+
+            if(result.IsCompletedSuccessfully)
+            {
+                return Ok();
+            }
+
+            return BadRequest("Error al actualizar el usuario");
+
         }
 
         /// <summary>

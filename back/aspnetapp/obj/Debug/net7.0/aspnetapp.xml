@@ -317,6 +317,29 @@
              <response code="401">If the user is not authenticated</response>
              <response code="500">If there is an internal server error</response>
         </member>
+        <member name="M:aspnetapp.Controllers.StepsController.PostStep(aspnetapp.Models.Step)">
+             <summary>
+             Create a step
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /pasos
+                 {
+                    "name": "Step 1",
+                    "description": "Description of step 1",
+                    "image": file,
+                    "duration": "10"
+                 }
+             
+             </remarks>
+             <param name="step"></param>
+             <returns>A newly created step</returns>
+             <response code="201">Returns the newly created step</response>
+             <response code="400">If the step is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
         <member name="M:aspnetapp.Controllers.StepsController.DeleteStep(System.Int32)">
              <summary>
              Delete a step
@@ -454,7 +477,7 @@
         </member>
         <member name="M:aspnetapp.Controllers.UsersController.GetPractice(System.String)">
              <summary>
-             Get a practice by student id
+             Get a practices by student id
              </summary>
              <param name="id"></param>
              <remarks>
@@ -515,6 +538,30 @@
             <inheritdoc />
         </member>
         <member name="M:aspnetapp.Migrations._4.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._5">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._5.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._5.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._5.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._6">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._6.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc /> 
+        </member>
+        <member name="M:aspnetapp.Migrations._6.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._6.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

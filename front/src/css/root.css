@@ -1,0 +1,38 @@
+#root{
+    height: 100vh;
+    overflow: hidden;
+}
+
+.App {
+    height: 100%;
+}
+
+.logo{
+    height: 10%;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo1 svg{
+    width: 50%;
+}
+
+.logo1 .icon{
+    display: flex;
+    justify-content: end;
+}
+
+.logo1 h1{
+    align-self: center;
+}
+
+.container {
+    height: 100% !important;
+}
+
+.container-son{
+    height: 100% !important;
+}

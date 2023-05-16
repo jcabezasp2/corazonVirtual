@@ -1,23 +1,52 @@
-.p-button{
+.p-buttonLogo{
     background: transparent !important;
     border: none !important;
     color: transparent !important;
+    box-shadow: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 3rem;
+    height: 3rem;
+    padding: 4rem;
+    
 }
 
-.p-button:hover{
+.p-buttonLogo:hover{
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
     box-shadow: var(--primary-color) !important;
 }
 
-.p-button:focus{
+.p-buttonLogo:focus{
     background-color: none !important;
     border-color: none !important;
-    box-shadow: none !important
+    box-shadow: none !important;
 }
 
-.boxlogo{
-    background-image: url('../img/logo1.png');
-    background-repeat: no-repeat;
-    background-size: contain;
+
+ 
+.logo{
+    align-self: baseline;
+}
+
+
+.logo1{
+    font-size: 2rem !important;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    display:flex
+}
+
+.logo1:hover h1{
+    cursor: pointer;
+    color: black;
+    text-shadow: 0 0 0  !important;
+}
+
+.logo1:hover svg{
+    cursor: pointer;
+    fill:#fff;
+    text-shadow: 0 0 10px #fff;
 }

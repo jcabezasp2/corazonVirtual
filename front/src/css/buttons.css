@@ -2,7 +2,10 @@
 /* ButtonDemo.css */
 
 .button-demo .p-button {
-    margin: 0.5rem ;
+    /* margin: 0.5rem ; */
+}
+.button{
+    line-height: 1 !important;
 }
 .button-demo .p-buttonset .p-button {
     margin-right: 0 ;
@@ -19,7 +22,9 @@
     color: #fff !important;
     border-color: var(--surface-700) !important;
     border-radius: 1.5rem !important;
-    padding: 0.5rem 2.8rem 0.5rem 2.8rem !important;
+    width: 100% !important;
+    height: fit-content;
+    padding: 0.5rem 2rem 0.5rem 2rem !important;
     
 }
 .button-demo .template .p-button.signin:hover {

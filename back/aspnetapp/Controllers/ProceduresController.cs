@@ -47,7 +47,7 @@ namespace aspnetapp.Controllers
             var procedures = await _context.Procedures.ToListAsync();
 
             procedures.ForEach(p => {
-                p.Steps = _context.Steps.Where(s => s.Procedures.Contains(p)).ToList();
+                p.Steps = _context.ProcedureStep.Where(ps => ps.ProcedureId == p.Id).OrderBy(ps => ps.Order).ToList();
             });
 
             return procedures;
@@ -83,7 +83,7 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
-            procedure.Steps = _context.Steps.Where(s => s.Procedures.Contains(procedure)).ToList();
+            procedure.Steps = _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).OrderBy(ps => ps.Order).ToList();
 
             return procedure;
         }
@@ -234,11 +234,14 @@ namespace aspnetapp.Controllers
             {
                 return NotFound();
             }
-            var steps = await _context.Steps.Where(s => s.Procedures.Contains(procedure)).ToListAsync();
-            if (steps == null)
+            var stepsIds = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).OrderBy(ps => ps.Order).ToListAsync();
+            if (stepsIds == null)
             {
                 return NotFound();
             }
+
+            var steps = await _context.Steps.Where(s => stepsIds.Any(si => si.StepId == s.Id)).ToListAsync();
+
             return steps;
         }
 
@@ -281,7 +284,7 @@ namespace aspnetapp.Controllers
             }
             foreach (var step in steps)
             {
-                procedure.Steps.Add(step);
+                _context.ProcedureStep.Add(new ProcedureStep { ProcedureId = procedure.Id, StepId = step.Id });
             }
             await _context.SaveChangesAsync();
             return Ok();
