@@ -4,6 +4,21 @@
         <name>aspnetapp</name>
     </assembly>
     <members>
+        <member name="M:aspnetapp.Controllers.ImagesController.PostImage(aspnetapp.Models.Image)">
+             <summary>
+             Upload an image
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /images
+            
+             </remarks>
+             <returns>Route of uploaded image</returns>
+             <response code="200">Returns the image route</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is a connection failure with the database </response>
+        </member>
         <member name="M:aspnetapp.Controllers.PracticeController.GetPractices">
              <summary>
              Get all practices
@@ -435,6 +450,7 @@
              <returns>The user data and the ApiKey</returns>
              <response code="200">Returns the user data and the ApiKey</response>
              <response code="400">Error in the request</response>
+             <response code="404">If the user is not found</response>
              <response code="401">If the user is not authenticated</response>
         </member>
         <member name="M:aspnetapp.Controllers.UsersController.AddClaimToUSer(aspnetapp.Models.AddClaimToUSer)">
@@ -455,7 +471,7 @@
              <response code="200">Returns Ok</response>
              <response code="400">If the user is null or the password is invalid</response>
         </member>
-        <member name="M:aspnetapp.Controllers.UsersController.UpdateUser(aspnetapp.Models.User)">
+        <member name="M:aspnetapp.Controllers.UsersController.UpdateUser(System.String,aspnetapp.Models.User)">
              <summary>
              uptade the user data
              </summary>
