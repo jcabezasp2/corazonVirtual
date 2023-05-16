@@ -1,0 +1,11 @@
+
+
+.table{
+    padding: 5% 20% 10% 20%;
+}
+
+.table svg{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
