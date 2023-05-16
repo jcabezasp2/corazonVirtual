@@ -13,7 +13,7 @@ namespace aspnetapp.Migrations
 {
     [DbContext(typeof(dataContext))]
     [Migration("20230506173032_5")]
-    partial class _5
+    partial class _7
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

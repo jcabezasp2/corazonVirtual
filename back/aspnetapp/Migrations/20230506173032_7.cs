@@ -5,7 +5,7 @@
 namespace aspnetapp.Migrations
 {
     /// <inheritdoc />
-    public partial class _5 : Migration
+    public partial class _7 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
