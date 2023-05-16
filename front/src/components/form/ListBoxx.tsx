@@ -9,9 +9,11 @@ interface List {
     handleSelect: Function;
 } 
 
-export default function ListBoxx(props : List) {
+export default function ListBoxx() {
     const [selected, setSelected] = useState<List | null>(null);
     const options: List[] = [
+        { nameList: 'Selecciona una herramienta', codeList: 0, allcodes: [], handleSelect: () => console.log("click") },
+        { nameList: 'New York', codeList: 1, allcodes: [], handleSelect: () => console.log("click") },
        // { name: {props.nameSelect}, code: {props.code} },
         // { name: 'Rome', code: 'RM' },
         // { name: 'London', code: 'LDN' },
