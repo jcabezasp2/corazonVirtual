@@ -52,24 +52,53 @@ namespace aspnetapp.Controllers
                     return StatusCode(415, "Unsupported Media Type");
                 }
 
-                var imagePath = $"{folder}/{imageName}";
-                var imageFullPath = $"public/{imagePath}";
-                if(!System.IO.Directory.Exists($"public/{folder}"))
-                {
-                    System.IO.Directory.CreateDirectory($"public/{folder}");
-                } 
-                using (var stream = System.IO.File.Create(imageFullPath))
-                {
-                    await img.CopyToAsync(stream);
-                }
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, imageName);
+
+                if(!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder)))
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder));
+
                 
-                return imagePath;
+
+                using (var bits = new FileStream(path, FileMode.Create))
+                {
+                    await img.CopyToAsync(bits);
+                }
+
+                return Ok($"{Request.Scheme}://{Request.Host}/images/{imageName}");
             }
 
             return BadRequest();
         }
 
+        /// <summary>
+        /// Get an image
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /images/{id}
+        ///
+        /// </remarks>
+        /// <returns>Image</returns>
+        /// <response code="200">Returns the image</response>
+        /// <response code="404">If the image is not found</response>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<string>> GetImage(string id)
+        {
+            var image = null as Stream;
 
+            if(id.Split('.').Last() == "fbx")
+                image = System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images3d", id)) ? System.IO.File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images3d", id)) : null;
+            else
+                image = System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", id)) ? System.IO.File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", id)) : null;
+
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(image);
+        }
 
 
     }
