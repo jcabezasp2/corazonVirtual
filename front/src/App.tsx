@@ -9,6 +9,7 @@ import Procedures from './pages/Procedures';
 import ToolForm from './pages/forms/ToolForm';
 import Practices from './pages/Practices';
 import Students from './pages/Students';
+import Panel from './pages/Panel';
 import * as endpoints from "../src/assets/endpoints"
 import User from './models/User';
 import { Role } from './assets/constants';
@@ -47,6 +48,7 @@ function App() {
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
+          <Route path="/panel" element={user.role == Role.Teacher? <Panel /> : <Home />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>

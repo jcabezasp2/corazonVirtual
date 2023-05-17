@@ -59,6 +59,24 @@ export const getAllUsers = async () => {
     return data
 }
 
+//User by id
+export const getUser = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/${id}`, opciones);
+    console.log(res)
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
 
 
 // Calls to the procedures API endpoints
@@ -175,7 +193,8 @@ export const getTools = async () => {
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data        
-}
+}  
+
 //Tool by id
 export const getTool = async (id :number) => {
     const apiKey = sessionStorage.getItem('apiKey');

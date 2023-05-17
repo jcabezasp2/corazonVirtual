@@ -25,12 +25,16 @@ export default function ToolForm(props: Iprops) {
 
     const [name, setName] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
+    const [image, setImage] = React.useState<string>('');
     const [status, setStatus] = React.useState<Status>(Status.error);
-    const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');    
-    const [nameList, setNameList] = React.useState<string>('Selecciona una herramienta');
-    const [codeList, setCodeList] = React.useState<number>(0);
-    const [allcodes, setAllcodes] = React.useState<number[]>([]);
-    const [options, setoptions] = React.useState<string[]>([]);useState<string>('Selecciona una herramienta');
+    const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
+    const [labeldescription, setLabeldescription] = React.useState<string>('Descripción de la herramienta');
+    const [labelimage, setLabelimage] = React.useState<string>('Imagen de la herramienta');   
+    
+    // const [nameList, setNameList] = React.useState<string>('Selecciona una herramienta');
+    // const [codeList, setCodeList] = React.useState<number>(0);
+    // const [allcodes, setAllcodes] = React.useState<number[]>([]);
+    // const [options, setoptions] = React.useState<string[]>([]);useState<string>('Selecciona una herramienta');
 
     const handleName = (e: string) => {
         setName(e);
@@ -38,11 +42,14 @@ export default function ToolForm(props: Iprops) {
     const handleDescription = (e: string) => {
         setDescription(e);
     }    
-    const handleList = (e: {value: number[]}) => {
-        setNameList(e as any);
-        // setAllcodes(e as any);
-        setAllcodes(e as any);
-    }
+    const handleImage = (e: string) => {
+        setDescription(e);
+    }  
+    // const handleList = (e: {value: number[]}) => {
+    //     setNameList(e as any);
+    //     // setAllcodes(e as any);
+    //     setAllcodes(e as any);
+    // }
     
     // interface FormValues {
     //     name: string;
@@ -76,54 +83,37 @@ export default function ToolForm(props: Iprops) {
       
     async function tools() {
         console.log('entrando en tools')
-        const res = await endpoints.getTools();
+        const res = await endpoints.createTool(name, description, image);
         if(res != null){
-            console.log('se ha logueado')
+            console.log('funciona')
             console.log(res)
 
         }else{
-            console.log('no se ha logueado')
-        }
-        console.log(res)
-        console.log(res.map((tool: any) => tool.name))
-        setNameList(res.map((tool: any) => tool.name))
-        console.log(res.map((tool: any) => tool.id))
-        setCodeList(res.map((tool: any) => tool.code))
-        setoptions(res.map((tool: any) => tool.name))
+            console.log('no funciona')
+        }             
 
     }
 
 
     React.useEffect(() => {
-        tools();
+     
       }, [])
+
+    const handleTool = () => {
+        tools();
+    }
 
 
 
 
     return (      
-        <div className='formgrid ui-grid'>           
+        <div className='formgrid grid'>           
           
                 {/* <Col className="col-6"> */}
-                    <div className="p-fluid ui-grid-col-8">
+                    <div className="p-fluid grid-col-8">
                         <div className="p-field field col-8">
-                            <InputTxt name={name} handleName={handleName} labelname={labelname}/>
-                        
-                        </div>
-                        <div className="p-field">
-                            <ListBox
-                            id="items"
-                            value={nameList}
-                            // options={[
-                            //     { label: {nameList}, value: {codeList} },
-                            //     // { label: "Option 2", value: "option2" },
-                            //     // { label: "Option 3", value: "option3" },
-                            // ]}
-                            options={options}
-                            onChange={handleList}
-                            multiple
-                            />
-                        </div>
+                            <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
+                        </div>                        
                         <div className="p-field">
                             <TxtEditor description={description} handleDescription={handleDescription} />
                         </div>
@@ -132,7 +122,11 @@ export default function ToolForm(props: Iprops) {
                         </div>
                         <div className="p-field">
                             <SubmitButton
-                                onclik={() => console.log("click")}
+                                // name={name}
+                                // description={description}
+                                // image={image}
+                                onclik={handleTool}
+                                // onclik={() => console.log("click")}
                                 ctx={{}}
                                 isLogin={false}
                               />
@@ -180,3 +174,19 @@ export default function ToolForm(props: Iprops) {
 //     </form>
 //   );
 // }
+
+
+{/* <div className="p-field">
+                            <ListBox
+                            id="items"
+                            value={nameList}
+                            // options={[
+                            //     { label: {nameList}, value: {codeList} },
+                            //     // { label: "Option 2", value: "option2" },
+                            //     // { label: "Option 3", value: "option3" },
+                            // ]}
+                            options={options}
+                            onChange={handleList}
+                            multiple
+                            />
+                        </div> */}
