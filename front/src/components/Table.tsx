@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import OptionsButton from './OptionsButton';
 import { appContext } from "../App";
+import "./../css/table.css"
 
 class Iprops {
 
@@ -28,7 +28,7 @@ export default function Table(props: Iprops) {
    
     return (
         <div>
-            <DataTable value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}>
+            <DataTable className='table' value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}>
                 {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string) => { return DataColumn(key, key, { width: '10rem' }) })}
                 {props.showOptions &&<Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={context.apiCalls.deleteStep} onEdit={`/steps/${rowData.Id}`} />} style={{ width: '20%' }} />}
             </DataTable>
