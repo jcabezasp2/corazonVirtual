@@ -7,6 +7,7 @@ class Iprops {
     handleName!: Function;
     name!: string;
     labelname!: string;
+
 }
 
 export default function InputTxt(props : Iprops) {
@@ -19,7 +20,7 @@ export default function InputTxt(props : Iprops) {
     return (
         <div className="card flex justify-content-center">
             <span className="p-float-label">
-                <InputText id="name" value={props.name} onChange={(e) => props.handleName} />
+                <InputText id="name" placeholder={props.name} onChange={(e) => props.handleName} />
                 <label htmlFor="name">{props.labelname}</label>
             </span>
         </div>

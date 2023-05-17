@@ -11,6 +11,8 @@ import { Chart } from 'primereact/chart';
 import InputTxt from "../components/form/InputTxt";
 import File from "../components/form/File";
 import { Icons } from "../assets/constants";
+import '../css/panel.css';
+import * as endpoints from '../assets/endpoints';      
 
 
 
@@ -27,17 +29,25 @@ export default function Panel(props: Iprops) {
         const [password, setPassword] = React.useState<string>('');
         const [chartData, setChartData] = useState({});
         const [chartOptions, setChartOptions] = useState({});
-    
-        const initialize = async () => {
-            const response = await context.apiCalls.allUser();
-            setUser(response.id);
-            setEmail(response.email);
-            setPassword(response.password);
-                        
-        };
+
+        
+            // const response = await context.apiCalls.user();
+         
+            const getUser = async (id: number) => {
+                  console.log(context.user.id)
+                const res = await context.apiCalls.getUser(id)                
+        //    const res = await getUser(context.user.id)
+              console.log(res)
+            setUser(res.name)
+            setEmail(res.email)
+            setPassword(res.password)                
+            // setAvatar(res.data.image)
+            }   
+       
+
     
         React.useEffect(() => {
-        initialize();
+        getUser(context.user.id);
         }, []);
 
         const handleAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,39 +137,43 @@ export default function Panel(props: Iprops) {
         }, []);
 
         return (
-            <div>
-                <h1>Panel</h1>
-                    <div className="card">
-                    <div className="flex flex-wrap gap-5">
-                        
-                    <h5>Avatar</h5>
-                    <Avatar image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp" className="p-avatar-text flex align-items-center justify-content-center mr-2" size="xlarge" shape="circle">
-                         
-                     </Avatar>                                     
+            <div className="panel col-12">
+                    <h1>Panel</h1>
+                    <div className="card panelcontent col-12">
+                    
+                        <div className=" gap-5 avatar col-3">      
+                        <label>Avatar</label>
+                        <Avatar image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp" className="p-avatar-text flex align-items-center justify-content-center mr-2" size="xlarge" shape="circle">
+                             
+                         </Avatar>             
+                        </div>
+                        <div className="panelform col-8">
+                        <div className='col-4 '>
+                            <label>Usuario</label>
+                            <InputTxt labelname={user}
+                            name={user} handleName={handleUser}/>
+                        </div>
+                        <div className='col-4'>
+                            <label>Email</label>
+                            <InputTxt labelname={email} name={email} handleName={handleEmail}/>
+                        </div>
+                        <div className='col-4'>
+                            <label>Password</label>
+                            <InputTxt labelname={password} name={password} handleName={handlePassword}/>                        
+                        </div>
                     </div>
-                    <div className='col-10 '>
-                        <label>Usuario</label>
-                        <InputTxt  value={user} onChange={handleUser}/>
+                    <div className="card col-6">
+                        <Chart height="200%" type="line" data={chartData} options={chartOptions} />
                     </div>
-                    <div className='formgrid grid'>
-                        <label>Email</label>
-                        <InputTxt value={email} onChange={handleEmail}/>
                     </div>
-                    <div className='formgrid grid'>
-                        <label>Password</label>
-                        <InputTxt value={password} onChange={handlePassword}/>                        
-                    </div>
-                    <div className="card">
-                        {/* <Chart type="line" data={chartData} options={chartOptions} /> */}
-                    </div>
-                    <div className='formgrid grid'>
+                    <div className=' col-3'>
                         <SubmitButton
                         onclik={context.apiCalls.updateUser}
                         ctx= {{email: email, password : password, avatar: avatar}}
                         isLogin={true}
                         />
                     </div>
-                </div>
+                
             </div>
         );
     }
