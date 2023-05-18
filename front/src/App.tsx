@@ -30,12 +30,21 @@ function App() {
     setUser(user);
   }
 
+  useEffect(() => {
+    if(sessionStorage.getItem('apiKey') != null && user.id == 0){
+      endpoints.getMyUser().then((res: any) => {
+        setUser(res);
+      })
+    }
+  }, []);
+
   return (
     <appContext.Provider value={{
       apiCalls: endpoints,
       user: user,
       changeUSer: changeUSer
     }}>
+
 
     <div className="App">
       <BrowserRouter>
