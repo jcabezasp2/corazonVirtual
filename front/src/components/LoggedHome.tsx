@@ -2,7 +2,9 @@ import React from "react";
 import HomeCard from "./HomeCard";
 import { Role, Icons } from "../assets/constants";
 import { appContext } from "../App";
-import "../css/loggedHome.css"
+import Icon from "./Icons";
+import "../css/loggedHome.css";
+import "../css/logohome.css";
 
 interface MenuItem {
   title: string;
@@ -10,29 +12,13 @@ interface MenuItem {
   destiny: string;
 }
 
-const commonItems: MenuItem[] = [
-  {
-    title: "Panel de usuario",
-    icon: Icons.Identity,
-    destiny: "/panel",
-  },
-  {
-    title: "Herramientas",
-    icon: Icons.Tools,
-    destiny: "/herramientas",
-  },
-];
+const commonItems: MenuItem[] = [];
 
 const studentItems: MenuItem[] = [
   {
     title: "Procedimientos",
     icon: Icons.Procedure,
     destiny: "/procedimientos",
-  },
-  {
-    title: "Practicas",
-    icon: Icons.ListCheck,
-    destiny: "/practicas",
   },
 ];
 
@@ -67,27 +53,58 @@ const adminItems: MenuItem[] = [
   },
 ];
 
-
 export default function LoggedHome() {
-
   const context = React.useContext(appContext);
   const [items, setItems] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    if(context.user.role == Role.Student){
-      setItems([...commonItems, ...studentItems])
-    }else if(context.user.role == Role.Teacher){
-      setItems([...commonItems, ...teacherItems])
-    }else if(context.user.role == Role.Admin){
-      setItems([...commonItems, ...adminItems])
+    if (context.user.role == Role.Student) {
+      setItems([...commonItems, ...studentItems]);
+    } else if (context.user.role == Role.Teacher) {
+      setItems([...commonItems, ...teacherItems]);
+    } else if (context.user.role == Role.Admin) {
+      setItems([...commonItems, ...adminItems]);
     }
   }, [context.user.role]);
 
   return (
     <div className="loggedHome">
-      {items.map((item) => (
-        <HomeCard title={item.title} icon={item.icon} destiny={item.destiny}/>
-      ))}
+      <div className="firstRow row">
+      <div className="logoLogged title">
+        <h1 className="logo2">
+          CoRAzón <br /> Virtual
+        </h1>
+      </div>
+        <HomeCard
+          title={"Panel de usuario"}
+          icon={Icons.Identity}
+          destiny={"/panel"}
+        />
+      </div>
+      <div className="secondRow row">
+        <HomeCard
+          title={"Panel de usuario"}
+          icon={Icons.Tools}
+          destiny={"/herramientas"}
+        />
+        <div className="logoLogged">
+          <Icon type={Icons.Logo} />
+        </div>
+        <HomeCard
+          title={"Practicas"}
+          icon={Icons.ListCheck}
+          destiny={"/practicas"}
+        />
+      </div>
+      <div className="thirdRow row">
+        {items.map((item, index) => (
+          <HomeCard
+            title={item.title}
+            icon={item.icon}
+            destiny={item.destiny}
+          />
+        ))}
+      </div>
     </div>
   );
 }
