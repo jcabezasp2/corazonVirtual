@@ -69,40 +69,46 @@ export default function LoggedHome() {
 
   return (
     <div className="loggedHome">
-      <div className="firstRow row">
-      <div className="logoLogged title">
-        <h1 className="logo2">
-          CoRAzón <br /> Virtual
-        </h1>
+      <div>
       </div>
+      <div className="scalein animation-duration-1000">
         <HomeCard
           title={"Panel de usuario"}
           icon={Icons.Identity}
           destiny={"/panel"}
         />
       </div>
-      <div className="secondRow row">
+      <div className="scalein animation-duration-1000">
         <HomeCard
-          title={"Panel de usuario"}
+          title={"Utensilios"}
           icon={Icons.Tools}
           destiny={"/herramientas"}
         />
-        <div className="logoLogged">
-          <Icon type={Icons.Logo} />
+      </div>
+      <div className="logoLogged">
+        <Icon type={Icons.Logo} />
+        <div className="title">
+          <h1 className="logo2">
+            CoRAzón <br /> Virtual
+          </h1>
         </div>
+      </div>
+      <div className="scalein animation-duration-1000">
         <HomeCard
           title={"Practicas"}
           icon={Icons.ListCheck}
           destiny={"/practicas"}
         />
       </div>
-      <div className="thirdRow row">
+      <div className="row">
         {items.map((item, index) => (
-          <HomeCard
-            title={item.title}
-            icon={item.icon}
-            destiny={item.destiny}
-          />
+          <div className="scalein animation-duration-1000">
+            <HomeCard
+              title={item.title}
+              icon={item.icon}
+              destiny={item.destiny}
+            />
+          </div>
         ))}
       </div>
     </div>
