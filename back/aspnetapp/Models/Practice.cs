@@ -11,5 +11,6 @@ public class Practice
     public int ProcedureId { get; set; }
     public int StepId { get; set; }
     public string? UserId { get; set; } = null!;
+    public bool IsFinished { get; set; } = false;
 
 }
