@@ -63,7 +63,7 @@ export default function LoggedHome() {
     } else if (context.user.role == Role.Teacher) {
       setItems([...commonItems, ...teacherItems]);
     } else if (context.user.role == Role.Admin) {
-      setItems([...commonItems, ...adminItems]);
+      setItems([...adminItems]);
     }
   }, [context.user.role]);
 
@@ -78,13 +78,13 @@ export default function LoggedHome() {
           destiny={"/panel"}
         />
       </div>
-      <div className="scalein animation-duration-1000">
-        <HomeCard
+      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
+       <HomeCard
           title={"Utensilios"}
           icon={Icons.Tools}
           destiny={"/herramientas"}
         />
-      </div>
+      </div>: <div></div>}
       <div className="logoLogged">
         <Icon type={Icons.Logo} />
         <div className="title">
@@ -93,13 +93,13 @@ export default function LoggedHome() {
           </h1>
         </div>
       </div>
-      <div className="scalein animation-duration-1000">
+      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
         <HomeCard
           title={"Practicas"}
           icon={Icons.ListCheck}
           destiny={"/practicas"}
         />
-      </div>
+      </div>: <div></div>}
       <div className="row">
         {items.map((item, index) => (
           <div className="scalein animation-duration-1000">

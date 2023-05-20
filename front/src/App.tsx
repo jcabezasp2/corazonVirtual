@@ -18,6 +18,7 @@ interface context {
   apiCalls: any;
   user : User;
   changeUSer: (user: User) => void;
+  logout: () => void;
 }
 
 export const appContext = createContext({} as context);
@@ -28,6 +29,11 @@ function App() {
 
   const changeUSer = (user: User) => {
     setUser(user);
+  }
+
+  const logout = () => {
+    sessionStorage.removeItem('apiKey');
+    setUser(new User());
   }
 
   useEffect(() => {
@@ -42,7 +48,8 @@ function App() {
     <appContext.Provider value={{
       apiCalls: endpoints,
       user: user,
-      changeUSer: changeUSer
+      changeUSer: changeUSer,
+      logout: logout
     }}>
 
 
