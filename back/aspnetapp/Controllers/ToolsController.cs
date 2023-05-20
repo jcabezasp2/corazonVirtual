@@ -31,10 +31,7 @@ namespace aspnetapp.Controllers
             {
                 return NotFound();
             }
-
-            var tools = await _context.Tools.ToListAsync();
-
-            return tools;
+                return await _context.Tools.ToListAsync();
         }
 
         // GET: api/Tools/1

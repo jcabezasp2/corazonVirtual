@@ -43,7 +43,19 @@ namespace aspnetapp.Controllers
           {
               return NotFound();
           }
-            return await _context.Steps.ToListAsync();
+
+            var steps = await _context.Steps.ToListAsync();
+
+            if (steps == null)
+            {
+                return NotFound();
+            }
+
+            steps.ForEach(s =>
+                s.Tools = _context.Tools.Where(t => t.Steps.Contains(s)).ToList() 
+             );
+
+            return steps;
         }
 
         /// <summary>
@@ -201,6 +213,27 @@ namespace aspnetapp.Controllers
         private bool StepExists(int id)
         {
             return (_context.Steps?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpGet("{id}/herramientas")]
+        public async Task<ActionResult<IEnumerable<Tool>>> GetToolsByStep(int id)
+        {
+            var step = await _context.Steps.FindAsync(id);
+
+            if (step == null)
+            {
+                return NotFound();
+            }
+
+            var tools = await _context.Tools.Where(s=> s.Steps.Contains(step)).ToListAsync();
+
+            if (tools == null)
+            {
+                return NotFound();
+            }
+
+            return tools;
         }
     }
 }
