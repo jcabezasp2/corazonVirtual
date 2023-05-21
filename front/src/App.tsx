@@ -59,7 +59,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pasos" element={user.role != Role.Guest? <Steps /> : <Home />} />
-          <Route path="/pasos/formulario" element={user.role != Role.Teacher? <StepForm /> : <Home />} />
+          <Route path="/pasos/formulario" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
+          <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
           <Route path="/herramientas/formulario" element={user.role != Role.Teacher?<ToolForm /> : <Home /> } />
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />

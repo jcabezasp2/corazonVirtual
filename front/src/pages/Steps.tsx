@@ -2,7 +2,8 @@ import React from "react";
 import { appContext } from "../App";
 import Table from "../components/Table";
 import IStep from "../interfaces/Step";
-import OptionsButton from "../components/OptionsButton";
+import { useNavigate } from "react-router-dom";
+import { Button } from 'primereact/button';
 
 
 class Iprops {}
@@ -11,6 +12,8 @@ export default function Steps(props: Iprops) {
 
     const context = React.useContext(appContext);
     const [steps, setSteps] = React.useState([]);
+
+    const navigate = useNavigate();
 
     const initialize = async () => {
         const response = await context.apiCalls.getSteps();
@@ -35,8 +38,14 @@ export default function Steps(props: Iprops) {
 
 
   return (
-    <div>
-        <Table dataElements={steps} showOptions/>
+    <div id="stepsView">
+        <Button label="Crear paso" severity="secondary" onClick={()=> {navigate("/pasos/formulario")}}/>
+        <Table 
+            dataElements={steps}
+            showOptions
+            onEdit = "/pasos/formulario"
+            onDelete={context.apiCalls.deleteStep}
+            />
     </div>
   );
 }

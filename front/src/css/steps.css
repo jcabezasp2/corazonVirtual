@@ -1,0 +1,23 @@
+#stepsView{
+padding: 5% 10% 2% 10%;
+display:flex;
+flex-direction: column;
+gap: 1em;
+}
+
+#stepsView > button{
+    width: 20%;
+    height: 3em;
+    border-radius: 5px;
+    border: none;
+    background-color: #F2F2F2;
+    color: rgb(94, 149, 184);
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: end;
+}
+
+#stepsView  button:hover{
+    background-color: #E0E0E0;
+}
