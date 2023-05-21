@@ -11,7 +11,16 @@ td{
     text-align: center !important;
 }
 
+.td-image > img{
+    width: 50px !important;
+}
+
 .p-datatable .p-column-header-content{
     font-weight: bold;
     justify-content: center !important;
+}
+
+/* TODO implementar las funciones de los botones de la tabla */
+.p-paginator-left-content > button, .p-paginator-right-content > button {
+    display: none;
 }

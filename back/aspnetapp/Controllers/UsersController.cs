@@ -410,5 +410,38 @@ namespace aspnetapp.Controllers
 
             return practices;
         }
+
+        /// <summary>
+        /// Get all students
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET usuarios/students
+        ///
+        /// </remarks>
+        /// <returns>An array with all the students</returns>
+        /// <response code="200">Returns the students</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("estudiantes")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        public async Task<ActionResult<IEnumerable<User>>> GetStudents()
+        {
+            var students = await _userManager.GetUsersInRoleAsync("student");
+
+            if (students == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var student in students)
+            {
+                student.PasswordHash = "The password is hidden";
+            }
+
+            return Ok(students);
+        }
     }
 }

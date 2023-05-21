@@ -4,6 +4,9 @@ import Table from "../components/Table";
 import IStep from "../interfaces/Step";
 import { useNavigate } from "react-router-dom";
 import { Button } from 'primereact/button';
+import { Image } from 'primereact/image';
+import defaultImage from './../img/defaultImage.jpeg'
+import Modal from "../components/Modal";
 
 
 class Iprops {}
@@ -21,9 +24,9 @@ export default function Steps(props: Iprops) {
             return {
                 Id: step.id,
                 Nombre: step.name,
-                Descripcion: step.description,
+                Descripcion: <Modal content={step.description} />,
                 Duracion: step.duration,
-                Imagen: step.image,
+                Imagen: <Image className="td-image" src={step.image != "default"? step.image : defaultImage} alt="Image" width="250" />,
                 Previo: step.previousStep? 'Si' : 'No',
             }
         })

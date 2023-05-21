@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Table from "../components/Table";
 import { appContext } from "../App";
 import { Role } from "../assets/constants";
+import "./../css/students.css"
 
 class Iprops {}
 
@@ -23,15 +24,16 @@ export default function Students(props: Iprops) {
     const [students, setStudents] = React.useState([]);
 
     const initialize = async () => {
-      const res = await context.apiCalls.getAllUsers();
+      const res = await context.apiCalls.getAllStudents();
+      console.log('res', res);
       const students = res.filter((student: any) => {
         return student.role != Role.Student; //TODO cambiar en back para que devuelva el rol
         }).map((student: any) => {
             return {
                 id: student.id,
-                name: student.userName,
+                Nombre: student.userName,
                 email: student.email,
-                image: student.image,
+                Imagen: student.image,
                 };
             });
         setStudents(students);
@@ -42,9 +44,9 @@ export default function Students(props: Iprops) {
         initialize();
      }, []);
 
-  return <div id="students">
+  return <div id="studentsView">
 
-     <Table dataElements={students} />
+     <Table dataElements={students} onDelete={()=>{}} onEdit=""/>
 
   </div>;
 }

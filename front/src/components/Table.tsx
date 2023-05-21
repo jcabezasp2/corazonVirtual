@@ -21,18 +21,9 @@ function DataColumn (field: string, header: string, style: any) {
 export default function Table(props: Iprops) {
 
     const context = React.useContext(appContext);
-    const [dataElements, setDataElements] = useState(props.dataElements);
     const paginatorLeft = <Button type="button" icon="pi pi-refresh" text />;
     const paginatorRight = <Button type="button" icon="pi pi-download" text />;
 
-    useEffect(() => {
-        setDataElements([...props.dataElements]);
-
-    }, []);
-
-    const toCSV = () => {
-        console.log("toCSV")
-    }
 
     return (
         <div>
