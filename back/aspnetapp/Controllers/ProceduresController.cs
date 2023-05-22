@@ -225,24 +225,34 @@ namespace aspnetapp.Controllers
         [HttpGet("{id}/pasos")]
         public async Task<ActionResult<IEnumerable<Step>>> GetProcedureSteps(int id)
         {
-          if (_context.Procedures == null)
-          {
-              return NotFound();
-          }
-            var procedure = await _context.Procedures.FindAsync(id);
-            if (procedure == null)
+            if (_context.Procedures == null)
             {
                 return NotFound();
             }
-            var stepsIds = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).OrderBy(ps => ps.Order).ToListAsync();
-            if (stepsIds == null)
-            {
-                return NotFound();
-            }
-
-            var steps = await _context.Steps.Where(s => stepsIds.Any(si => si.StepId == s.Id)).ToListAsync();
-
-            return steps;
+                var procedure = await _context.Procedures.FindAsync(id);
+                if (procedure == null)
+                {
+                    return NotFound();
+                }
+    
+                var procedureSteps = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).ToListAsync();
+                if (procedureSteps == null)
+                {
+                    return NotFound();
+                }
+    
+                var steps = new List<Step>();
+                foreach (var procedureStep in procedureSteps)
+                {
+                    var step = await _context.Steps.FindAsync(procedureStep.StepId);
+                    if (step == null)
+                    {
+                        return NotFound();
+                    }
+                    steps.Add(step);
+                }
+    
+                return steps;
         }
 
         /// <summary>
@@ -277,16 +287,18 @@ namespace aspnetapp.Controllers
             {
                 return NotFound();
             }
-            var steps = await _context.Steps.Where(s => stepIds.Contains(s.Id)).ToListAsync();
-            if (steps == null)
+            if (stepIds == null)
             {
                 return NotFound();
             }
-            foreach (var step in steps)
+
+            var procedureSteps = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).ToListAsync();
+            if (procedureSteps == null)
             {
-                _context.ProcedureStep.Add(new ProcedureStep { ProcedureId = procedure.Id, StepId = step.Id });
+                return NotFound();
             }
             await _context.SaveChangesAsync();
+
             return Ok();
         }
     }

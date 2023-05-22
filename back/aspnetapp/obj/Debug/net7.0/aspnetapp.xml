@@ -19,6 +19,20 @@
              <response code="401">If the user is not authenticated</response>
              <response code="500">If there is a connection failure with the database </response>
         </member>
+        <member name="M:aspnetapp.Controllers.ImagesController.GetImage(System.String)">
+             <summary>
+             Get an image
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /images/{id}
+            
+             </remarks>
+             <returns>Image</returns>
+             <response code="200">Returns the image</response>
+             <response code="404">If the image is not found</response>
+        </member>
         <member name="M:aspnetapp.Controllers.PracticeController.GetPractices">
              <summary>
              Get all practices
@@ -58,6 +72,75 @@
              <response code="400">Bad request</response>
              <response code="401">Unauthorized</response>
              <response code="403">Forbidden</response>
+             <response code="500">Internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.PracticeController.PutPractice(System.Int32,System.Boolean,System.Int32,System.DateTime)">
+             <summary>
+             Change the practice
+             </summary>
+             <param name="id"></param>
+             <param name="practice"></param>
+             <remarks>
+             Sample request:
+            
+                 PUT /practicas/1
+                 {
+                    "date": "2023-05-20T13:52:50.921Z",
+                    "observations": "Observations",
+                    "duration": 60,
+                    "procedureId": 1,
+                    "stepId": 1
+                 }
+            
+             </remarks>
+             <returns>The practice updated</returns>
+             <response code="200">Returns the practice updated</response>
+             <response code="400">Bad request</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="404">Not found</response>
+             <response code="500">Internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.PracticeController.AddObservationToPractice(System.Int32,System.String)">
+             <summary>
+             Add an observation to the practice
+             </summary>
+             <param name="id"></param>
+             <param name="observation"></param>
+             <remarks>
+             Sample request:
+            
+                 PUT /practicas/1/observation
+                 {
+                    "observation": "Observations"
+                 }
+            
+             </remarks>
+             <returns>The practice updated</returns>
+             <response code="200">Returns the practice updated</response>
+             <response code="400">Bad request</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="404">Not found</response>
+             <response code="500">Internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.PracticeController.DeletePractice(System.Int32)">
+             <summary>
+             Finish the practice
+             </summary>
+             <param name="id"></param>
+             <remarks>
+             Sample request:
+            
+                 PUT /practicas/1/finish
+            
+             </remarks>
+             <returns>The practice updated</returns>
+             <response code="200">Returns the practice updated</response>
+             <response code="400">Bad request</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="404">Not found</response>
              <response code="500">Internal server error</response>
         </member>
         <member name="M:aspnetapp.Controllers.ProceduresController.GetProcedures">
@@ -198,7 +281,7 @@
              <remarks>
              Sample request:
             
-                 POST /rol/create
+                 POST /roles/create
                  {
                     "name": "admin"
                  }
@@ -218,7 +301,7 @@
              <remarks>
              Sample request:
             
-                 POST /rol/delete
+                 POST /roles/delete
                  {
                     "name": "admin"
                  }
@@ -238,7 +321,7 @@
              <remarks>
              Sample request:
             
-                 POST /rol/adduser
+                 POST /roles/adduser
                  {
                     "userEmail": "admin@admin",
                     "roleName": "admin"
@@ -271,6 +354,36 @@
              <returns>Ok</returns>
              <response code="200">Returns Ok</response>
              <response code="400">If the role is null</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.RoleController.GetAll">
+             <summary>
+             Get all roles
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /roles/getAll
+            
+             </remarks>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="401">If the user is not authenticated</response>
+             <response code="500">If there is an internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.RoleController.GetAllClaims">
+             <summary>
+             Get all claims
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /roles/getAllClaims
+            
+             </remarks>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
              <response code="401">If the user is not authenticated</response>
              <response code="500">If there is an internal server error</response>
         </member>
@@ -508,6 +621,22 @@
              <response code="403">Forbidden</response>
              <response code="500">Internal server error</response>
         </member>
+        <member name="M:aspnetapp.Controllers.UsersController.GetStudents">
+             <summary>
+             Get all students
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET usuarios/students
+            
+             </remarks>
+             <returns>An array with all the students</returns>
+             <response code="200">Returns the students</response>
+             <response code="401">Unauthorized</response>
+             <response code="403">Forbidden</response>
+             <response code="500">Internal server error</response>
+        </member>
         <member name="T:aspnetapp.Migrations._1">
             <inheritdoc />
         </member>
@@ -578,6 +707,30 @@
             <inheritdoc />
         </member>
         <member name="M:aspnetapp.Migrations._6.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._7">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._7.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._7.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._7.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._8">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._8.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._8.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._8.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

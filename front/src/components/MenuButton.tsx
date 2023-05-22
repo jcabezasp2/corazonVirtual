@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { appContext } from "../App";
 import { Role, Icons } from "../assets/constants";
 import Icon from "./../components/Icons";
-import { Tooltip } from 'primereact/tooltip';
 import "./../css/menuButton.css"
 
 
@@ -18,11 +17,11 @@ export default function MenuButton() {
   React.useEffect(() => {
     console.log(context.user);
       if (context.user.role === Role.Student) {
-        setItems([...publicItems, ...studentItems]);
+        setItems([...publicItems, ...studentItems, ...commonItems]);
       } else if (context.user.role === Role.Teacher) {
-        setItems([...publicItems, ...teacherItems]);
+        setItems([...publicItems, ...teacherItems, ...commonItems]);
       } else if (context.user.role === Role.Admin) {
-        setItems(adminItems);
+        setItems([...adminItems, ...commonItems]);
       }else{
         setItems(publicItems);
       }
@@ -100,31 +99,42 @@ export default function MenuButton() {
       label: "Usuarios",
       icon: <Icon type={Icons.Identity} />,
       command: () => {
-        navigate("/usuarios");
+        navigate("/admin/usuarios");
       },
     },
     {
       label: "Roles",
       icon: <Icon type={Icons.Role} />,
       command: () => {
-        navigate("/roles");
+        navigate("/admin/roles");
       },
     },
     {
       label: "Permisos",
       icon: <Icon type={Icons.Check} />,
       command: () => {
-        navigate("/permisos");
+        navigate("/admin/permisos");
+      },
+    },
+  ];
+
+  const commonItems: MenuItem[] = [
+    {
+      label: "Cerrar sesion",
+      icon: <Icon type={Icons.Logout} />,
+      command: () => {
+        context.logout();
+        navigate("/");
       },
     },
   ];
 
 
+
   //TODO poner estilos en hoja de estilos
   return (
     <div className="card">
-      <Tooltip target=".icon"/>
-      <div style={{ position: "fixed", top: "2%", left: "96%" }}>
+      <div id="menu_button" >
         <SpeedDial
           mask
           model={items}

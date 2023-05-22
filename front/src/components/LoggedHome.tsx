@@ -39,17 +39,17 @@ const adminItems: MenuItem[] = [
   {
     title: "Usuarios",
     icon: Icons.Identity,
-    destiny: "/usuarios",
+    destiny: "/admin/usuarios",
   },
   {
     title: "Roles",
     icon: Icons.Role,
-    destiny: "/roles",
+    destiny: "/admin/roles",
   },
   {
     title: "Permisos",
     icon: Icons.Check,
-    destiny: "/permisos",
+    destiny: "/admin/permisos",
   },
 ];
 
@@ -63,46 +63,52 @@ export default function LoggedHome() {
     } else if (context.user.role == Role.Teacher) {
       setItems([...commonItems, ...teacherItems]);
     } else if (context.user.role == Role.Admin) {
-      setItems([...commonItems, ...adminItems]);
+      setItems([...adminItems]);
     }
   }, [context.user.role]);
 
   return (
     <div className="loggedHome">
-      <div className="firstRow row">
-      <div className="logoLogged title">
-        <h1 className="logo2">
-          CoRAzón <br /> Virtual
-        </h1>
+      <div>
       </div>
+      <div className="scalein animation-duration-1000">
         <HomeCard
           title={"Panel de usuario"}
           icon={Icons.Identity}
           destiny={"/panel"}
         />
       </div>
-      <div className="secondRow row">
-        <HomeCard
-          title={"Panel de usuario"}
+      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
+       <HomeCard
+          title={"Utensilios"}
           icon={Icons.Tools}
           destiny={"/herramientas"}
         />
-        <div className="logoLogged">
-          <Icon type={Icons.Logo} />
+      </div>: <div></div>}
+      <div className="logoLogged">
+        <Icon type={Icons.Logo} />
+        <div className="title">
+          <h1 className="logo2">
+            CoRAzón <br /> Virtual
+          </h1>
         </div>
+      </div>
+      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
         <HomeCard
           title={"Practicas"}
           icon={Icons.ListCheck}
           destiny={"/practicas"}
         />
-      </div>
-      <div className="thirdRow row">
+      </div>: <div></div>}
+      <div className="row">
         {items.map((item, index) => (
-          <HomeCard
-            title={item.title}
-            icon={item.icon}
-            destiny={item.destiny}
-          />
+          <div className="scalein animation-duration-1000">
+            <HomeCard
+              title={item.title}
+              icon={item.icon}
+              destiny={item.destiny}
+            />
+          </div>
         ))}
       </div>
     </div>

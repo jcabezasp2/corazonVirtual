@@ -110,21 +110,33 @@ namespace aspnetapp.Controllers
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         [Route("getAll")]
-        public async Task<ActionResult<User>> GetAll()
+        public async Task<ActionResult<UserData>> GetAll()
         {
             var users = await _userManager.Users.ToListAsync();
 
             if (users == null)
             {
-                return BadRequest("Users not found");
+                return NotFound("Users not found");
             }
+            var appUsers = new List<UserData>();
 
-            users.ForEach(async user =>
+            foreach (var user in users)
             {
                 user.PasswordHash = "The password is hidden";
-            });
+                var role = await _userManager.GetRolesAsync(user);
+                var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
 
-            return Ok(users);
+                var appUser = new UserData()
+                {
+                    user = user,
+                    Role = role[0],
+                    RoleClaims = roleClaims,
+                };
+
+                appUsers.Add(appUser);
+            }
+
+            return Ok(appUsers);
         }
 
         /// <summary>
@@ -409,6 +421,39 @@ namespace aspnetapp.Controllers
             }
 
             return practices;
+        }
+
+        /// <summary>
+        /// Get all students
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET usuarios/students
+        ///
+        /// </remarks>
+        /// <returns>An array with all the students</returns>
+        /// <response code="200">Returns the students</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("estudiantes")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        public async Task<ActionResult<IEnumerable<User>>> GetStudents()
+        {
+            var students = await _userManager.GetUsersInRoleAsync("student");
+
+            if (students == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var student in students)
+            {
+                student.PasswordHash = "The password is hidden";
+            }
+
+            return Ok(students);
         }
     }
 }

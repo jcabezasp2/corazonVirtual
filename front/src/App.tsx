@@ -10,14 +10,18 @@ import ToolForm from './pages/forms/ToolForm';
 import Practices from './pages/Practices';
 import Students from './pages/Students';
 import Panel from './pages/Panel';
+import Users from './pages/Users';
 import * as endpoints from "../src/assets/endpoints"
 import User from './models/User';
+import Roles from './pages/Roles';
+import Claims from './pages/Claims';
 import { Role } from './assets/constants';
 
 interface context {
   apiCalls: any;
   user : User;
   changeUSer: (user: User) => void;
+  logout: () => void;
 }
 
 export const appContext = createContext({} as context);
@@ -28,6 +32,11 @@ function App() {
 
   const changeUSer = (user: User) => {
     setUser(user);
+  }
+
+  const logout = () => {
+    sessionStorage.removeItem('apiKey');
+    setUser(new User());
   }
 
   useEffect(() => {
@@ -42,7 +51,8 @@ function App() {
     <appContext.Provider value={{
       apiCalls: endpoints,
       user: user,
-      changeUSer: changeUSer
+      changeUSer: changeUSer,
+      logout: logout
     }}>
 
 
@@ -52,12 +62,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pasos" element={user.role != Role.Guest? <Steps /> : <Home />} />
-          <Route path="/pasos/formulario" element={user.role != Role.Teacher? <StepForm /> : <Home />} />
+          <Route path="/pasos/formulario" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
+          <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
           <Route path="/herramientas/formulario" element={user.role != Role.Teacher?<ToolForm /> : <Home /> } />
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
           <Route path="/panel" element={user.role == Role.Teacher? <Panel /> : <Home />} />
+          <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
+          <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
+          <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>

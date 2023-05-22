@@ -4,6 +4,8 @@ import TxtEditor from "../../components/form/TxtEditor"
 import Toggle from "../../components/form/Toggle";
 import File from "../../components/form/File";
 import SubmitButton from "../../components/form/SubmitButton";
+import { useParams, useNavigate } from 'react-router-dom';
+import "./../../css/steps.css";
 
 class Iprops{
 
@@ -14,11 +16,15 @@ class Iprops{
 
 export default function StepForm(props: Iprops){
 
+    const {id} = useParams();
+
     const [description, setDescription] = React.useState<string>('');
 
     const [previousStep, setpreviousStep] = React.useState<boolean>(false);
 
     const [status, setStatus] = React.useState<Status>(Status.error);
+
+    const navigate = useNavigate();
 
     const handleDescription = (e: string) => {
         setDescription(e);

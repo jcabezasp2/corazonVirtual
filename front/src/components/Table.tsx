@@ -4,11 +4,14 @@ import { Column } from 'primereact/column';
 import OptionsButton from './OptionsButton';
 import { appContext } from "../App";
 import "./../css/table.css"
+import { Button } from 'primereact/button';
 
 class Iprops {
 
     dataElements!: any[];
     showOptions?: boolean;
+    onEdit!: string;
+    onDelete!: Function;
 }
 
 function DataColumn (field: string, header: string, style: any) {
@@ -18,19 +21,17 @@ function DataColumn (field: string, header: string, style: any) {
 export default function Table(props: Iprops) {
 
     const context = React.useContext(appContext);
-    const [dataElements, setDataElements] = useState(props.dataElements);
+    const paginatorLeft = <Button type="button" icon="pi pi-refresh" text />;
+    const paginatorRight = <Button type="button" icon="pi pi-download" text />;
 
-    useEffect(() => {
-        setDataElements([...props.dataElements]);
 
-    }, []);
-
-   
     return (
         <div>
-            <DataTable className='table' value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}>
+            <DataTable stripedRows scrollable paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} scrollHeight="60vh" className='table' value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}
+            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+            currentPageReportTemplate="{first} al {last} de {totalRecords}" paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
                 {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string) => { return DataColumn(key, key, { width: '10rem' }) })}
-                {props.showOptions &&<Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={context.apiCalls.deleteStep} onEdit={`/steps/${rowData.Id}`} />} style={{ width: '20%' }} />}
+                {props.showOptions &&<Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={props.onDelete()} onEdit={`${props.onEdit}/${rowData.Id}`} />} style={{ width: '10%' }}/>}
             </DataTable>
         </div>
     );
