@@ -42,6 +42,9 @@ function App() {
   useEffect(() => {
     if(sessionStorage.getItem('apiKey') != null && user.id == 0){
       endpoints.getMyUser().then((res: any) => {
+        if(res == null){
+          logout();
+        }
         setUser(res);
       })
     }

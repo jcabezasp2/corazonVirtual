@@ -125,6 +125,21 @@ export const getProcedures = () => {
     return res
 }
 
+export const deleteProcedure = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
+    return res
+}
+
+
 
 // Calls to the Steps API endpoints
 export const getSteps = async () => {
