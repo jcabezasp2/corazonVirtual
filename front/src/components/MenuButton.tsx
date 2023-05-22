@@ -99,21 +99,21 @@ export default function MenuButton() {
       label: "Usuarios",
       icon: <Icon type={Icons.Identity} />,
       command: () => {
-        navigate("/usuarios");
+        navigate("/admin/usuarios");
       },
     },
     {
       label: "Roles",
       icon: <Icon type={Icons.Role} />,
       command: () => {
-        navigate("/roles");
+        navigate("/admin/roles");
       },
     },
     {
       label: "Permisos",
       icon: <Icon type={Icons.Check} />,
       command: () => {
-        navigate("/permisos");
+        navigate("/admin/permisos");
       },
     },
   ];

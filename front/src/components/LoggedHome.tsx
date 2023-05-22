@@ -39,17 +39,17 @@ const adminItems: MenuItem[] = [
   {
     title: "Usuarios",
     icon: Icons.Identity,
-    destiny: "/usuarios",
+    destiny: "/admin/usuarios",
   },
   {
     title: "Roles",
     icon: Icons.Role,
-    destiny: "/roles",
+    destiny: "/admin/roles",
   },
   {
     title: "Permisos",
     icon: Icons.Check,
-    destiny: "/permisos",
+    destiny: "/admin/permisos",
   },
 ];
 

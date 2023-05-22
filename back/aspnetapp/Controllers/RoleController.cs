@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using aspnetapp.Models;
 using aspnetapp.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace aspnetapp.Controllers
 {
@@ -13,14 +14,17 @@ namespace aspnetapp.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly dataContext _context;
 
         public RoleController(
             UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            dataContext context
         )
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         /// <summary>
@@ -29,7 +33,7 @@ namespace aspnetapp.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /rol/create
+        ///     POST /roles/create
         ///     {
         ///        "name": "admin"
         ///     }
@@ -69,7 +73,7 @@ namespace aspnetapp.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /rol/delete
+        ///     POST /roles/delete
         ///     {
         ///        "name": "admin"
         ///     }
@@ -109,7 +113,7 @@ namespace aspnetapp.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /rol/adduser
+        ///     POST /roles/adduser
         ///     {
         ///        "userEmail": "admin@admin",
         ///        "roleName": "admin"
@@ -201,5 +205,51 @@ namespace aspnetapp.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Get all roles
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /roles/getAll
+        ///
+        /// </remarks>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpGet]
+        [Route("getAll")]
+        public async Task<ActionResult<Role>> GetAll()
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+
+            return Ok(roles);
+        }
+
+        /// <summary>
+        /// Get all claims
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /roles/getAllClaims
+        ///
+        /// </remarks>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpGet]
+        [Route("getAllClaims")]
+        public async Task<ActionResult<string>> GetAllClaims()
+        {
+            var claims = await _context.Permissions.ToListAsync();
+            return Ok(claims);
+        }
+
     }
 }
