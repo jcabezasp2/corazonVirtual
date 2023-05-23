@@ -23,7 +23,6 @@ namespace aspnetapp.Controllers
 
 
          // GET: api/Tools
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tool>>> GetTools()
         {

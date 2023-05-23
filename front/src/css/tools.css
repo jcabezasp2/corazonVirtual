@@ -1,0 +1,48 @@
+#toolsView {
+    padding: 10% 10% 5% 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    background-color: transparent !important;
+    height: 100%;
+}
+
+#toolsView > button {
+    align-self: end;
+}
+
+#toolsView > .card {
+    background-color: transparent !important;
+    height: 100%; 
+}
+
+.tools{
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.p-dataview .p-dataview-header {
+    background-color: transparent !important;
+    border : none !important;
+}
+
+.tools-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.p-dataview .p-dataview-content {
+    background-color: transparent !important;
+}
+
+.p-paginator {
+    color: #708da9;
+    border: none !important;
+    padding: .5rem 1rem;
+    justify-self: end;
+    background-color: transparent !important;
+}

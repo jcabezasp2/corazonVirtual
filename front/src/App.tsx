@@ -15,6 +15,7 @@ import * as endpoints from "../src/assets/endpoints"
 import User from './models/User';
 import Roles from './pages/Roles';
 import Claims from './pages/Claims';
+import Tools from './pages/Tools';
 import { Role } from './assets/constants';
 
 interface context {
@@ -71,6 +72,7 @@ function App() {
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
+          <Route path="/herramientas" element={ <Tools />} />
           <Route path="/panel" element={user.role == Role.Teacher? <Panel /> : <Home />} />
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />

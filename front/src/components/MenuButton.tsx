@@ -15,7 +15,6 @@ export default function MenuButton() {
   const [items, setItems] = React.useState<MenuItem[]>([]);
 
   React.useEffect(() => {
-    console.log(context.user);
       if (context.user.role === Role.Student) {
         setItems([...publicItems, ...studentItems, ...commonItems]);
       } else if (context.user.role === Role.Teacher) {
