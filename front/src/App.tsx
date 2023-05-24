@@ -16,6 +16,7 @@ import User from './models/User';
 import Roles from './pages/Roles';
 import Claims from './pages/Claims';
 import Tools from './pages/Tools';
+import Information from './pages/Information';
 import { Role } from './assets/constants';
 
 interface context {
@@ -77,6 +78,7 @@ function App() {
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
           <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />
+          <Route path="/informacion" element={<Information />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
