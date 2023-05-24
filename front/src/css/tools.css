@@ -7,6 +7,10 @@
     height: 100%;
 }
 
+#toolsView  canvas {
+    height: 350px ; 
+}
+
 #toolsView > button {
     align-self: end;
 }

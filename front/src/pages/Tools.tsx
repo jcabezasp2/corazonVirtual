@@ -1,12 +1,15 @@
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
-import Table from "../components/Table";
 import { appContext } from "../App";
 import { Role } from "../assets/constants";
 import React, { useState, useEffect } from "react";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Skeleton } from "primereact/skeleton";
-import { Tag } from "primereact/tag";
+import Model from "../components/Model";
+import ViewerModal from "../components/ViewerModal";
+import { Canvas } from "@react-three/fiber";
+import { Environment, OrbitControls, Sky } from "@react-three/drei";
+import { Suspense } from "react";
 import "./../css/tools.css";
 
 class Iprops {}
@@ -22,69 +25,36 @@ export default function Claims(props: Iprops) {
   const navigate = useNavigate();
   const context = React.useContext(appContext);
   const [tools, setTools] = React.useState([]);
-  const [display, setDisplay] = React.useState("grid");
+  const [selectedTool, setSelectedTool] = React.useState<any>();
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const listItem = (tool: any) => {
-    return tool? (
-      <div className="col-12">
-        <div className="p-4 border-1 surface-border surface-card border-round">
-          <div className="flex flex-column align-items-center gap-3 py-5">
-            <img
-              className="w-9 shadow-2 border-round"
-              src={`${tool.modelo}`}
-              alt={tool.Nombre}
-            />
-            <div className="text-2xl font-bold">{tool.Nombre}</div>
-          </div>
-          <div className="flex align-items-center justify-content-between">
-            <Button
-              icon="pi pi-eye"
-              className="p-button"
-              onClick={() => {}}
-            ></Button>
-          </div>
-        </div>
-      </div>
-    ) : (
-      <div className="col-12">
-        <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-          <Skeleton className="w-9 sm:w-16rem xl:w-10rem shadow-2 h-6rem block xl:block mx-auto border-round" />
-          <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-              <Skeleton className="w-8rem border-round h-2rem" />
-              <Skeleton className="w-6rem border-round h-1rem" />
-              <div className="flex align-items-center gap-3">
-                <Skeleton className="w-6rem border-round h-1rem" />
-                <Skeleton className="w-3rem border-round h-1rem" />
-              </div>
-            </div>
-            <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-              <Skeleton className="w-4rem border-round h-2rem" />
-              <Skeleton shape="circle" className="w-3rem h-3rem" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  const setVisible = () => {
+    setModalVisible(!modalVisible);
+    };
+
 
   const gridItem = (tool: any) => {
     return tool ? (
       <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
         <div className="p-4 border-1 surface-border surface-card border-round">
           <div className="flex flex-column align-items-center gap-3 py-5">
-            <img
-              className="w-9 shadow-2 border-round"
-              src={`${tool.modelo}`}
-              alt={tool.Nombre}
-            />
+            <Canvas camera={{ position: [0, 0, 3] }}>
+              <Suspense fallback={null}>
+                <Model path={`${tool.Modelo}`} />
+              </Suspense>
+              <OrbitControls />
+              <ambientLight intensity={0.3} />
+              <directionalLight intensity={0.4} position={[0, 1, 1]} />
+              <Sky sunPosition={[0, 1, 1]} turbidity={40} />
+            </Canvas>
+
             <div className="text-2xl font-bold">{tool.Nombre}</div>
           </div>
           <div className="flex align-items-center justify-content-between">
             <Button
               icon="pi pi-eye"
               className="p-button"
-              onClick={() => {}}
+              onClick={() => {setModalVisible(true); setSelectedTool(tool);}}
             ></Button>
           </div>
         </div>
@@ -115,25 +85,22 @@ export default function Claims(props: Iprops) {
       return;
     }
 
-    if (layout === "list") return listItem(item);
-    else if (layout === "grid") return gridItem(item);
+     return gridItem(item);
   };
 
   const header = () => {
     return (
       <div className="tools-header">
-        {context.user.role == Role.Teacher && <Button
-          label="Crear utensilio"
-          severity="secondary"
-          onClick={() => {
-            navigate("/herramientas/formulario");
-          }}
-        />}
-        
-        <DataViewLayoutOptions
-          layout={"grid"}
-          onChange={(e) => setDisplay(e.value)}
-        />
+        {context.user.role == Role.Teacher && (
+          <Button
+            label="Crear utensilio"
+            severity="secondary"
+            onClick={() => {
+              navigate("/herramientas/formulario");
+            }}
+          />
+        )}
+
       </div>
     );
   };
@@ -158,6 +125,7 @@ export default function Claims(props: Iprops) {
 
   return (
     <div id="toolsView">
+        {selectedTool && <ViewerModal visible={modalVisible} title ={selectedTool!.Nombre} Modelo={selectedTool!.Modelo} setVisible={setVisible} description={selectedTool.Descripcion} /> }
       <div className="card">
         <DataView
           className="tools"
@@ -165,7 +133,8 @@ export default function Claims(props: Iprops) {
           itemTemplate={itemTemplate}
           layout={"grid"}
           header={header()}
-          paginator rows={3}
+          paginator
+          rows={3}
         />
       </div>
     </div>

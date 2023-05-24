@@ -386,3 +386,20 @@ export const getPractices = async () => {
     const data = await res.json();
     return data        
 }
+
+//Calls to the Images API endpoints
+export const getImage = async (path :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}images/${path}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.blob();
+    return data        
+}
