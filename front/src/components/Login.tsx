@@ -33,7 +33,7 @@ export default function Login() {
                 </span>
 
                 <span className='p-float-label'>
-                <Password className='inputtext'  id="password" value={password} onKeyDown={(e) => e.key === 'Enter' && console.log('')} onChange={(e: React.ChangeEvent<HTMLInputElement>)  => setPassword(e.target.value)} toggleMask feedback={false} />
+                <Password className='inputtext'  id="password" value={password} onKeyDown={(e) => e.key === 'Enter' } onChange={(e: React.ChangeEvent<HTMLInputElement>)  => setPassword(e.target.value)} toggleMask feedback={false} />
                 <label htmlFor="password">Password</label>
                 </span>
              <div className='button-demo '>

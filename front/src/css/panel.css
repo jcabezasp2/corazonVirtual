@@ -1,23 +1,66 @@
+
 .panel{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 2rem;
+    
+}
+.panelcontent{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 2rem;
+    
 }
 .avatar{
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
     justify-content: center;
-    align-items: start;
-    align-self: center;
+    align-items: center;
+    transform: translateY(30%);
     
 }
 
-.panelcontent{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem 0 0 0;
+#photo>img{
+    border-radius: 50%;
+    width: 6rem;
+    height: 6rem;
+}
+
+.p-image-preview-indicator{
+    width: 6rem !important;
+    height: 6rem !important;
+    border-radius: 50% !important;
+}
+
+
+
+
+.card-form{
+    gap: 1rem;
+}
+
+input{
+    width: 15rem !important;
+    
+}
+.p-card{
+    /* width: fit-content !important; */
+    border-radius: 2rem !important;
+    background-color: #181818a2 !important;
+    box-shadow: inset 1rem var(--surface-900) !important;
+    color: var(--primary-color-text) !important;
+}
+
+#button-datos>div>button{
+    pointer-events: none;
+    
+}
+
+.p-card-footer{
+    display: flex !important;
+    justify-content: center !important;
+    
 }

@@ -14,7 +14,9 @@ import { Icons } from "../assets/constants";
 import '../css/panel.css';
 import * as endpoints from '../assets/endpoints';
 import InputPassword from "../components/form/InputPassword";
-
+import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
+import { Image } from 'primereact/image';
 
 
 
@@ -30,25 +32,34 @@ export default function Panel(props: Iprops) {
     const [password, setPassword] = React.useState<string>('');
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
+  
+   
+    const footer = (
+        <span id="button-datos" className=" col-6">
+           <SubmitButton
+                   
+                    onclik={context.apiCalls.updateUser}
+                    ctx={{user : user, email: email, password: password, avatar: avatar }}
+                    isLogin={true}
+                    
+                />
+        </span>
+    );
 
-
-    // const response = await context.apiCalls.user();
-
-    const getUser = async (id: number) => {
-        console.log(context.user.id)
-        const res = await context.apiCalls.getUser(id)
-        //    const res = await getUser(context.user.id)
+    const initialize = async () => {       
+        const res = await context.apiCalls.getMyUser();        
         console.log(res)
-        setUser(res.name)
-        setEmail(res.email)
-        setPassword(res.password)
-        // setAvatar(res.data.image)
-    }
-
-
+        console.log(res.user.userName)
+        console.log(res.user.email)
+        console.log(res.user.password)
+        setUser(res.user.userName)
+        setEmail(res.user.email)
+        setPassword(res.user.password)
+      
+    };
 
     React.useEffect(() => {
-        getUser(context.user.id);
+       initialize();
     }, []);
 
     const handleAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,8 +93,8 @@ export default function Panel(props: Iprops) {
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('var(--primary-color)');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+        const textColorSecondary = documentStyle.getPropertyValue('var(--text-color-secondary)');
+        const surfaceBorder = documentStyle.getPropertyValue('var(--surface-border)');
         const data = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [
@@ -91,14 +102,14 @@ export default function Panel(props: Iprops) {
                     label: 'First Dataset',
                     data: [65, 59, 80, 81, 56, 55, 40],
                     fill: false,
-                    borderColor: documentStyle.getPropertyValue('--blue-500'),
+                    borderColor: documentStyle.getPropertyValue('var(--primary-text-color)'),
                     tension: 0.4
                 },
                 {
                     label: 'Second Dataset',
                     data: [28, 48, 40, 19, 86, 27, 90],
                     fill: false,
-                    borderColor: documentStyle.getPropertyValue('--pink-500'),
+                    borderColor: documentStyle.getPropertyValue('var(--primary-color)'),
                     tension: 0.4
                 }
             ]
@@ -138,50 +149,53 @@ export default function Panel(props: Iprops) {
     }, []);
 
     return (
-        <div className="panel col-12">
-            <h1>Panel</h1>
-            <div className="card panelcontent col-12">
+                 
+            <div className="panel col-12">
 
-                <div className="gap-5 avatar col-3">
-                    <label>Avatar</label>
-                    <Avatar image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp" className="p-avatar-text flex align-items-center justify-content-center mr-2" size="xlarge" shape="circle">
-
-                    </Avatar>
+                
+                <div  className="panel col-2">
+                    <Card className="avatar col-12" title={user.toUpperCase()} >                    
+                        <div className="card-avatar">                       
+                            <div className="photo card flex justify-content-center">
+                                <Image id="photo" src={avatar ? avatar : 'https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp'} indicatorIcon="pi pi-pencil"  alt="Image" preview />
+                    
+                            </div>
+                        </div>
+                    </Card> 
                 </div>
-                <div className="panel form col-8">
-                    <div className='col-4 flex flex-row justify-content-between align-content-center'>
-                        <label className="flex align-items-center">Usuario</label>
-                        <div className="col-8">
-                            <InputTxt labelname={user}
-                                name={user} handleName={handleUser} />
+                <div className="panelcontent col-12">
+                    <Card className="col-4" title="Datos"   footer={footer} >
+                        <div className="flex card-form col-12">
+                            <label className="flex align-items-center col-2 " >Usuario</label>
+                                <div className="col-10">
+                                    <InputTxt labelname={user}
+                                        name={user} handleName={handleUser} />
+                                </div>
                         </div>
-                    </div>
-                    <div className='col-4 flex flex-row justify-content-between align-content-center'>
-                        <label className="flex align-items-center">Email</label>
-                        <div className="col-8">
-                            <InputTxt labelname={email} name={email} handleName={handleEmail} />
+                        <div className="flex card-form col-12">
+                            <label className="flex align-items-center col-2 ">Email</label>
+                            <div className="col-10 align-self-start">
+                                <InputTxt labelname={email} name={email} handleName={handleEmail} />
+                            </div>
                         </div>
-                    </div>
-                    <div className='col-4 flex flex-row justify-content-between align-content-center'>
-                        <label className="flex align-items-center">Password</label>
-                        <div className="col-8">
-                            <InputPassword labelname={"password"} name={password} handlePassword={handlePassword} />
+                        <div className="flex card-form col-12">
+                        <label className="flex align-items-center col-2">Password</label>
+                        <div className="col-10">
+                            <InputPassword labelname={"••••••••••"} name={password} handlePassword={handlePassword} />
                         </div>
-                    </div>
-                </div>
-                <div className="card col-6">
-                    <Chart height="200%" type="line" data={chartData} options={chartOptions} />
+                        </div>
+                     </Card>                   
+                  
+                
+                <Card className="col-4" title="Gráfico prácticas" > 
+                    <Chart height="250%" type="line" data={chartData} options={chartOptions} />
+                </Card>
                 </div>
             </div>
-            <div className=' col-3'>
-                <SubmitButton
-                    onclik={context.apiCalls.updateUser}
-                    ctx={{ email: email, password: password, avatar: avatar }}
-                    isLogin={true}
-                />
-            </div>
-
-        </div>
+        
     );
 }
+
+
+
 
