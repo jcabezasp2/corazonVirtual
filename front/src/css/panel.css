@@ -47,9 +47,7 @@ input{
     
 }
 .p-card{
-    /* width: fit-content !important; */
-    border-radius: 2rem !important;
-    background-color: #181818a2 !important;
+    /* Por favor tened cuidado al cambiar los estilos de esta clase, ya que afecta a todos los componentes que sean de tipo card */
     box-shadow: inset 1rem var(--surface-900) !important;
     color: var(--primary-color-text) !important;
 }

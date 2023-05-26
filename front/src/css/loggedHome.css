@@ -82,9 +82,9 @@
 }
 
 
-.loggedCard {
+div .loggedCard {
     box-shadow: 0 0 10px #fff !important;
-    background-color: transparent !important;
+    background-color: white !important;
     border-radius: 50% !important;
     width: 200px !important;
     height: 200px !important;
