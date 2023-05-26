@@ -130,9 +130,8 @@ export default function MenuButton() {
 
 
 
-  //TODO poner estilos en hoja de estilos
   return (
-    <div className="card">
+    <div className="">
       <div id="menu_button" >
         <SpeedDial
           mask

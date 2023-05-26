@@ -17,7 +17,7 @@
     border-color: var(--primary-color) !important;
     box-shadow: var(--primary-color) !important;
 }
-
+    
 .p-buttonLogo:focus{
     background-color: none !important;
     border-color: none !important;
@@ -34,19 +34,15 @@
 .logo1{
     font-size: 2rem !important;
     font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 10px #fff;
+    color: black;
     display:flex
 }
 
 .logo1:hover h1{
     cursor: pointer;
-    color: black;
     text-shadow: 0 0 0  !important;
 }
 
 .logo1:hover svg{
     cursor: pointer;
-    fill:#fff;
-    text-shadow: 0 0 10px #fff;
 }

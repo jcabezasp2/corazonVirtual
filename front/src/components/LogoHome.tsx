@@ -17,9 +17,9 @@ export default function LogoHome() {
 
   return (
     <div className="logo">
-      {(location.pathname == '/' && context.user.role === Role.Guest || location.pathname != '/' ) && <div className="logo1" onClick={() =>{navigate('/')}}>
+      {<div className="logo1" onClick={() =>{navigate('/')}}>
         <Icon type={Icons.Logo} />
-        <h1>CoRAzón <br/> Virtual</h1>
+        <h1>CoRAzón Virtual</h1>
       </div>}
 
 
