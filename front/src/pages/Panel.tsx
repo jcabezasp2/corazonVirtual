@@ -13,6 +13,7 @@ import File from "../components/form/File";
 import { Icons } from "../assets/constants";
 import '../css/panel.css';
 import * as endpoints from '../assets/endpoints';      
+import { Image } from 'primereact/image';
 
 
 
@@ -31,7 +32,7 @@ export default function Panel(props: Iprops) {
         const [chartOptions, setChartOptions] = useState({});
 
         
-            // const response = await context.apiCalls.user();
+        const icon = (<i className="pi pi-check"></i>)
          
             const getUser = async (id: number) => {
                   console.log(context.user.id)
@@ -143,8 +144,8 @@ export default function Panel(props: Iprops) {
                     
                         <div className=" gap-5 avatar col-3">      
                         <label>Avatar</label>
-                        <Avatar image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp" className="p-avatar-text flex align-items-center justify-content-center mr-2" size="xlarge" shape="circle">
-                             
+                        <Avatar image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp" className="p-avatar-text flex align-items-center justify-content-center mr-2" size="xlarge" shape="circle"  >
+                        {/* <Image src="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp" template={icon} alt="" preview width="250" /> */}
                          </Avatar>             
                         </div>
                         <div className="panelform col-8">
