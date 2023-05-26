@@ -23,7 +23,6 @@ namespace aspnetapp.Controllers
 
 
          // GET: api/Tools
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tool>>> GetTools()
         {
@@ -31,10 +30,7 @@ namespace aspnetapp.Controllers
             {
                 return NotFound();
             }
-
-            var tools = await _context.Tools.ToListAsync();
-
-            return tools;
+                return await _context.Tools.ToListAsync();
         }
 
         // GET: api/Tools/1

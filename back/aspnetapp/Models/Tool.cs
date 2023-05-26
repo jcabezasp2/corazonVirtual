@@ -10,6 +10,4 @@ public class Tool
     public string Modelo { get; set; }   
 
     public virtual ICollection<Step>? Steps { get; set; }
-
-    public string? Image { get; set; }
 }

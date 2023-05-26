@@ -16,15 +16,15 @@ export default function Home() {
   }, []);
 
   return (
-      <div className="container grid">
+      <div className="container">
 
-          <div className="container-son selection:bg-red-500 selection:text-white ">
+          <div className="container-son">
             <div className="wrapper">
               {context.user.role == Role.Guest ? (
                 <>
-                  <div className="cor row">
-                    <div id="loader" className="row col-12">
-                      <svg id="pachos" className="pacho" viewBox="10 0 310 60">
+                  <div className="cor">
+                    <div id="loader" className="">
+                      <svg id="pachos" className="pacho" viewBox="-10 0 250 60" preserveAspectRatio="none">
                         <path
                           id="pacho"
                           className="st0 pacho"
@@ -35,7 +35,7 @@ export default function Home() {
                         />
                       </svg>
                     </div>
-                    <div className="corazon col-4"></div>
+                    <div className="corazon"></div>
                   </div>
                   <Login />
                 </>

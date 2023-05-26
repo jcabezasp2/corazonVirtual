@@ -13,6 +13,7 @@ services:
       - 8000:8000
     volumes:
       - ./back:/corazonVirtual/backend
+      - ./public:/app/wwwroot/
     depends_on:
       - postgres
     networks:
@@ -47,8 +48,11 @@ services:
     image: postgres:latest
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_PASSWORD=${POSTGRES_DEV_PW} # configuracion de desarrollo, comentar y descomentar la siguiente linea para produccion
+      # - POSTGRES_PASSWORD=${POSTGRES_PW}  # descomentar en produccion
       - POSTGRES_DB=${POSTGRES_DB} #optional (specify default database instead of $POSTGRES_DB)
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     restart: always

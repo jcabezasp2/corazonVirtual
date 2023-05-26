@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Table from "../components/Table";
 import { appContext } from "../App";
 import { Role } from "../assets/constants";
+import "./../css/practices.css"
 
 class Iprops {}
 
@@ -59,7 +60,7 @@ export default function Practices(props: Iprops) {
 
   return <div id="practices">
 
-     <Table dataElements={practices} />
+     <Table dataElements={practices} onDelete={()=>{}} onEdit=""/>
 
   </div>;
 }

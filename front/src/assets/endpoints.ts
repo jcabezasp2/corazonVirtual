@@ -32,7 +32,6 @@ export const register = async (email :string, password :string, name :string, ) 
     };
 
     const res = await fetch(`${constants.API_URL}usuarios/registrar`, opciones);
-    console.log(res)
     if(res.status === 400) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     
@@ -53,11 +52,44 @@ export const getAllUsers = async () => {
         }
     };
     const res = await fetch(`${constants.API_URL}usuarios/getAll`, opciones);
-    console.log(res)
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
 }
+
+export const getAllStudents = async () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/estudiantes`, opciones);
+
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+export const getMyUser = async () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/getUsuario`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
 
 //User by id
 export const getUser = async (id :number) => {
@@ -71,7 +103,6 @@ export const getUser = async (id :number) => {
         }
     };
     const res = await fetch(`${constants.API_URL}usuarios/${id}`, opciones);
-    console.log(res)
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
@@ -94,11 +125,25 @@ export const getProcedures = () => {
     return res
 }
 
+export const deleteProcedure = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
+    return res
+}
+
+
 
 // Calls to the Steps API endpoints
 export const getSteps = async () => {
     const apiKey = sessionStorage.getItem('apiKey');
-    console.log(apiKey)
     let opciones :any = {
         method: 'GET',
         headers: {
@@ -132,6 +177,12 @@ export const editStep = async (id :number, name :string, description :string, im
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
+}
+
+export const blockUser = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    // TODO implementar bloqueo de usuario
 }
 
 export const createStep = async (name :string, description :string, image :string, duration :string, previousStep :boolean) => {
@@ -174,6 +225,47 @@ export const deleteStep = async (id :number) => {
 }
 
 
+// Calls to the Roles API endpoints
+
+//All roles
+export const getRoles = async () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}roles/getAll`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+export const getPermissions = async () => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}roles/getAllClaims`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    console.log(data);
+    return data
+}
 
 // Calls to the Tools API endpoints
 //All tools
@@ -189,7 +281,7 @@ export const getTools = async () => {
         }
     };
 
-    const res = await fetch(`${constants.API_URL}herramientas`, opciones);
+    const res = await fetch(`${constants.API_URL}Herramientas`, opciones);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data        
@@ -292,5 +384,22 @@ export const getPractices = async () => {
     const res = await fetch(`${constants.API_URL}practicas`, opciones);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
+    return data        
+}
+
+//Calls to the Images API endpoints
+export const getImage = async (path :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}images/${path}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.blob();
     return data        
 }

@@ -107,6 +107,127 @@ namespace aspnetapp.Controllers
 
                 return Ok(practice);
             }
-        }
 
+            /// <summary>
+            /// Change the practice
+            /// </summary>
+            /// <param name="id"></param>
+            /// <param name="practice"></param>
+            /// <remarks>
+            /// Sample request:
+            ///
+            ///     PUT /practicas/1
+            ///     {
+            ///        "date": "2023-05-20T13:52:50.921Z",
+            ///        "observations": "Observations",
+            ///        "duration": 60,
+            ///        "procedureId": 1,
+            ///        "stepId": 1
+            ///     }
+            ///
+            /// </remarks>
+            /// <returns>The practice updated</returns>
+            /// <response code="200">Returns the practice updated</response>
+            /// <response code="400">Bad request</response>
+            /// <response code="401">Unauthorized</response>
+            /// <response code="403">Forbidden</response>
+            /// <response code="404">Not found</response>
+            /// <response code="500">Internal server error</response>
+            [HttpPut("{id}")]
+            [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+            public async Task<IActionResult> PutPractice(int id, bool IsFinished, int Duration, DateTime Date)
+            {
+
+                var oldPractice = await _context.Practices.FindAsync(id);
+            
+                if(oldPractice == null)
+                {
+                    return NotFound();
+                }
+
+                oldPractice.Date = Date;
+                oldPractice.Duration = Duration;
+                oldPractice.IsFinished = IsFinished;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(oldPractice);              
+            }
+
+            /// <summary>
+            /// Add an observation to the practice
+            /// </summary>
+            /// <param name="id"></param>
+            /// <param name="observation"></param>
+            /// <remarks>
+            /// Sample request:
+            ///
+            ///     PUT /practicas/1/observation
+            ///     {
+            ///        "observation": "Observations"
+            ///     }
+            ///
+            /// </remarks>
+            /// <returns>The practice updated</returns>
+            /// <response code="200">Returns the practice updated</response>
+            /// <response code="400">Bad request</response>
+            /// <response code="401">Unauthorized</response>
+            /// <response code="403">Forbidden</response>
+            /// <response code="404">Not found</response>
+            /// <response code="500">Internal server error</response>
+            [HttpPut("{id}/observation")]
+            [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+            public async Task<IActionResult> AddObservationToPractice(int id, String observation)
+            {
+
+                var oldPractice = await _context.Practices.FindAsync(id);
+            
+                if(oldPractice == null)
+                {
+                    return NotFound();
+                }
+
+                oldPractice.Observations = observation;
+
+
+                _context.SaveChangesAsync();
+
+                return Ok(oldPractice);              
+            }
+            
+            /// <summary>
+            /// Finish the practice
+            /// </summary>
+            /// <param name="id"></param>
+            /// <remarks>
+            /// Sample request:
+            ///
+            ///     PUT /practicas/1/finish
+            ///
+            /// </remarks>
+            /// <returns>The practice updated</returns>
+            /// <response code="200">Returns the practice updated</response>
+            /// <response code="400">Bad request</response>
+            /// <response code="401">Unauthorized</response>
+            /// <response code="403">Forbidden</response>
+            /// <response code="404">Not found</response>
+            /// <response code="500">Internal server error</response>
+            [HttpDelete("{id}")]
+            [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+            public async Task<IActionResult> DeletePractice(int id)
+            {
+                var practice = await _context.Practices.FindAsync(id);
+                if (practice == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Practices.Remove(practice);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+
+
+        }
 }

@@ -19,9 +19,16 @@ Los datos de conexión son:
 
 En un futuro se añadira persistencia para que no sea necesario volver a configurar cada vez que se levante el contenedor.
 
-<h2>Backend</h2>
+<h3>Backend</h3>
 
 No es necesario utilizar Postman para probar la api, tenemos una documentacion interactiva en <http://localhost:8000/swagger/index.html>
+
+> <h3>Imagenes</h3>
+> Las imágenes que se quieran tener disponibles desde el inicio de la aplicación deeberán ir alojadas en la carpeta public.
+> Si no existen las correspondientes subcarpetas deberán ser creadas para poder acceder a dichar archivos.
+>> **images** : sera la carpeta en la que se deberan alojar los archivos *.png/.jpg/.jpeg*.
+>
+>> **images3d** : sera la carpeta donde se deberán alojar los archvivos de modelos 3d *.fbx*
 
 <h3>Comandos para ejecutar las migraciones de la base de datos</h3>
 

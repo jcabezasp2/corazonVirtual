@@ -7,12 +7,22 @@ using System.Text;
 using aspnetapp.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.IO;
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
-
-WebApplicationOptions options = new WebApplicationOptions {
-    WebRootPath = "/app/public",
-};
 
 // Add services to the container.
 
@@ -129,10 +139,30 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+//hacer publica la carpeta wwwroot
+app.UseStaticFiles();
+
+if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")))
+    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+    RequestPath = "/wwwroot"
+});
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseStaticFiles("/app/public"); 
+
 
 app.UseCors("AllowAll");
 app.UseAuthorization();
