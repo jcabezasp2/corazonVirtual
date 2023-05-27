@@ -10,16 +10,12 @@
 
 .p-speeddial-item{
     width: 70% !important;
-    box-shadow: 0 0 10px #fff !important;
     background-color: transparent !important;
-    border-radius: 50% !important;
 }
 
 .p-speeddial-item:hover {
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.22), 0px 4px 5px rgba(0, 0, 0, 0.24), 0px 2px 4px -1px rgba(0, 0, 0, 0.3) !important;
     opacity: 1 !important;
     cursor: pointer;
-    background-color: white !important;
 
 }
 
@@ -31,14 +27,12 @@ button :focus{
 }
 
 button:hover svg {
-   fill:#fff;
-   text-shadow: 0 0 10px #fff;
+    fill:url(#MyGradient);
    border: 0 !important;
 }
 
 .p-speeddial-item:hover svg{
     fill:url(#MyGradient);
-    text-shadow: 0 0 10px #fff;
 }
 
 
@@ -57,10 +51,6 @@ button:hover svg {
 
 #menu_button {
     position: fixed;
-    top: 2%;
-    left: 96%;
-}
-
-#menu_button>.p-speeddial>.p-speeddial-button>.icon>svg{
-    padding: 0.4rem !important;
+    top: 3%;
+    left: 92%;
 }

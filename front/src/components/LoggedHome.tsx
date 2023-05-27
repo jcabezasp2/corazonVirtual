@@ -90,14 +90,7 @@ export default function LoggedHome() {
           destiny={"/herramientas"}
         />
       </div>: <div></div>}
-      <div className="logoLogged">
-        <Icon type={Icons.Logo} />
-        <div className="title">
-          <h1 className="logo2">
-            CoRAzón <br /> Virtual
-          </h1>
-        </div>
-      </div>
+      <div></div>
       {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
         <HomeCard
           title={"Practicas"}
