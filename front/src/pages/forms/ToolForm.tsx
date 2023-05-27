@@ -14,7 +14,7 @@ import InputTxt from "../../components/form/InputTxt";
 import Select from "../../components/form/Select";
 import SelectMulti from "../../components/form/SelectMulti";
 import { ListBox } from "primereact/listbox";
-import * as endpoints from "../../assets/endpoints";
+import { appContext } from "../../App";
 import '../../css/toolform.css';
 
 class Iprops {
@@ -26,11 +26,11 @@ export default function ToolForm(props: Iprops) {
 
     const [name, setName] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
-    const [modelo, setModelo] = React.useState<string>('');
+    const [file, setFile] = React.useState<string>('');
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
     const [labeldescription, setLabeldescription] = React.useState<string>('Descripción de la herramienta');
-    const [labelmodelo, setLabelmodelo] = React.useState<string>('Modelo 3D de la herramienta');   
+    const context = React.useContext(appContext);
     
     // const [nameList, setNameList] = React.useState<string>('Selecciona una herramienta');
     // const [codeList, setCodeList] = React.useState<number>(0);
@@ -43,15 +43,16 @@ export default function ToolForm(props: Iprops) {
     const handleDescription = (e: string) => {
         setDescription(e);
     }    
-    const handleModelo = (e: string) => {
-        setModelo(e);
+    const handleFile = (e :any) => {
+        setFile(e);
+        console.log("dentro de handleFile toolform",file)
     }  
     
       
     async function tools() {
         console.log('entrando en tools')
-        console.log(name, description, modelo)
-        const res = await endpoints.createTool(name, description, modelo);
+        console.log(name,"--------", description,"--------", file)
+        const res = await context.apiCalls.createTool(name, description, file);
         if(res != null){
             console.log('funciona')
             console.log(res)
@@ -62,11 +63,7 @@ export default function ToolForm(props: Iprops) {
 
     }
 
-
-    React.useEffect(() => {
-     
-      }, [])
-
+   
     const handleTool = () => {
         tools();
     }
@@ -84,13 +81,13 @@ export default function ToolForm(props: Iprops) {
                         <div className="col-8">
                             <TxtEditor description={description} handleDescription={handleDescription} />
                         </div>
-                        <div className="col-8">
-                            <File />
+                        <div className="col-8 file-tool">
+                            <File file={file} handleFile={handleFile}/>
                         </div>
                         <div className="col-2">
                             <SubmitButton                                
                                 onclik={handleTool}
-                                ctx= {{name: name, description : description, modelo : modelo}}
+                                ctx= {{name: name, description : description, modelo : file}}
                                 isLogin={true}
                               />
                         </div>
@@ -103,40 +100,6 @@ export default function ToolForm(props: Iprops) {
 }
 
                         
-
-    // ------------------------------------------------------- // 
-
-
-
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <div>
-//         <label htmlFor="name">Name:</label>
-//         <InputText id="name" value={formValues.name} onChange={handleNameChange} />
-//       </div>
-//       <div>
-//         <label htmlFor="items">Selected Items:</label>
-       
-//       </div>
-//       <div>
-//         <label htmlFor="file">Selected File:</label>
-//         <FileUpload
-//           id="file"
-//           name="file"
-//           mode="basic"
-//           accept="image/*"
-//           maxFileSize={1000000}
-//           chooseLabel="Select File"
-//           uploadLabel="Upload"
-//           cancelLabel="Cancel"
-//           onSelect={handleFileUpload}
-//         />
-//       </div>
-//       <button type="submit">Submit</button>
-//     </form>
-//   );
-// }
 
 
 {/* <div className="p-field">

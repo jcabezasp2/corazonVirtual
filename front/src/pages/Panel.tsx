@@ -26,7 +26,7 @@ class Iprops { }
 export default function Panel(props: Iprops) {
 
     const context = React.useContext(appContext);
-
+    const [id, setId] = React.useState<string>('');
     const [user, setUser] = React.useState<string>('');
     const [avatar, setAvatar] = React.useState<File>();
     const [email, setEmail] = React.useState<string>('');
@@ -35,27 +35,15 @@ export default function Panel(props: Iprops) {
     const [chartOptions, setChartOptions] = useState({});
   
    
-    const footer = (
-        <span id="button-datos" className=" col-6">
-           <SubmitButton
-                   
-                    onclik={context.apiCalls.updateUser}
-                    ctx={{user : user, email: email, password: password, avatar: avatar }}
-                    isLogin={true}
-                    
-                />
-        </span>
-    );
+ 
 
     const initialize = async () => {       
-        const res = await context.apiCalls.getMyUser();        
-        console.log(res)
-        console.log(res.user.userName)
-        console.log(res.user.email)
-        console.log(res.user.password)
-        setUser(res.user.userName)
-        setEmail(res.user.email)
-        setPassword(res.user.password)
+        const res = await context.apiCalls.getMyUser();       
+       
+        setId(res.user.id);
+        setUser(res.user.userName);
+        setEmail(res.user.email);
+        setPassword('aA1551-');
       
     };
 
@@ -63,10 +51,7 @@ export default function Panel(props: Iprops) {
        initialize();
     }, []);
 
-    const handleAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files![0];
-        setAvatar(file);
-    }
+    
 
     const handleUser = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser(e.target.value);
@@ -80,16 +65,26 @@ export default function Panel(props: Iprops) {
         setPassword(e.target.value);
     }
 
-    const handleUpdate = async () => {
-        const response = await context.apiCalls.updateUser(user, email, password, avatar);
+    const handleUpdateUser = async () => {
+        
+        const response = await context.apiCalls.updateUser(user, email, password);
         console.log(response);
     }
 
-    const handleLogout = async () => {
-        const response = await context.apiCalls.logout();
-        console.log(response);
-    }
-
+  
+    const footer = (
+        <div className="button-footer-datos">
+        <span id="button-datos" className=" col-6">
+           <SubmitButton
+                   
+                    onclik={handleUpdateUser}
+                    ctx={{id : id, user : user, email: email, password: password}}
+                    isLogin={true}
+                    
+                />
+        </span>
+        </div>
+    );
 
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
@@ -167,7 +162,7 @@ export default function Panel(props: Iprops) {
                     </Card> 
                 </div>
                 <div className="panelcontent col-12">
-                    <Card className="col-4" title="Datos"   footer={footer} >
+                    <Card className="col-3 card-panel datos" title="Datos"   footer={footer} >
                         <div className="flex card-form col-12">
                             <label className="flex align-items-center col-2 " >Usuario</label>
                                 <div className="col-10">
@@ -190,7 +185,7 @@ export default function Panel(props: Iprops) {
                      </Card>                   
                   
                 
-                <Card className="col-4" title="Gráfico prácticas" > 
+                <Card className="col-5 card-panel chart" title="Gráfico prácticas" > 
                     <Chart height="250%" type="line" data={chartData} options={chartOptions} />
                 </Card>
                 </div>

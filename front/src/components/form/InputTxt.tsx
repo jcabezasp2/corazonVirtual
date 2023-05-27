@@ -11,19 +11,17 @@ class Iprops {
 }
 
 export default function InputTxt(props : Iprops) {
-//    const [name, setName] = useState<string>('');
-    // const handleName = (e: string) => {
-    //     setName(e);
-    // }
-    console.log(props.name)
-   
+
+       
     return (
         <div className="card flex justify-content-center">
             <span className="p-float-label">
-                <InputText id="name" placeholder={props.name} onChange={(e) => props.handleName} />
+                <InputText id="name" value={props.name} onChange={(e : any) => props.handleName(e.target.value)} />               
                 <label htmlFor="name">{props.labelname}</label>
             </span>
         </div>
     )
 }
 
+
+// onChange={(e) => props.handleName(e.htmlValue)}

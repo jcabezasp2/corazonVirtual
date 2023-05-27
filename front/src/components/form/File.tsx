@@ -9,17 +9,33 @@ import { Tag } from 'primereact/tag';
 import '../../css/buttons.css';
 
 
-export default function File() {
+class Iprops {
+    handleFile!: Function;
+    file!: string;
+   
+}
+
+export default function File(props : Iprops) {
     const toast = useRef(null);
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef :any = useRef(null);
-
+    const [fileName, setFileName] = React.useState<string>('');
     const onTemplateSelect = (e :any) => {
         let _totalSize = totalSize;
         let files = e.files;
+        // let _files = props.file ? [...props.file] : [];
+        for (let i = 0; i < files.length; i++) {
+            _totalSize += files[i].size || 0;
+        }
+
 
         Object.keys(files).forEach((key) => {
             _totalSize += files[key].size || 0;
+            // setFileName(files[key].name); 
+             setFileName(files[key].name);
+            props.handleFile(files[key].name);
+            // props.file = fileName; 
+            console.log("dentro de onselect file",files[key].name)
         });
 
         setTotalSize(_totalSize);
@@ -66,7 +82,7 @@ export default function File() {
     const itemTemplate = (file :any, props :any) => {
         return (
             <div className="flex align-items-center flex-wrap">
-                <div className="flex align-items-center" style={{ width: '40%' }}>
+                <div className="flex align-items-center" style={{ width: '20%' }}>
                     <img alt={file.name} role="presentation" src={file.objectURL} width={100} />
                     <span className="flex flex-column text-left ml-3">
                         {file.name}
@@ -99,11 +115,13 @@ export default function File() {
             <Toast ref={toast}></Toast>
 
             <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
-            <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
+            {/* <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" /> */}
             <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
-
-            <FileUpload ref={fileUploadRef} name="demo[]" url="/api/upload" multiple accept="image/*" maxFileSize={1000000}
-                onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
+            <FileUpload className='file-row-img' ref={fileUploadRef} name="file" url="/api/upload" multiple accept="image/*" maxFileSize={1000000}
+                onSelect={onTemplateSelect}                
+              
+                // onSelect={(e : any) => props.handleFile(e.target.value)}
+                onUpload={onTemplateUpload}  onError={onTemplateClear} onClear={onTemplateClear}
                 headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                 chooseOptions={chooseOptions} 
                 // uploadOptions={uploadOptions} 
