@@ -18,6 +18,7 @@ import Claims from './pages/Claims';
 import Tools from './pages/Tools';
 import Information from './pages/Information';
 import { Role } from './assets/constants';
+import './css/app.css';
 
 interface context {
   apiCalls: any;

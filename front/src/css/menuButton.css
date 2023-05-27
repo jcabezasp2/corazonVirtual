@@ -60,3 +60,7 @@ button:hover svg {
     top: 2%;
     left: 96%;
 }
+
+#menu_button>.p-speeddial>.p-speeddial-button>.icon>svg{
+    padding: 0.4rem !important;
+}

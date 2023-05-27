@@ -23,10 +23,11 @@
     
 }
 
-#photo>img{
-    border-radius: 50%;
+#photo{
     width: 6rem;
     height: 6rem;
+    padding: 0.8rem;
+   
 }
 
 .p-image-preview-indicator{

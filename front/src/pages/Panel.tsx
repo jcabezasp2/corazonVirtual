@@ -10,13 +10,14 @@ import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 import InputTxt from "../components/form/InputTxt";
 import File from "../components/form/File";
-import { Icons } from "../assets/constants";
 import '../css/panel.css';
 import * as endpoints from '../assets/endpoints';
 import InputPassword from "../components/form/InputPassword";
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Image } from 'primereact/image';
+import { Role, Icons } from "../assets/constants";
+import Icon from "./../components/Icons";
 
 
 
@@ -157,7 +158,9 @@ export default function Panel(props: Iprops) {
                     <Card className="avatar col-12" title={user.toUpperCase()} >                    
                         <div className="card-avatar">                       
                             <div className="photo card flex justify-content-center">
-                                <Image id="photo" src={avatar ? avatar : 'https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp'} indicatorIcon="pi pi-pencil"  alt="Image" preview />
+                                <Avatar id="photo" icon={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} shape="circle" size="xlarge"/>
+                                
+                                {/* <Image id="photo" src={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} indicatorIcon="pi pi-pencil"  alt="Image" preview /> */}
                     
                             </div>
                         </div>
