@@ -131,6 +131,7 @@ namespace aspnetapp.Controllers
                     user = user,
                     Role = role[0],
                     RoleClaims = roleClaims,
+                    isLocked = await _userManager.IsLockedOutAsync(user),
                 };
 
                 appUsers.Add(appUser);
@@ -161,6 +162,7 @@ namespace aspnetapp.Controllers
             var role = await _userManager.GetRolesAsync(user);
             var claims = await _userManager.GetClaimsAsync(user);
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
+            var isLocked = await _userManager.IsLockedOutAsync(user);
 
             if (user == null)
             {
@@ -174,6 +176,7 @@ namespace aspnetapp.Controllers
                 user = user,
                 Role = role[0],
                 RoleClaims = roleClaims,
+                isLocked = isLocked,
             };
 
             return Ok(result);
@@ -250,6 +253,11 @@ namespace aspnetapp.Controllers
             if (user == null)
             {
                 return NotFound("El usuario no existe");
+            }
+
+            if(user.LockoutEnabled == true)
+            {
+                return Unauthorized("El usuario está bloqueado");
             }
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
@@ -358,17 +366,17 @@ namespace aspnetapp.Controllers
                 return BadRequest("Usuario no encontrado");
             }
 
-            if(user.Name != userToUpdate.UserName)
+            if (user.Name != userToUpdate.UserName)
             {
                 _userManager.SetUserNameAsync(userToUpdate, user.Name);
             }
 
-            if(user.Email != userToUpdate.Email)
+            if (user.Email != userToUpdate.Email)
             {
                 _userManager.SetEmailAsync(userToUpdate, user.Email);
             }
 
-            if(user.Password != null)
+            if (user.Password != null)
             {
                 _userManager.RemovePasswordAsync(userToUpdate);
                 _userManager.AddPasswordAsync(userToUpdate, user.Password);
@@ -376,7 +384,7 @@ namespace aspnetapp.Controllers
 
             var result = _userManager.UpdateAsync(userToUpdate);
 
-            if(result.IsCompletedSuccessfully)
+            if (result.IsCompletedSuccessfully)
             {
                 return Ok();
             }
@@ -454,6 +462,58 @@ namespace aspnetapp.Controllers
             }
 
             return Ok(students);
+        }
+
+        /// <summary>
+        /// Lock or unlock a user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST usuarios/lockUnlock
+        ///     "id"
+        ///
+        /// </remarks>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the user is null or with ADMIN role</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPost("bloquearDesbloquear")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        public async Task<ActionResult> LockUnlockUser([FromBody] string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var role = await _userManager.GetRolesAsync(user);
+            if(role[0] == "ADMIN"){
+                return BadRequest("No puedes bloquear a un admin");
+            }
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            if (user.SecurityStamp == null)
+            {
+                // If the security stamp is null, retrieve it or regenerate it.
+                //user.SecurityStamp = await _userManager.GetSecurityStampAsync(user);
+                // Alternatively, you can regenerate the security stamp using:
+                user.SecurityStamp = Guid.NewGuid().ToString();
+            }
+
+            if (user.LockoutEnabled)
+            {
+                user.LockoutEnabled = false;
+            }
+            else
+            {
+                user.LockoutEnabled = true;
+            }
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok();
         }
     }
 }

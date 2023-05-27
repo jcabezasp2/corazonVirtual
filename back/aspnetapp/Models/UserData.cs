@@ -13,5 +13,7 @@ namespace aspnetapp.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public aspnetapp.Models.UserApiKey UserApiKey { get; set; }
+
+        public Boolean isLocked { get; set; }
     }
 }

@@ -126,6 +126,25 @@ export const editUser = async (id :number, name :string, email :string, password
     return data    
     }
    
+// Calls to Lock/Unlock API endpoint 
+export const lockUnlockUser = async (id :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify(id)
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/bloquearDesbloquear`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    console.log(res)
+}
+
+
+
     
 // Calls to the procedures API endpoints
 export const getProcedures = () => {
