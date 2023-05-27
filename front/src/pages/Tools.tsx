@@ -32,7 +32,6 @@ export default function Claims(props: Iprops) {
     setModalVisible(!modalVisible);
     };
 
-
   const gridItem = (tool: any) => {
     return tool ? (
       <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
@@ -96,7 +95,7 @@ export default function Claims(props: Iprops) {
             label="Crear utensilio"
             severity="secondary"
             onClick={() => {
-              navigate("/herramientas/formulario");
+              navigate("/herramientas/formulario") ;
             }}
           />
         )}

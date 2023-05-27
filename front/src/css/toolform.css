@@ -1,0 +1,22 @@
+/* .tool-form{
+    width: auto;
+} */
+
+
+
+.panel-tool{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+    
+}
+
+.input-tool-form>div>span>input{
+    width: 52.5rem !important;
+}
+
+.file-tool{
+    
+}

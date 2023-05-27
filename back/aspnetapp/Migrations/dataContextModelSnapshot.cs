@@ -230,7 +230,7 @@ namespace aspnetapp.Migrations
 
                     b.HasIndex("ToolsId");
 
-                    b.ToTable("StepTool", (string)null);
+                    b.ToTable("StepTool");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.ApplicationUser", b =>
@@ -255,7 +255,7 @@ namespace aspnetapp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUsers", (string)null);
+                    b.ToTable("ApplicationUsers");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.Permission", b =>
@@ -276,7 +276,7 @@ namespace aspnetapp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions", (string)null);
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.Practice", b =>
@@ -314,7 +314,7 @@ namespace aspnetapp.Migrations
 
                     b.HasIndex("StepId");
 
-                    b.ToTable("Practices", (string)null);
+                    b.ToTable("Practices");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.Procedure", b =>
@@ -334,7 +334,7 @@ namespace aspnetapp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Procedures", (string)null);
+                    b.ToTable("Procedures");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.ProcedureStep", b =>
@@ -360,7 +360,7 @@ namespace aspnetapp.Migrations
 
                     b.HasIndex("StepId");
 
-                    b.ToTable("ProcedureStep", (string)null);
+                    b.ToTable("ProcedureStep");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.Step", b =>
@@ -392,7 +392,7 @@ namespace aspnetapp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Steps", (string)null);
+                    b.ToTable("Steps");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.Tool", b =>
@@ -417,7 +417,7 @@ namespace aspnetapp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tools", (string)null);
+                    b.ToTable("Tools");
                 });
 
             modelBuilder.Entity("aspnetapp.Models.UserApiKey", b =>
@@ -443,7 +443,7 @@ namespace aspnetapp.Migrations
                     b.HasIndex("Value")
                         .IsUnique();
 
-                    b.ToTable("UserApiKeys", (string)null);
+                    b.ToTable("UserApiKeys");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

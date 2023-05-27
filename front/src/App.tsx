@@ -18,6 +18,7 @@ import Claims from './pages/Claims';
 import Tools from './pages/Tools';
 import Information from './pages/Information';
 import { Role } from './assets/constants';
+import './css/app.css';
 
 interface context {
   apiCalls: any;
@@ -68,13 +69,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pasos" element={user.role != Role.Guest? <Steps /> : <Home />} />
           <Route path="/pasos/formulario" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
-          <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
-          <Route path="/herramientas/formulario" element={user.role != Role.Teacher?<ToolForm /> : <Home /> } />
+          <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />          
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
           <Route path="/herramientas" element={ <Tools />} />
-          <Route path="/panel" element={user.role != Role.Guest? <Panel /> : <Home />} />
+          <Route path="/herramientas/formulario" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
+          <Route path="/panel" element={user.role != Role.Student? <Panel /> : <Home />} />
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
           <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />

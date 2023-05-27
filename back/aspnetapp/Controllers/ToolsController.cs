@@ -20,9 +20,24 @@ namespace aspnetapp.Controllers
         {
             _context = context;
         }
+        
+        
+        /// <summary>
+        /// Get all tools
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /herramientas
+        ///
+        /// </remarks>
+        /// <returns>Array of tools</returns>
+        /// <response code="200">Returns the array of tools</response>
+        /// <response code="404">If the array of tools is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
 
-
-         // GET: api/Tools
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tool>>> GetTools()
         {
@@ -33,7 +48,21 @@ namespace aspnetapp.Controllers
                 return await _context.Tools.ToListAsync();
         }
 
-        // GET: api/Tools/1
+        /// <summary>
+        /// Get a tool by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /herramientas/1
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns>A tool</returns>
+        /// <response code="200">Returns the tool</response>
+        /// <response code="404">If the tool is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Tool>> GetTool(int id)
@@ -52,8 +81,29 @@ namespace aspnetapp.Controllers
             return tool;
         }
          
-
-    // PUT: api/Tools/5
+        /// <summary>
+        /// Update a tool 
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /herramientas/1
+        ///      {
+        ///        "name": "Tool 1",
+        ///        "description": "Description of tool 1",
+        ///        "modelo": "file"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <param name="tool"></param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="400">If the id is not equal to the tool id</response>
+        /// <response code="404">If the tool is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
+      
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTool(int id, Tool tool)
@@ -84,7 +134,26 @@ namespace aspnetapp.Controllers
             return NoContent();
         }
 
-        // POST: api/Tools
+        /// <summary>
+        /// Create a tool 
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /herramientas
+        ///     {
+        ///        "name": "Tool 1",
+        ///        "description": "Description of tool 1",
+        ///        "modelo": file,
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="tool"></param>
+        /// <returns>A newly created tool</returns>
+        /// <response code="201">Returns the newly created tool</response>
+        /// <response code="400">If the tool is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
         public async Task<ActionResult<Tool>> PostTool(Tool tool)
@@ -99,7 +168,21 @@ namespace aspnetapp.Controllers
             return CreatedAtAction("GetTool", new { id = tool.Id }, tool);
         }
 
-        // DELETE: api/Tools/5
+        /// <summary>
+        /// Delete a tool
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /herramientas/1
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Sucess</response>
+        /// <response code="404">If the tool is null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTool(int id)

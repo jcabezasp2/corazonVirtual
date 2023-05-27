@@ -1,23 +1,84 @@
+
 .panel{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 3rem 2rem 2rem 2rem;
+    
+}
+.panelcontent{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 2rem;
+    
 }
 .avatar{
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
     justify-content: center;
-    align-items: start;
-    align-self: center;
+    align-items: center;
+    /* background-color: #000000be !important; */
+    transform: translateY(30%);
+    /* border-radius: 1.5rem !important; */
+    color: var(--surface-900) !important;
+}
+.avatar > div > div{
+    color: var(--surface-900) !important;
+}
+
+#photo{
+    width: 6rem;
+    height: 6rem;
+    padding: 0.8rem;
+   
+}
+
+
+.card-form{
+    gap: 1rem;
+}
+
+input{
+    width: 15rem !important;
+    
+}
+.p-card{
+    /* Por favor tened cuidado al cambiar los estilos de esta clase, ya que afecta a todos los componentes que sean de tipo card */
+    /* box-shadow: inset 1rem var(--surface-900) !important; */
+    color: var(--primary-color-text) !important;
+}
+
+ .card-panel{
+    color: var(--surface-900) !important;
+   /* border-radius: 1.5rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+   
+ */
     
 }
 
-.panelcontent{
+.datos{
+    width: auto;
+    /* background-color: #b8b6b64b !important; */
+}
+/*
+.chart{
+    background-color: #ffffff67 !important;
+} */
+
+#button-datos>div>button{
+    pointer-events: none;
+    
+}
+
+.button-footer-datos{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    padding: 4rem 0 0 0;
+    width: 100%;
+   
 }

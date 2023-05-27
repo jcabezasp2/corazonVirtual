@@ -2,6 +2,7 @@ import React from "react";
 import { appContext } from "../App";
 import Login from "../components/Login";
 import "../css/Home.css";
+import "./../css/tipography.css";
 import User from "../models/User";
 import { Role } from "../assets/constants"
 import LoggedHome from "../components/LoggedHome";
@@ -35,7 +36,6 @@ export default function Home() {
                         />
                       </svg>
                     </div>
-                    <div className="corazon"></div>
                   </div>
                   <Login />
                 </>

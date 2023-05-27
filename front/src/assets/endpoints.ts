@@ -108,8 +108,25 @@ export const getUser = async (id :number) => {
     return data
 }
 
-
-
+//Edit User by id
+export const editUser = async (id :number, name :string, email :string, password :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones : any = {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "name": name, "email": email, "password": password })
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/updateUsuario/${id}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data    
+    }
+   
+    
 // Calls to the procedures API endpoints
 export const getProcedures = () => {
     const apiKey = sessionStorage.getItem('apiKey');
@@ -306,7 +323,7 @@ export const getTool = async (id :number) => {
     return data        
 }
 //Create tool
-export const createTool = async (name :string, description :string, image :string) => {
+export const createTool = async (name :string, description :string, modelo :string) => {
     const apiKey = sessionStorage.getItem('apiKey');
 
     let opciones :any = {
@@ -316,7 +333,7 @@ export const createTool = async (name :string, description :string, image :strin
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image })
+        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo })
     };
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
@@ -325,7 +342,7 @@ export const createTool = async (name :string, description :string, image :strin
     return data        
 }
 //Update tool
-export const updateTool = async (id :number, name :string, description :string, image :string) => { 
+export const updateTool = async (id :number, name :string, description :string, modelo :string) => { 
     const apiKey = sessionStorage.getItem('apiKey');
 
     let opciones :any = {
@@ -335,7 +352,7 @@ export const updateTool = async (id :number, name :string, description :string, 
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image })
+        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo })
     };
 
     const res = await fetch(`${constants.API_URL}herramientas/${id}`, opciones);
