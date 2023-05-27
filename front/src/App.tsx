@@ -74,7 +74,7 @@ function App() {
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
           <Route path="/herramientas" element={ <Tools />} />
           <Route path="/herramientas/formulario" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
-          <Route path="/panel" element={user.role == Role.Teacher? <Panel /> : <Home />} />
+          <Route path="/panel" element={user.role != Role.Student? <Panel /> : <Home />} />
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
           <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />
