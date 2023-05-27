@@ -73,7 +73,7 @@ function App() {
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
-          {/* <Route path="/herramientas" element={ <Tools />} /> */}
+          <Route path="/herramientas" element={ <Tools />} />
           <Route path="/herramientas/formulario" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
           <Route path="/panel" element={user.role != Role.Student? <Panel /> : <Home />} />
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
