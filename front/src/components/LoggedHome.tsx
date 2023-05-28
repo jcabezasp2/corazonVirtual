@@ -85,7 +85,7 @@ export default function LoggedHome() {
           destiny={"/herramientas"}
         />
       </div>: <div></div>}
-      <div></div>
+      <div className="no"/>
       {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
         <HomeCard
           title={"Practicas"}

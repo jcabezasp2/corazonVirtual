@@ -1,8 +1,8 @@
 .loggedHome {
-    width: 80%;
+    width: min-content;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 200px 200px 200px;
    
 }
 
@@ -126,5 +126,10 @@ div .loggedCard {
     cursor: pointer;
     text-shadow: 0 0 10px #fff;
     fill:url(#MyGradient)
+}
+
+.no{
+    width: 200px;
+    height: 200px;
 }
 
