@@ -6,21 +6,21 @@ import '../../css/inputs.css';
 class Iprops {
     num!: number;
     handleNum!: Function;
-    labelnumb!: string;
+    labelnum!: string;
 }
 
 
 
 export default function InputNum(props : Iprops) {
-    const [num, setNum] = useState<number | null>(null);
+    
 
 
     return (
         
         <div className="card flex justify-content-center">
         <div className="p-float-label">            
-            <InputNumber id="inputNum" value={num} onValueChange={(e: InputNumberValueChangeEvent) => setNum(e.target.value ?? null)}  showButtons mode="decimal" />
-            <label htmlFor="inputNum">{props.labelnumb}</label>
+            <InputNumber id="inputNum" value={props.num} onValueChange={(e: InputNumberValueChangeEvent) => props.handleNum(e.target.value)}  showButtons mode="decimal" />
+            <label htmlFor="inputNum">{props.labelnum}</label>
         </div> 
         </div>
         

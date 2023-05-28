@@ -420,3 +420,21 @@ export const getImage = async (path :string) => {
     const data = await res.blob();
     return data        
 }
+
+export const uploadImage = async (file :any) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Api-Key': apiKey
+        },
+        body: file
+    };
+
+    const res = await fetch(`${constants.API_URL}images`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    console.log(data);
+    return data        
+}
