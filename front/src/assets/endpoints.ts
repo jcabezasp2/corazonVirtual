@@ -126,6 +126,25 @@ export const editUser = async (id :number, name :string, email :string, password
     return data    
     }
    
+// Calls to Lock/Unlock API endpoint 
+export const lockUnlockUser = async (id :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify(id)
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/bloquearDesbloquear`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    console.log(res)
+}
+
+
+
     
 // Calls to the procedures API endpoints
 export const getProcedures = () => {
@@ -236,6 +255,26 @@ export const deleteStep = async (id :number) => {
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+export const getStepByProcedureId = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+
+
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}/pasos`, opciones);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
