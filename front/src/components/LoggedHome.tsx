@@ -33,11 +33,6 @@ const teacherItems: MenuItem[] = [
     icon: Icons.Steps,
     destiny: "/pasos",
   },
-  {
-    title: "Procedimientos",
-    icon: Icons.Procedure,
-    destiny: "/procedimientos",
-  },
 ];
 
 const adminItems: MenuItem[] = [

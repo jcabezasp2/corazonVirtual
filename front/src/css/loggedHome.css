@@ -84,11 +84,11 @@
 
 div .loggedCard {
     box-shadow: 0 0 10px #fff !important;
-    background-color: white !important;
+    background-color: rgb(94, 149, 184) !important;
     border-radius: 50% !important;
     width: 200px !important;
     height: 200px !important;
-    color:black !important;
+    color:white !important;
 }
 
 .loggedCard:hover {
@@ -119,7 +119,7 @@ div .loggedCard {
 .loggedCard > .p-card-body > .p-card-content > .icon  {
     display: flex;
     justify-content: center;
-    fill: black;
+    fill: white;
  }
 
 .loggedCard:hover > .p-card-body > .p-card-content > .icon > svg {
