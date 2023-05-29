@@ -9,7 +9,11 @@ import "./../../css/steps.css";
 import { appContext } from "../../App";
 import InputNum from "../../components/form/InputNum";
 import InputTxt from "../../components/form/InputTxt";
-import { ListBox } from "primereact/listbox";
+import  ListBoxx  from "../../components/form/ListBoxx";
+import { MultiSelect } from 'primereact/multiselect';
+import SelectMulti from '../../components/form/SelectMulti';
+import { Select } from '@react-three/drei';
+import Select1 from '../../components/form/Select';
 
 class Iprops {
 
@@ -33,10 +37,9 @@ export default function StepForm(props: Iprops) {
     const [duration, setDuration] = React.useState<string>('');; 
     const navigate = useNavigate();
     const context = React.useContext(appContext);
-    const [nameList, setNameList] = React.useState<string>('Selecciona los pasos asociados');
-    const [codeList, setCodeList] = React.useState<number>(0);
-    const [allcodes, setAllcodes] = React.useState<number[]>([]);
-    const [options, setoptions] = React.useState<string[]>([]);
+    const [placeholder, setPlaceholder] = React.useState<strin>('Selecciona una herramienta')
+    const [options, setoptions] = React.useState<any[]>([]);
+    const [toolId, setToolId] = React.useState<number>(0);
 
 
     const handleName = (e: string) => {
@@ -45,8 +48,12 @@ export default function StepForm(props: Iprops) {
 
     const handleNum = (e: number) => {
         setNum(e);
-        setDuration(num.toString());
-        console.log(num,"to.string")
+        setDuration(String(num))
+        console.log(num,"num", typeof num, "type")
+        console.log(duration, "duration", typeof duration, "type")
+        // setDuration(num.toString());
+        // console.log(num,"to.string")
+        // parseInt(num)
         
     }
 
@@ -63,30 +70,86 @@ export default function StepForm(props: Iprops) {
         setpreviousStep(e);
     }
 
-    React.useEffect(() => {
-        console.log(previousStep)
-    }, [previousStep])
-
-    async function steps() {
-        console.log('entrando en tools')
-
-        console.log(name,"--------", description,"--------", file, "--------", num,"--------", previousStep)
-        const res = await context.apiCalls.createStep(name, description, file, num, previousStep);
-        if(res != null){
-            console.log('funciona')
-            console.log(res)
-
-        }else{
-            console.log('no funciona')
-        }             
-
+   
+    const handleSelect = (e: any) => {
+        setToolId(e);
+        console.log("dentro de handleSelect stepform",toolId)
     }
 
    
+    async function allTools() {
+        const allTools = await context.apiCalls.getTools();
+        if(allTools != null){
+            console.log('funciona allTools')
+            console.log(allTools)
+            const options = allTools.map((tool: any) => ({
+                label: tool.name,
+                value: tool.id,
+              }));
+            setoptions(options)
+            console.log(options,"options")
+            let allcodes = allTools.map((tool: any) => {
+                return tool.id
+            })
+            
+            // console.log(allcodes,"allcodes")
+       
+        }else{
+            console.log('no funciona allTools')
+        }
+
+        // const allSteps = await context.apiCalls.getSteps();
+        // // console.log(allSteps.map((step:any) => [ step.name,step.id]  ))
+        // console.log(allSteps.length)
+        // console.log(allSteps[id].length)
+    }
+
+    
+
+
+    React.useEffect(() => {
+        console.log(previousStep)
+        allTools();
+    }, [previousStep])
+
+    async function steps() {
+        console.log('entrando en steps')
+      
+        console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", toolId)
+        const res = await context.apiCalls.createStep(name, description, file, duration, previousStep);
+        if(res != null){
+            console.log('funciona createsteps')
+            console.log(res)
+
+        }else{
+            console.log('no funciona createsteps')
+        }             
+            stepTool();
+    }
+
+
+    async function stepTool() {
+        const allSteps = await context.apiCalls.getSteps();
+        
+        console.log(allSteps)
+        console.log(allSteps.length)
+       
+        let id = allSteps.length
+        console.log(id)
+
+   
+    const res2 = await context.apiCalls.addStepTool(id, toolId);
+    if(res2 != null){
+        console.log('funciona addsteptool')
+        console.log(res2)
+        }else{
+            console.log('no funciona addsteptool')
+        }
+    }
+
     const handleStep = () => {
         steps();
     }
-
 
 
     return (
@@ -100,18 +163,27 @@ export default function StepForm(props: Iprops) {
                 <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>                           
             </div>
             <div className="p-field">
-                            <ListBox
-                            id="items"
-                            value={nameList}
-                            // options={[
-                            //     { label: {nameList}, value: {codeList} },
-                            //     // { label: "Option 2", value: "option2" },
-                            //     // { label: "Option 3", value: "option3" },
-                            // ]}
+                            {/* <ListBoxx
+                            // options={options}
+                            options={options} 
+                            handleList={handleList}
+                         
+                      
+                            /> */}
+            </div>
+            <div className="p-field">
+                            {/* <SelectMulti                            
+                            handleSelect={handleSelect}
+                            toolId={toolId}
                             options={options}
-                            onChange={handleList}
-                            multiple
-                            />
+                            placeholder='Selecciona una herramienta'
+                            
+                            /> */}
+                            <Select1
+                             handleSelect={handleSelect}
+                             toolId={toolId}
+                             options={options}
+                             placeholder={placeholder}/>
             </div>
             <div className='py-3'>
                 <TxtEditor
@@ -130,13 +202,13 @@ export default function StepForm(props: Iprops) {
                 />
             </div>
 
-            <File file={file} handleFile={handleFile}/>
+            {/* <File file={file} handleFile={handleFile}/> */}
 
             <div className='pt-3 flex justify-content-center'>
                 <div className='col-4'>
                 <SubmitButton
                     onclik={handleStep}
-                    ctx={{name: name, description : description, image : file, duration : num, previousStep : previousStep}}
+                    ctx={{name: name, description : description, image : null, duration : num, previousStep : previousStep, toolId : toolId}}
                     isLogin={false}
                 />
                 </div>
@@ -144,3 +216,6 @@ export default function StepForm(props: Iprops) {
         </div>
     )
 }
+
+
+

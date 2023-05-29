@@ -6,6 +6,7 @@ import StepForm from './pages/forms/StepForm';
 import Page404 from './pages/Page404';
 import Steps from './pages/Steps';
 import Procedures from './pages/Procedures';
+import ProcedureForm from './pages/forms/ProcedureForm';
 import ToolForm from './pages/forms/ToolForm';
 import Practices from './pages/Practices';
 import Students from './pages/Students';
@@ -72,6 +73,7 @@ function App() {
           <Route path="/pasos/formulario" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
           <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />          
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
+          <Route path="/procedimientos/formulario" element={user.role == Role.Teacher?<ProcedureForm /> : <Home /> } />
           <Route path="/procedimientos/:id" element={user.role == Role.Student? <Procedure /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />

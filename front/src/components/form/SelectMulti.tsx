@@ -16,29 +16,51 @@ import { SelectItemOptionsType } from "primereact/selectitem";
 
     
 interface Iprops {
-    nameSelect: string;
-    code: number;
-    allcodes: number[];
+    // nameSelect: string;
+    // code: number;
+    // allcodes: number[];
+    idAsociados: [];
     handleSelect: Function;
     placeholder: string;
-    options: string[] | undefined;
+    options: List[];
 }
+interface List {
+    label: string;
+    value: number;
+    // nameList: string;
+    // codeList: number;
+  }
 
+  
 export default function SelectMulti(props: Iprops) {
+    const [selected, setSelected] = useState<List | null>(null);
+    // const [selected, setSelected] = useState<number>(0);
+    const options: List[] = [
+        // { label: "Selecciona los pasos asociados", value: 0 },
+        ...props.options,
+      ];
+    
+    props.handleSelect(selected)
+    
+      console.log("selectMulti:" + props.options, props.handleSelect, props.placeholder, props.options.map(item => [ item.label,item.value] ), "selected", props.idAsociados)
 
-    console.log("selectMulti:" + props.nameSelect, props.code, props.allcodes, props.handleSelect, props.placeholder)
 
     return (
         <div className="card flex justify-content-center">
             <MultiSelect
                 display="chip"
-                value={props.code}
-                onChange={(e: MultiSelectChangeEvent) => props.handleSelect(e.value)}
+                value={selected}
+                onChange={(e: MultiSelectChangeEvent) => {
+                    setSelected(e.value);
+                    props.handleSelect(e.value);
+                  }}
                 optionLabel="name"
                 placeholder={props.placeholder}
-                maxSelectedLabels={3}
+                maxSelectedLabels={10}
                 className="w-full md:w-20rem"
-                /* options={props.nameSelect} */
+                style={{color: 'var(--surface-800)' }}
+                options={options} 
+                
             />
         </div>
     );

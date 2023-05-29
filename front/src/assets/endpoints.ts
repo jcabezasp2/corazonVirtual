@@ -161,6 +161,37 @@ export const getProcedures = () => {
     return res
 }
 
+export const getProcedure = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
+    return res
+}
+
+// export const addProcedure = async (name :string, description :string, image :string) => {
+   export const createProcedure = async (name : string, image : string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "name": name, "image": image })
+    };
+    const res = await fetch(`${constants.API_URL}procedimientos`, opciones);
+    return res
+}
+
+
 export const deleteProcedure = async (id :number) => {
     const apiKey = sessionStorage.getItem('apiKey');
     let opciones :any = {
@@ -175,6 +206,34 @@ export const deleteProcedure = async (id :number) => {
     return res
 }
 
+export const editProcedure = async (id :number, name :string, description :string, image :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "name": name, "description": description, "image": image })
+    };
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
+    return res
+}
+export const addProcedureSteps = async (id :number, stepIds :[]) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "procedureId": id, "stepIds": stepIds })
+    };
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}/pasos`, opciones);
+    return res
+}
 
 
 // Calls to the Steps API endpoints
@@ -278,6 +337,24 @@ export const getStepByProcedureId = async (id :number) => {
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
+}
+
+export const addStepTool = async (id : number, toolsId : number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    // TODO implementar agregar herramienta a paso
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+                'Api-Key': apiKey
+            },
+            body: JSON.stringify({ "StepsId": id, "ToolsId": toolsId })
+        };
+        const res = await fetch(`${constants.API_URL}pasos/${id}/herramientas`, opciones);
+        return res
+        
 }
 
 
