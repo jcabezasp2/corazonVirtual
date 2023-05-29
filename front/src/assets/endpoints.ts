@@ -418,6 +418,25 @@ export const deleteTool = async (id :number) => {
     return data        
 }
 
+//Tools by step id
+export const getToolByStepId = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+    const res = await fetch(`${constants.API_URL}pasos/${id}/herramientas`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+
 // Call to the Practices API endpoints
 //All user practices
 export const getStudentPractices = async () => {
