@@ -105,6 +105,7 @@ builder.Services.AddScoped<aspnetapp.Services.ApiKeyService>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.User.AllowedUserNameCharacters = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789-._@+/ ";
     options.User.RequireUniqueEmail = true;
+    options.Lockout.AllowedForNewUsers = false;
 })
     .AddEntityFrameworkStores<dataContext>()
     .AddDefaultTokenProviders();
