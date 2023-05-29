@@ -11,6 +11,7 @@ import Practices from './pages/Practices';
 import Students from './pages/Students';
 import Panel from './pages/Panel';
 import Users from './pages/Users';
+import Procedure from './pages/Procedure';
 import * as endpoints from "../src/assets/endpoints"
 import User from './models/User';
 import Roles from './pages/Roles';
@@ -71,11 +72,12 @@ function App() {
           <Route path="/pasos/formulario" element={user.role === Role.Teacher? <StepForm /> : <Home />} />
           <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />          
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
+          <Route path="/procedimientos/:id" element={user.role == Role.Student? <Procedure /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
           <Route path="/herramientas" element={ <Tools />} />
           <Route path="/herramientas/formulario" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
-          <Route path="/panel" element={user.role != Role.Student? <Panel /> : <Home />} />
+          <Route path="/panel" element={user.role == Role.Student || Role.Teacher? <Panel /> : <Home />} />
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
           <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />

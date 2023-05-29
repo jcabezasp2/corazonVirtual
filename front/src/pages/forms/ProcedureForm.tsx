@@ -26,17 +26,21 @@ export default function ToolForm(props: Iprops) {
 
     const [name, setName] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
-    const [file, setFile] = React.useState<any>();
+    const [file, setFile] = React.useState<string>('');
     const [status, setStatus] = React.useState<Status>(Status.error);
-    const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
-    const [labeldescription, setLabeldescription] = React.useState<string>('Descripción de la herramienta');
-    const context = React.useContext(appContext);
-    
+    const [labelname, setLabelname] = React.useState<string>('Nombre del procedimiento');
+    const context = React.useContext(appContext);    
+    const [nameList, setNameList] = React.useState<string>('Selecciona los pasos asociados');
+    const [codeList, setCodeList] = React.useState<number>(0);
+    const [allcodes, setAllcodes] = React.useState<number[]>([]);
+    const [options, setoptions] = React.useState<string[]>([]);
+
     const handleName = (e: string) => {
         setName(e);
     }
-    const handleDescription = (e: string) => {
-        setDescription(e);
+    const handleList = (e: number) => {
+        setCodeList(e);
+        allcodes.push(codeList);
     }    
     const handleFile = (e :any) => {
         setFile(e);
@@ -47,29 +51,13 @@ export default function ToolForm(props: Iprops) {
     async function tools() {
         console.log('entrando en tools')
         console.log(name,"--------", description,"--------", file)
-        const resAllimg = await context.apiCalls.getImage();
-        setFile(resAllimg)
-        if(resAllimg != null){
-            console.log('funciona allimg')
-            console.log(resAllimg)
-        }else{
-            console.log('no funciona allimg', resAllimg)
-        }
-        const resImg = await context.apiCalls.uploadImage(file); 
-        if(resImg != null){
-            console.log('funciona imagen')
-            console.log(resImg)
-        }else{
-            console.log('no funciona imagen')
-        }   
-        console.log('despues de la imagen')
         const res = await context.apiCalls.createTool(name, description, file);
         if(res != null){
-            console.log('funciona tool')
+            console.log('funciona')
             console.log(res)
 
         }else{
-            console.log('no funciona tool')
+            console.log('no funciona')
         }             
 
     }
@@ -90,8 +78,19 @@ export default function ToolForm(props: Iprops) {
                         <div className="col-8 input-tool-form">                        
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
                         </div>                        
-                        <div className="col-8">
-                            <TxtEditor description={description} handleDescription={handleDescription} />
+                        <div className="p-field">
+                            <ListBox
+                            id="items"
+                            value={nameList}
+                            // options={[
+                            //     { label: {nameList}, value: {codeList} },
+                            //     // { label: "Option 2", value: "option2" },
+                            //     // { label: "Option 3", value: "option3" },
+                            // ]}
+                            options={options}
+                            onChange={handleList}
+                            multiple
+                            />
                         </div>
                         <div className="col-8 file-tool">
                             <File file={file} handleFile={handleFile}/>
@@ -112,3 +111,5 @@ export default function ToolForm(props: Iprops) {
 }
 
                         
+
+

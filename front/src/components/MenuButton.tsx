@@ -1,5 +1,6 @@
 import React, { useRef, useContext } from "react";
 import { SpeedDial } from "primereact/speeddial";
+import { Tooltip } from 'primereact/tooltip';
 import { MenuItem } from "primereact/menuitem";
 import { useNavigate } from "react-router-dom";
 import { appContext } from "../App";
@@ -15,15 +16,21 @@ export default function MenuButton() {
   const [items, setItems] = React.useState<MenuItem[]>([]);
 
   React.useEffect(() => {
+
+      let options: MenuItem[] = [];
+    
       if (context.user.role === Role.Student) {
-        setItems([...publicItems, ...studentItems, ...commonItems]);
+        options = [...publicItems, ...studentItems, ...commonItems];
       } else if (context.user.role === Role.Teacher) {
-        setItems([...publicItems, ...teacherItems, ...commonItems]);
+        options = [...publicItems, ...teacherItems, ...commonItems];
       } else if (context.user.role === Role.Admin) {
-        setItems([...adminItems, ...commonItems]);
+        options = [...adminItems, ...commonItems];
       }else{
-        setItems(publicItems);
+        options = [...publicItems];
       }
+      options = options.reverse();
+      setItems(options);
+      //setItems(items.reverse());
   }, [context.user]);
 
   const publicItems: MenuItem[] = [
@@ -91,6 +98,13 @@ export default function MenuButton() {
         navigate("/pasos");
       },
     },
+    {
+      label: "Practicas",
+      icon: <Icon type={Icons.ListCheck} text="Practicas"/>,
+      command: () => {
+        navigate("/practicas");
+      },
+    },
   ];
 
   const adminItems: MenuItem[] = [
@@ -119,6 +133,14 @@ export default function MenuButton() {
 
   const commonItems: MenuItem[] = [
     {
+      label: "Panel de usuario",
+      icon: <Icon type={Icons.Identity} />,
+      command: () => {
+        context.logout();
+        navigate("/panel");
+      },
+    },
+    {
       label: "Cerrar sesion",
       icon: <Icon type={Icons.Logout} />,
       command: () => {
@@ -131,10 +153,12 @@ export default function MenuButton() {
 
 
   return (
-    <div className="">
       <div id="menu_button" >
+      <Tooltip target=".p-speeddial-action" position="right" />
         <SpeedDial
           mask
+          maskClassName="mask"
+          className="speeddial-bottom-right"
           model={items}
           radius={180}
           type="quarter-circle"
@@ -144,6 +168,5 @@ export default function MenuButton() {
           hideIcon= {<Icon type={Icons.Close} />}
         />
       </div>
-    </div>
   );
 }

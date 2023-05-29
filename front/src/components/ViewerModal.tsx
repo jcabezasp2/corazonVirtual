@@ -19,6 +19,7 @@ export default function ViewerModal(props: Iprops) {
   return (
     <div id="viewerModal" className="card flex justify-content-center">
       <Dialog
+        maximizable
         header={props.title}
         visible={props.visible}
         style={{ width: "80vw", height: "80vh" }}

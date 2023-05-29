@@ -12,7 +12,7 @@ export default function Icon(props : Iprops) {
     return (
     
     <div className="icon" data-pr-tooltip={props.text}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d={props.type}/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 0 750 512"><path d={props.type}/>
     <style type="text/css">
         fill:url(#MyGradient)
       </style>

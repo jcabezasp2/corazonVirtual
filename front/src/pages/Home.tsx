@@ -25,7 +25,7 @@ export default function Home() {
                 <>
                   <div className="cor">
                     <div id="loader" className="">
-                      <svg id="pachos" className="pacho" viewBox="-10 0 250 60" preserveAspectRatio="none">
+                      <svg id="pachos" className="pacho" viewBox="0 0 250 60" preserveAspectRatio="none">
                         <path
                           id="pacho"
                           className="st0 pacho"

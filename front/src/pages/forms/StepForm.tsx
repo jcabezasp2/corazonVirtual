@@ -7,6 +7,9 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { useParams, useNavigate } from 'react-router-dom';
 import "./../../css/steps.css";
 import { appContext } from "../../App";
+import InputNum from "../../components/form/InputNum";
+import InputTxt from "../../components/form/InputTxt";
+import { ListBox } from "primereact/listbox";
 
 class Iprops {
 
@@ -20,23 +23,31 @@ export default function StepForm(props: Iprops) {
     const { id } = useParams();
 
     const [name, setName] = React.useState<string>('');
-
+    const [labelname, setLabelname] =React.useState<string>('Nombre del paso');
+    const [labelnum, setLabelnum] =React.useState<string>('Tiempo de duración del paso');
     const [description, setDescription] = React.useState<string>('');
-
     const [previousStep, setpreviousStep] = React.useState<boolean>(false);
-
     const [status, setStatus] = React.useState<Status>(Status.error);
-
     const [file, setFile] = React.useState<string>('');
-
-    const [duration, setDuration] = React.useState<number>(0);
-
+    const [num, setNum] = React.useState<number>(0);
+    const [duration, setDuration] = React.useState<string>('');; 
     const navigate = useNavigate();
-
     const context = React.useContext(appContext);
+    const [nameList, setNameList] = React.useState<string>('Selecciona los pasos asociados');
+    const [codeList, setCodeList] = React.useState<number>(0);
+    const [allcodes, setAllcodes] = React.useState<number[]>([]);
+    const [options, setoptions] = React.useState<string[]>([]);
+
 
     const handleName = (e: string) => {
         setName(e);
+    }
+
+    const handleNum = (e: number) => {
+        setNum(e);
+        setDuration(num.toString());
+        console.log(num,"to.string")
+        
     }
 
     const handleFile = (e :any) => {
@@ -58,8 +69,9 @@ export default function StepForm(props: Iprops) {
 
     async function steps() {
         console.log('entrando en tools')
-        console.log(name,"--------", description,"--------", file)
-        const res = await context.apiCalls.createStep(name, description, file, duration, previousStep);
+
+        console.log(name,"--------", description,"--------", file, "--------", num,"--------", previousStep)
+        const res = await context.apiCalls.createStep(name, description, file, num, previousStep);
         if(res != null){
             console.log('funciona')
             console.log(res)
@@ -80,7 +92,27 @@ export default function StepForm(props: Iprops) {
     return (
         <div className='pt-6 p-5'>
             <h1 className='mt-6'>StepForm</h1>
-
+           
+            <div className="py-3">                        
+                <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
+            </div> 
+            <div className="py-3 ">                        
+                <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>                           
+            </div>
+            <div className="p-field">
+                            <ListBox
+                            id="items"
+                            value={nameList}
+                            // options={[
+                            //     { label: {nameList}, value: {codeList} },
+                            //     // { label: "Option 2", value: "option2" },
+                            //     // { label: "Option 3", value: "option3" },
+                            // ]}
+                            options={options}
+                            onChange={handleList}
+                            multiple
+                            />
+            </div>
             <div className='py-3'>
                 <TxtEditor
                     handleDescription={handleDescription}
@@ -104,7 +136,7 @@ export default function StepForm(props: Iprops) {
                 <div className='col-4'>
                 <SubmitButton
                     onclik={handleStep}
-                    ctx={{name: name, description : description, image : file, duration : duration, previousStep : previousStep}}
+                    ctx={{name: name, description : description, image : file, duration : num, previousStep : previousStep}}
                     isLogin={false}
                 />
                 </div>

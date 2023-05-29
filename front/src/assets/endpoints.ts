@@ -260,6 +260,26 @@ export const deleteStep = async (id :number) => {
     return data
 }
 
+export const getStepByProcedureId = async (id :number) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+
+
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}procedimientos/${id}/pasos`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
 
 // Calls to the Roles API endpoints
 
@@ -437,5 +457,23 @@ export const getImage = async (path :string) => {
     const res = await fetch(`${constants.API_URL}images/${path}`, opciones);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.blob();
+    return data        
+}
+
+export const uploadImage = async (file :any) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Api-Key': apiKey
+        },
+        body: file
+    };
+
+    const res = await fetch(`${constants.API_URL}images`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    console.log(data);
     return data        
 }
