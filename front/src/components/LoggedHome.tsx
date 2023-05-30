@@ -12,9 +12,7 @@ interface MenuItem {
   destiny: string;
 }
 
-const commonItems: MenuItem[] = [
- 
-];
+const commonItems: MenuItem[] = [];
 
 const studentItems: MenuItem[] = [
   {
@@ -94,10 +92,10 @@ export default function LoggedHome() {
           icon={Icons.ListCheck}
           destiny={"/practicas"}
         />
-      </div>: <div></div>}      
-      <div className="row justify-content-between">
+      </div>: <div></div>}
+      <div className="row">
         {items.map((item, index) => (
-          <div className="scalein animation-duration-1000 flex gap-3">
+          <div className="scalein animation-duration-1000">
             <HomeCard
               title={item.title}
               icon={item.icon}
@@ -106,15 +104,6 @@ export default function LoggedHome() {
           </div>
         ))}
       </div>
-      <div className="no"/>
-      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
-        <HomeCard
-          title={"Procedimientos"}
-          icon={Icons.Procedure}
-          destiny={"/procedimientos"}
-        />
-      </div>: <div></div>}
     </div>
-    
   );
 }

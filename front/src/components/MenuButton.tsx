@@ -136,7 +136,6 @@ export default function MenuButton() {
       label: "Panel de usuario",
       icon: <Icon type={Icons.Identity} />,
       command: () => {
-        context.logout();
         navigate("/panel");
       },
     },
