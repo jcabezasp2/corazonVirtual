@@ -11,6 +11,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls, Sky } from "@react-three/drei";
 import { Suspense } from "react";
 import Model from "../components/Model";
+import { classNames } from "primereact/utils";
 
 interface IStep {
     id: number;
@@ -37,7 +38,7 @@ export default function Procedure() {
   React.useEffect(() => {
     if (steps) {
       setCurrentStep(steps[currentStepIndex]);
-      setProgress((currentStepIndex / steps.length) * 100);
+      setProgress(Math.round((currentStepIndex / steps.length) * 100));
         if(currentStep != undefined){         
         const tool = context.apiCalls.getToolByStepId(currentStep.id);
         //if(tool[0].modelo != undefined)
@@ -63,13 +64,13 @@ export default function Procedure() {
 
   return (
     <div id="procedureView">
-    {isLoading? <ProgressBar mode="indeterminate" />
+    {isLoading? <ProgressBar className="loading" mode="indeterminate" />
     :
      <>
         <Timeline value={steps} selected={currentStepIndex}></Timeline>
-        <div className="">
+        <div className="selectedStep">
             <Card  title={currentStep?.name}>
-                <p>{currentStep!.description}</p>
+                <p>{currentStep?.description}</p>
                 {tool.modelo != undefined && (
                     <Canvas camera={{ position: [0, 0, 3] }}>
                     <Suspense fallback={null}>
@@ -92,6 +93,7 @@ export default function Procedure() {
                 }
             }}></Button>
         </div>
+        {(currentStepIndex == steps.length) && <Card className="finalCard" title="Finalizado"></Card> }
       </>}
     </div>
   );

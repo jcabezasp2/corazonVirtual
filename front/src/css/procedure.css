@@ -6,3 +6,28 @@
     grid-template-columns: 20% 1fr;
 }
 
+.loading{
+    width: 80vw;
+    position: relative;
+    top: 45vh;
+}
+
+#procedureView .p-timeline-event .p-card-title{
+    color: rgb(94, 149, 184);
+    text-align: center;
+}
+
+.selectedStep .p-card-title {
+    color: rgb(94, 149, 184);
+    text-align: center;
+}
+
+.selectedStep .p-card-content{
+    color: black;
+}
+
+.finalCard .p-card-body{
+    background-color: rgb(94, 149, 184);
+    color: white;
+    text-align: center;
+}

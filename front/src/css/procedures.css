@@ -14,6 +14,8 @@
 }
 
 
+
+
 #procedures {
     display: flex;
     flex-direction: row;
@@ -24,6 +26,6 @@
     height: 100%;
 }
 
-#procedures .procedure-card {
-    width: 25%;
+#proceduresView .procedure{
+    padding: 1em;
 }

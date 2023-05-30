@@ -17,7 +17,7 @@ interface Iprops {
 
 export default function ViewerModal(props: Iprops) {
   return (
-    <div id="viewerModal" className="card flex justify-content-center">
+    <div id="viewerModal" className="card flex justify-content-center algo">
       <Dialog
         maximizable
         header={props.title}

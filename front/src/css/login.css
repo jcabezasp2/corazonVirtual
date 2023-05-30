@@ -1,26 +1,32 @@
 .login{
     align-self: baseline;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     position: relative;
     right: calc(50% - 10rem);
     top: 10rem;
     background-color: #ffffffd2;
-    border-radius: 1rem;
-    padding: 3rem 2rem 3rem 2rem;  
-    gap: 2rem;
-    box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem var(--surface-700);
     
+    
+}
+
+.login .p-card-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.login h3{
+    font-size: 1.5rem;
+    padding: 1rem;
+    color: rgb(94, 149, 184);
+}
+
+.login .button{
+    border-radius: 0.5em !important;
 }
 
 
 #email{
     padding-right: 2.5rem;
-}
-
-.h3{
-    font-size: 1.5rem;
-    padding: 1rem;
 }

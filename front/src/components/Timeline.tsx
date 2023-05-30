@@ -27,7 +27,7 @@ export default function Timeline(props: Iprops) {
             name: item.name,
             image: item.image,
             icon: item.previousStep ? "pi pi-calendar" : "pi pi-heart",
-            color: index === props.selected ? "#4caf50" : "#f50057",
+            color: item.previousStep ? "#4caf50" : "#007ad9",
             };
         });
 
@@ -36,8 +36,6 @@ export default function Timeline(props: Iprops) {
 
     React.useEffect(() => {
         let currentSteps = [...steps];
-        //currentSteps[props.selected].color = "#4caf50";
-        //currentSteps[props.selected].icon = "pi pi-check";
         currentSteps.shift();
         setSteps([...currentSteps]);
         console.log('steps', steps)
@@ -64,14 +62,6 @@ export default function Timeline(props: Iprops) {
   const customizedContent = (item: IStep) => {
     return (
       <Card title={item.name}>
-        {item.image && (
-          <img
-            src={`${item.image}`}
-            alt={item.name}
-            width={200}
-            className="shadow-1"
-          />
-        )}
       </Card>
     );
   };

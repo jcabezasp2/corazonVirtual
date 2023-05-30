@@ -11,4 +11,8 @@
     width: 100% !important;
     height: 100% !important;
 }
+
+.p-dialog-mask .p-dialog-content{
+    overflow: hidden !important;
+}
     
