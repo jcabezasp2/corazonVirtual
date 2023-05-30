@@ -5,7 +5,7 @@ import Toggle from "../../components/form/Toggle";
 import File from "../../components/form/File";
 import SubmitButton from "../../components/form/SubmitButton";
 import { useParams, useNavigate } from 'react-router-dom';
-import "./../../css/steps.css";
+import "./../../css/stepform.css";
 import { appContext } from "../../App";
 import InputNum from "../../components/form/InputNum";
 import InputTxt from "../../components/form/InputTxt";
@@ -37,9 +37,9 @@ export default function StepForm(props: Iprops) {
     const [duration, setDuration] = React.useState<string>('');; 
     const navigate = useNavigate();
     const context = React.useContext(appContext);
-    const [placeholder, setPlaceholder] = React.useState<strin>('Selecciona una herramienta')
+    const [placeholder, setPlaceholder] = React.useState<string>('Selecciona una herramienta')
     const [options, setoptions] = React.useState<any[]>([]);
-    const [toolId, setToolId] = React.useState<number>(0);
+    const [idasociados, setidasociados] = React.useState<number>(0);
 
 
     const handleName = (e: string) => {
@@ -51,10 +51,7 @@ export default function StepForm(props: Iprops) {
         setDuration(String(num))
         console.log(num,"num", typeof num, "type")
         console.log(duration, "duration", typeof duration, "type")
-        // setDuration(num.toString());
-        // console.log(num,"to.string")
-        // parseInt(num)
-        
+                
     }
 
     const handleFile = (e :any) => {
@@ -72,8 +69,8 @@ export default function StepForm(props: Iprops) {
 
    
     const handleSelect = (e: any) => {
-        setToolId(e);
-        console.log("dentro de handleSelect stepform",toolId)
+        setidasociados(e);
+        console.log("dentro de handleSelect stepform",idasociados)
     }
 
    
@@ -83,8 +80,8 @@ export default function StepForm(props: Iprops) {
             console.log('funciona allTools')
             console.log(allTools)
             const options = allTools.map((tool: any) => ({
-                label: tool.name,
-                value: tool.id,
+                name: tool.name,
+                code: tool.id,
               }));
             setoptions(options)
             console.log(options,"options")
@@ -98,10 +95,6 @@ export default function StepForm(props: Iprops) {
             console.log('no funciona allTools')
         }
 
-        // const allSteps = await context.apiCalls.getSteps();
-        // // console.log(allSteps.map((step:any) => [ step.name,step.id]  ))
-        // console.log(allSteps.length)
-        // console.log(allSteps[id].length)
     }
 
     
@@ -115,7 +108,7 @@ export default function StepForm(props: Iprops) {
     async function steps() {
         console.log('entrando en steps')
       
-        console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", toolId)
+        console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idasociados)
         const res = await context.apiCalls.createStep(name, description, file, duration, previousStep);
         if(res != null){
             console.log('funciona createsteps')
@@ -136,9 +129,9 @@ export default function StepForm(props: Iprops) {
        
         let id = allSteps.length
         console.log(id)
-
-   
-    const res2 = await context.apiCalls.addStepTool(id, toolId);
+       
+        console.log("idasociados", idasociados.code)
+    const res2 = await context.apiCalls.addStepTool(id, idasociados.code);
     if(res2 != null){
         console.log('funciona addsteptool')
         console.log(res2)
@@ -156,13 +149,11 @@ export default function StepForm(props: Iprops) {
         <div className='pt-6 p-5'>
             <h1 className='mt-6'>StepForm</h1>
            
-            <div className="py-3">                        
-                <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
-            </div> 
-            <div className="py-3 ">                        
-                <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>                           
-            </div>
-            <div className="p-field">
+            <div className="row py-3 col-12 justify-content-evenly gap-6">      
+                <div className='col-4' id="inputtxt">                
+                    <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
+                </div>                
+                <div className='col-3 ' id="select"> 
                             {/* <ListBoxx
                             // options={options}
                             options={options} 
@@ -170,20 +161,23 @@ export default function StepForm(props: Iprops) {
                          
                       
                             /> */}
-            </div>
-            <div className="p-field">
+          
                             {/* <SelectMulti                            
                             handleSelect={handleSelect}
-                            toolId={toolId}
+                            idasociados={idasociados}
                             options={options}
                             placeholder='Selecciona una herramienta'
                             
                             /> */}
                             <Select1
                              handleSelect={handleSelect}
-                             toolId={toolId}
+                             idasociados={idasociados}
                              options={options}
                              placeholder={placeholder}/>
+                </div>
+                <div className='col-2' id="inputnumb">  
+                <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>   
+                </div>    
             </div>
             <div className='py-3'>
                 <TxtEditor
@@ -208,7 +202,7 @@ export default function StepForm(props: Iprops) {
                 <div className='col-4'>
                 <SubmitButton
                     onclik={handleStep}
-                    ctx={{name: name, description : description, image : null, duration : num, previousStep : previousStep, toolId : toolId}}
+                    ctx={{name: name, description : description, image : null, duration : num, previousStep : previousStep, toolId : idasociados}}
                     isLogin={false}
                 />
                 </div>

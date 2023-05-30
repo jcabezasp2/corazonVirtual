@@ -6,16 +6,16 @@ interface Iprops {
     // nameSelect: string;
     // code: number;
     // allcodes: number[];
-    toolId: number;
+    idasociados: number;
     handleSelect: Function;
     placeholder: string;
     options: List[];
 }
 interface List {
-    label: string;
-    value: number;
-    // nameList: string;
-    // codeList: number;
+    // label: string;
+    // value: number;
+    name: string;
+    code: number;
   }
 
 export default function Select1(props : Iprops) {
@@ -23,25 +23,29 @@ export default function Select1(props : Iprops) {
     //const [selectedCity, setSelectedCity] = useState<City | null>(null);
     // const [selectedStep, setSelectedStep] = useState<Steps | null>(null);
     const [selected, setSelected] = useState<number | null>(null);
-    const options: List[] = [
-        { label: 'Selecciona una herramienta', value: 0 },
-        ...props.options,
-      ];
+    
+      const options : List[] = props.options.map((item: any) => ({
+        name: item.name,
+        code: item.code,
+      }));
 
-      console.log("selectMulti:" + props.options, props.handleSelect, props.placeholder, props.options.map(item => [ item.label,item.value] ), "selected", props.toolId)
-
+      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.idasociados, "id asociado", props.idasociados.code)
+      
 
 
     return (
         <div className="card flex justify-content-center">
+            <span className="p-float-label">
             <Dropdown 
-            value={selected} 
+            value={props.idasociados} 
             onChange={(e: DropdownChangeEvent) => props.handleSelect(e.value)} 
-            options={options} 
-            optionLabel="name" 
-            placeholder={props.placeholder}
-            className="w-full md:w-20rem" 
-            style={{color: 'var(--surface-800)' }}/>
+            options={options}            
+            optionLabel="name"            
+            className="w-full md:w-22rem" 
+            style={{color: 'var(--surface-800)' }}            
+            />
+              <label htmlFor="dd-city">{props.placeholder}</label>
+            </span>
         </div>
     )
 }

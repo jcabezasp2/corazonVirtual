@@ -1,0 +1,11 @@
+#inputtxt > div > span > input{
+    width: 32rem !important;
+}
+
+#inputnumb > div > div > span > input{
+    width: 16rem !important;
+}
+
+#select > div > div > span{
+    width: 20rem !important;
+}
