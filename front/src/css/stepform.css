@@ -1,11 +1,33 @@
-#inputtxt > div > span > input{
-    width: 32rem !important;
+#inputtxt-stepform > div > span > input{
+    width: 26rem !important;
 }
 
-#inputnumb > div > div > span > input{
-    width: 16rem !important;
+#inputnumb-stepform > div > div > span > input{
+    width: 17rem !important;
 }
 
-#select > div > div > span{
+#inputselect-stepform > div > span > div {
+    width: 26rem !important;
+}
+
+#h1form-stepform{
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+#toggle-stepform > div > div{
     width: 20rem !important;
+}
+
+#inputsform-stepform{
+    gap: 10rem;
+    
+} 
+
+#inputsform2-stepform{
+    gap: 10rem;
+}
+
+#editor-stepform > div > div{
+    height: 6rem !important;
 }

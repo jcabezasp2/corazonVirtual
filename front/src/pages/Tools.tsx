@@ -2,7 +2,7 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { appContext } from "../App";
 import { Role } from "../assets/constants";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Skeleton } from "primereact/skeleton";
 import Model from "../components/Model";
@@ -11,6 +11,9 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls, Sky } from "@react-three/drei";
 import { Suspense } from "react";
 import "./../css/tools.css";
+import OptionsButton from '../components/OptionsButton';
+import { Toast } from "primereact/toast";
+import { Status } from "../assets/constants";
 
 class Iprops {}
 
@@ -19,6 +22,7 @@ interface ITool {
   name: string;
   description: string;
   modelo: string;
+  
 }
 
 export default function Claims(props: Iprops) {
@@ -27,10 +31,33 @@ export default function Claims(props: Iprops) {
   const [tools, setTools] = React.useState([]);
   const [selectedTool, setSelectedTool] = React.useState<any>();
   const [modalVisible, setModalVisible] = useState(false);
+  const toast = useRef(null);
+  const [status, setStatus] = React.useState<Status>(Status.error);
+  const [toolID, setToolID] = React.useState<number>(0)
 
   const setVisible = () => {
     setModalVisible(!modalVisible);
     };
+
+
+    console.log("tools",tools)
+
+
+    const onDelete = async (id: number) => {
+
+        const res = await context.apiCalls.deleteTool(id);
+      console.log("dentro de ondelete")
+      if (res.status === 200) {
+          setStatus(Status.success);
+          toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+      } else {
+          setStatus(Status.error);
+          toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+      }
+      
+      initialize() 
+      
+  }
 
   const gridItem = (tool: any) => {
     return tool ? (
@@ -55,6 +82,9 @@ export default function Claims(props: Iprops) {
               className="p-button"
               onClick={() => {setModalVisible(true); setSelectedTool(tool);}}
             ></Button>
+            
+            <OptionsButton id={tool.id}   onEdit={`formulario/${tool.id}`} onDelete={onDelete}/>
+            
           </div>
         </div>
       </div>
@@ -116,8 +146,11 @@ export default function Claims(props: Iprops) {
       };
     });
     setTools(tools);
+   
+
   };
 
+  
   React.useEffect(() => {
     initialize();
   }, []);
@@ -139,3 +172,5 @@ export default function Claims(props: Iprops) {
     </div>
   );
 }
+
+

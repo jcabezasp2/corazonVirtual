@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import { Status } from "../assets/constants";
 import { appContext } from "../App";
 import Table from "../components/Table";
 import IStep from "../interfaces/Step";
@@ -7,6 +8,8 @@ import { Button } from 'primereact/button';
 import { Image } from 'primereact/image';
 import defaultImage from './../img/defaultImage.jpeg'
 import Modal from "../components/Modal";
+import { Toast } from "primereact/toast";
+
 
 
 class Iprops {}
@@ -15,7 +18,8 @@ export default function Steps(props: Iprops) {
 
     const context = React.useContext(appContext);
     const [steps, setSteps] = React.useState([]);
-
+    const toast = useRef(null);
+    const [status, setStatus] = React.useState<Status>(Status.error);
     const navigate = useNavigate();
 
     const initialize = async () => {
@@ -39,6 +43,20 @@ export default function Steps(props: Iprops) {
        initialize();
     }, []);
 
+    const onDelete = async (id: number) => {
+        const res = await context.apiCalls.deleteStep(id);
+        console.log("dentro de ondelete")
+        if (res.status === 200) {
+            setStatus(Status.success);
+            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+        } else {
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+        }
+        initialize();
+       
+    }
+
 
   return (
     <div id="stepsView">
@@ -47,8 +65,9 @@ export default function Steps(props: Iprops) {
             dataElements={steps}
             showOptions
             onEdit = "/pasos/formulario"
-            onDelete={context.apiCalls.deleteStep}
+            onDelete={onDelete}
             />
+        <Toast ref={toast} />
     </div>
   );
 }

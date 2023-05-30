@@ -25,8 +25,8 @@ interface Iprops {
     options: List[];
 }
 interface List {
-    label: string;
-    value: number;
+    name: string;
+    code: number;
     // nameList: string;
     // codeList: number;
   }
@@ -35,21 +35,20 @@ interface List {
 export default function SelectMulti(props: Iprops) {
     const [selected, setSelected] = useState<List | null>(null);
     // const [selected, setSelected] = useState<number>(0);
-    const options: List[] = [
-        // { label: "Selecciona los pasos asociados", value: 0 },
-        ...props.options,
-      ];
+    const options : List[] = props.options.map((item: any) => ({
+      name: item.name,
+      code: item.code,
+    }));
     
-    props.handleSelect(selected)
     
-      console.log("selectMulti:" + props.options, props.handleSelect, props.placeholder, props.options.map(item => [ item.label,item.value] ), "selected", props.idAsociados)
+      console.log("selectMulti:" + props.options, props.handleSelect, props.placeholder, props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados)
 
 
     return (
         <div className="card flex justify-content-center">
             <MultiSelect
                 display="chip"
-                value={selected}
+                value={props.idAsociados}
                 onChange={(e: MultiSelectChangeEvent) => {
                     setSelected(e.value);
                     props.handleSelect(e.value);

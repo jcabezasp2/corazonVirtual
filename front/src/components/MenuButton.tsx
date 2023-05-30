@@ -105,6 +105,13 @@ export default function MenuButton() {
         navigate("/practicas");
       },
     },
+    {
+      label: "Procedimientos",
+      icon: <Icon type={Icons.Procedure} text="Procedimientos"/>,
+      command: () => {
+        navigate("/procedimientos");
+      },
+    },
   ];
 
   const adminItems: MenuItem[] = [

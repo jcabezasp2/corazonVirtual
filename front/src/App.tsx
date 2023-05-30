@@ -74,11 +74,13 @@ function App() {
           <Route path="/pasos/formulario/:id" element={user.role === Role.Teacher? <StepForm /> : <Home />} />          
           <Route path="/procedimientos" element={user.role != Role.Guest? <Procedures /> : <Home />} />
           <Route path="/procedimientos/formulario" element={user.role == Role.Teacher?<ProcedureForm /> : <Home /> } />
+          <Route path="/procedimientos/formulario/:id" element={user.role == Role.Teacher?<ProcedureForm /> : <Home /> } />
           <Route path="/procedimientos/:id" element={user.role == Role.Student? <Procedure /> : <Home />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
           <Route path="/herramientas" element={ <Tools />} />
           <Route path="/herramientas/formulario" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
+          <Route path="/herramientas/formulario/:id" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
           <Route path="/panel" element={user.role == Role.Student || Role.Teacher? <Panel /> : <Home />} />
           <Route path="/admin/usuarios" element={user.role == Role.Admin? <Users /> : <Home />} />
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />

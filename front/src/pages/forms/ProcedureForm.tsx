@@ -17,7 +17,9 @@ import { ListBox } from "primereact/listbox";
 import { appContext } from "../../App";
 import '../../css/toolform.css';
 import { MultiSelect } from "primereact/multiselect";
-import ListBoxx from "../../components/form/ListBoxx";
+import "./../../css/procedureform.css";
+import { useParams } from 'react-router-dom';
+import { getStep } from "../../assets/endpoints";
 
 
 class Iprops {
@@ -27,8 +29,9 @@ class Iprops {
 
 export default function ToolForm(props: Iprops) {
 
+    const { id } = useParams();
+
     const [name, setName] = React.useState<string>('');
-    const [description, setDescription] = React.useState<string>('');
     const [file, setFile] = React.useState<string>('');
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [labelname, setLabelname] = React.useState<string>('Nombre del procedimiento');
@@ -37,8 +40,6 @@ export default function ToolForm(props: Iprops) {
     const [options, setoptions] = React.useState<any[]>([])
     const [idAsociados, setIdAsociados] = React.useState<[]>([]);
     const toast = useRef(null);
-    const [id, setId] = React.useState<number>(0);
-
 
     const handleName = (e: string) => {
         setName(e);
@@ -56,7 +57,18 @@ export default function ToolForm(props: Iprops) {
 
     React.useEffect(() => {        
         allSteps();
-        procedimientos();
+        if(id){
+            context.apiCalls.getProcedure(id).then((procedure: any)=>{
+                setName(procedure.name);   
+                console.log(name)           
+                //setFile(step.file);     
+            })
+            context.apiCalls.getStepByProcedureId(id).then((step: any)=>{
+                setIdAsociados(step.id)
+                console.log("dentro de useEffect toolform",idAsociados)
+            }
+            )}
+
     }, [])
 
     const allSteps = async () => {
@@ -65,8 +77,8 @@ export default function ToolForm(props: Iprops) {
         
         const options = res.map((step: any) => {
             return {
-                label: step.name,
-                value: step.id
+                name: step.name,
+                code: step.id
             }
         })
         setoptions(options);
@@ -90,7 +102,7 @@ export default function ToolForm(props: Iprops) {
    
     const procedimientos = async () => {
         const res = await context.apiCalls.getProcedures();
-    const allprocedures = await res.json();   
+        const allprocedures = await res.json();   
         
         console.log("allprocedures", allprocedures)
         console.log("allprocedures.length", allprocedures.length)
@@ -113,26 +125,14 @@ export default function ToolForm(props: Iprops) {
 
 
     return (      
-        <div className='col-12 tool-form'>           
-          
-                    <div className="col-12 panel-tool">
+        <div  className='p-3 col-12 flex flex-column justify-content-center align-items-center'>
+        <div id="procedureform" className='p-6 col-10 '>
                         <h1 className="p-2">ProcedureForm</h1>
-                        <div className="col-8 input-tool-form">                        
+                    <div id="inputsform-procedureform" className="flex row py-0 col-12">
+                        <div id="inputtxt-procedureform" className="col-6 ">                        
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
                         </div>                        
-                        <div className="p-field">
-                            {/* <ListBoxx
-                            id="items"
-                            value={nameList}
-                            // options={[
-                            //     { label: {nameList}, value: {codeList} },
-                            //     // { label: "Option 2", value: "option2" },
-                            //     // { label: "Option 3", value: "option3" },
-                            // ]}
-                            options={options}
-                            onChange={handleList}
-                            multiple
-                            /> */}
+                        <div className="p-field col-6">                            
                             <SelectMulti                            
                             handleSelect={handleSelect}
                             idAsociados={idAsociados}
@@ -141,23 +141,23 @@ export default function ToolForm(props: Iprops) {
                             
                             />
                         </div>
-                       
+                       </div>     
                         <div className="col-8 file-tool">
                             <File file={file} handleFile={handleFile}/>
                         </div>
-                        <div className="col-2">
+                        <div  id="button-procedureform" className="col-2">
                             <SubmitButton                                
                                 onclik={handleProcedure}
-                                ctx= {{name: name, image : null, ids : idAsociados}}
+                                ctx= {{name: name, image : null, stepIds : idAsociados}}
                                 isLogin={true}
                               />
                               <Toast ref={toast} />
                         </div>
-                    </div>
-                
+                    
+                </div>
        
-              
-            </div>
+        </div>  
+     
        
     );
 }

@@ -1,0 +1,19 @@
+#procedureform{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+#inputsform-procedureform{
+    gap: 0 !important;
+}
+
+#inputtxt-procedureform > div > span > input{
+    width: 26rem !important;
+}
+
+#button-procedureform{
+    margin-top: 2rem;
+}

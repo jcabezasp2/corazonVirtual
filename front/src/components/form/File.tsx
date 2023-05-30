@@ -303,7 +303,9 @@ export default function File(props:Iprops) {
         const file = event.files[0];
        
         console.log("file antes de todo",file)
-        props.handleFile(file)
+        props.handleFile(file.objectURL)
+
+        
         const reader = new FileReader();
 
         console.log("url",file.objectURL)
@@ -312,7 +314,7 @@ export default function File(props:Iprops) {
         let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
         
         console.log("blob en File",blob)
-        props.handleFile(blob)        
+        // props.handleFile(blob)        
         console.log("file",file)
         console.log("props.file",props.file)
         reader.readAsDataURL(blob);
@@ -322,8 +324,9 @@ export default function File(props:Iprops) {
         reader.onloadend = function () {                        
              
             const base64data = reader.result;
-            console.log("base64data", base64data)              
-           
+            console.log("base64data", base64data) 
+            props.handleFile(base64data)             
+            console.log("file despues de handle 64data", file) 
         };
        
        

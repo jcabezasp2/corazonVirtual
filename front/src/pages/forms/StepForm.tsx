@@ -9,11 +9,8 @@ import "./../../css/stepform.css";
 import { appContext } from "../../App";
 import InputNum from "../../components/form/InputNum";
 import InputTxt from "../../components/form/InputTxt";
-import  ListBoxx  from "../../components/form/ListBoxx";
-import { MultiSelect } from 'primereact/multiselect';
-import SelectMulti from '../../components/form/SelectMulti';
-import { Select } from '@react-three/drei';
 import Select1 from '../../components/form/Select';
+import { Toast } from "primereact/toast";
 
 class Iprops {
 
@@ -39,7 +36,8 @@ export default function StepForm(props: Iprops) {
     const context = React.useContext(appContext);
     const [placeholder, setPlaceholder] = React.useState<string>('Selecciona una herramienta')
     const [options, setoptions] = React.useState<any[]>([]);
-    const [idasociados, setidasociados] = React.useState<number>(0);
+    const [idAsociados, setidAsociados] = React.useState<number>(0);
+    const toast = useRef(null);
 
 
     const handleName = (e: string) => {
@@ -69,8 +67,8 @@ export default function StepForm(props: Iprops) {
 
    
     const handleSelect = (e: any) => {
-        setidasociados(e);
-        console.log("dentro de handleSelect stepform",idasociados)
+        setidAsociados(e);
+        console.log("dentro de handleSelect stepform",idAsociados)
     }
 
    
@@ -101,23 +99,57 @@ export default function StepForm(props: Iprops) {
 
 
     React.useEffect(() => {
-        console.log(previousStep)
         allTools();
-    }, [previousStep])
+        if(id){
+        context.apiCalls.getStep(id).then((step: any)=>{
+            setName(step.name);
+            setDescription(step.description);
+            setNum(parseInt(step.duration))
+            //setFile(step.file);
+            setpreviousStep(step.previousStep);
+
+        })
+        context.apiCalls.getToolByStepId(id).then((tool: any)=>{
+            let utensiliosId = tool.map((tool: any) => tool.id);
+            setidAsociados(utensiliosId);
+            console.log("id asociados de params id", idAsociados)
+        }
+        )
+        }
+
+  }, [])
+    
 
     async function steps() {
-        console.log('entrando en steps')
-      
-        console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idasociados)
+        if(id){
+            console.log("edit",name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idAsociados)
+            const resEdit = context.apiCalls.editStep(id,name, description, file, duration, previousStep);
+            if (resEdit.status === 200) {
+                setStatus(Status.success);
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                console.log('funciona edit teps')
+                console.log(resEdit)
+            } else {
+                setStatus(Status.error);
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                 console.log('no funciona edit teps')
+            }
+        }else{  
+        console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idAsociados)
         const res = await context.apiCalls.createStep(name, description, file, duration, previousStep);
-        if(res != null){
-            console.log('funciona createsteps')
-            console.log(res)
+            if (res.status === 200) {
+                setStatus(Status.success);
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                console.log('funciona createsteps')
+                console.log(res)
+            } else {
+                setStatus(Status.error);
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                console.log('no funciona createsteps')
+            }
+        }
+        stepTool();
 
-        }else{
-            console.log('no funciona createsteps')
-        }             
-            stepTool();
     }
 
 
@@ -130,8 +162,8 @@ export default function StepForm(props: Iprops) {
         let id = allSteps.length
         console.log(id)
        
-        console.log("idasociados", idasociados.code)
-    const res2 = await context.apiCalls.addStepTool(id, idasociados.code);
+        console.log("idAsociados", idAsociados.code)
+    const res2 = await context.apiCalls.addStepTool(id, idAsociados.code);
     if(res2 != null){
         console.log('funciona addsteptool')
         console.log(res2)
@@ -146,15 +178,23 @@ export default function StepForm(props: Iprops) {
 
 
     return (
-        <div className='pt-6 p-5'>
-            <h1 className='mt-6'>StepForm</h1>
+        <div  className='p-3 col-12 flex flex-column justify-content-center align-items-center'>
+        <div id="stepform" className='p-3 col-10 '>
+            <h1 id="h1form-stepform" className='mt-6 text-align-center'>StepForm</h1>
            
-            <div className="row py-3 col-12 justify-content-evenly gap-6">      
-                <div className='col-4' id="inputtxt">                
+            <div id="inputsform-stepform" className="row py-0 col-12">      
+                <div className='col-4 py-3' id="inputtxt-stepform">                
                     <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
                 </div>                
-                <div className='col-3 ' id="select"> 
-                            {/* <ListBoxx
+                <div className='col-3 ' id="inputnumb-stepform"> 
+                <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>
+                           
+                </div>
+            </div>             
+            
+            <div id="inputsform2-stepform" className='row  py-0 '>
+                <div className='col-3' id="inputselect-stepform">  
+                    {/* <ListBoxx
                             // options={options}
                             options={options} 
                             handleList={handleList}
@@ -164,28 +204,18 @@ export default function StepForm(props: Iprops) {
           
                             {/* <SelectMulti                            
                             handleSelect={handleSelect}
-                            idasociados={idasociados}
+                            idAsociados={idAsociados}
                             options={options}
                             placeholder='Selecciona una herramienta'
                             
                             /> */}
                             <Select1
                              handleSelect={handleSelect}
-                             idasociados={idasociados}
+                             idAsociados={idAsociados}
                              options={options}
                              placeholder={placeholder}/>
-                </div>
-                <div className='col-2' id="inputnumb">  
-                <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>   
                 </div>    
-            </div>
-            <div className='py-3'>
-                <TxtEditor
-                    handleDescription={handleDescription}
-                    description={description}
-                />
-            </div>
-            <div className='py-3'>
+                <div className='col-3' id="toggle-stepform" > 
                 <Toggle
                     onText="Es un paso previo"
                     offText="No es un paso previo"
@@ -194,19 +224,31 @@ export default function StepForm(props: Iprops) {
                     checked={previousStep}
                     onChange={handlePreviousStep}
                 />
-            </div>
-
-            {/* <File file={file} handleFile={handleFile}/> */}
-
-            <div className='pt-3 flex justify-content-center'>
-                <div className='col-4'>
-                <SubmitButton
-                    onclik={handleStep}
-                    ctx={{name: name, description : description, image : null, duration : num, previousStep : previousStep, toolId : idasociados}}
-                    isLogin={false}
+                </div>
+                </div>
+            <div className='py-0 flex justify-content-center'>
+                <div className='col-10' id="editor-stepform">
+                <TxtEditor
+                    handleDescription={handleDescription}
+                    description={description}
                 />
                 </div>
             </div>
+           
+
+            {/* <File file={file} handleFile={handleFile}/> */}
+
+            <div className='pt-8 flex justify-content-center'>
+                <div className='col-4'>
+                <SubmitButton
+                    onclik={handleStep}
+                    ctx={{name: name, description : description, image : null, duration : num, previousStep : previousStep, toolId : idAsociados}}
+                    isLogin={false}
+                />
+                 <Toast ref={toast} />
+                </div>
+            </div>
+        </div>
         </div>
     )
 }
