@@ -100,6 +100,7 @@ export default function ToolForm(props: Iprops) {
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
                  console.log('no funciona update tools')
             }
+            window.location.reload();
         }else{  
          
         const res = await context.apiCalls.createTool(name, description, file);
@@ -114,6 +115,7 @@ export default function ToolForm(props: Iprops) {
             console.log('no funciona tool')
             }     
             }
+            window.location.reload();
         
 
         }

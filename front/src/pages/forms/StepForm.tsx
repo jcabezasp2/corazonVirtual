@@ -134,6 +134,7 @@ export default function StepForm(props: Iprops) {
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
                  console.log('no funciona edit teps')
             }
+            window.location.reload();
         }else{  
         console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idAsociados)
         const res = await context.apiCalls.createStep(name, description, file, duration, previousStep);
@@ -170,6 +171,7 @@ export default function StepForm(props: Iprops) {
         }else{
             console.log('no funciona addsteptool')
         }
+        window.location.reload();
     }
 
     const handleStep = () => {

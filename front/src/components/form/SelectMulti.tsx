@@ -4,21 +4,9 @@ import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import { SelectItemOptionsType } from "primereact/selectitem";
 
 
-// class Iprops {
-//     nameSelect!: string;
-//     code!: number;
-//     allcodes!: number [];
-//     handleSelect!: Function;
-//     placeholder!: string;
-//     options?: SelectItemOptionsType;
-    
-// }
-
     
 interface Iprops {
-    // nameSelect: string;
-    // code: number;
-    // allcodes: number[];
+   
     idAsociados: [];
     handleSelect: Function;
     placeholder: string;
@@ -27,21 +15,23 @@ interface Iprops {
 interface List {
     name: string;
     code: number;
-    // nameList: string;
-    // codeList: number;
+ 
   }
 
   
 export default function SelectMulti(props: Iprops) {
-    const [selected, setSelected] = useState<List | null>(null);
-    // const [selected, setSelected] = useState<number>(0);
+    const [selected, setSelected] = useState<[] | null>(null);
+  
     const options : List[] = props.options.map((item: any) => ({
       name: item.name,
       code: item.code,
     }));
     
-    
-      console.log("selectMulti:" + props.options, props.handleSelect, props.placeholder, props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados)
+    // React.useEffect(() => {
+    //   setSelected(props.idAsociados)
+    // }, []);
+
+      console.log("selectMulti:" + props.options,  props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados)
 
 
     return (

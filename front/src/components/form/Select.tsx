@@ -27,6 +27,12 @@ export default function Select1(props : Iprops) {
         code: item.code,
       }));
 
+
+      React.useEffect(() => {
+        setSelected(props.idAsociados)
+      }, []);
+
+      
       console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados, "id asociado", props.idAsociados.code)
       
 

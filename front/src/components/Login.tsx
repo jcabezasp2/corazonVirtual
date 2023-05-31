@@ -33,6 +33,10 @@ export default function Login() {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
           }
+          onKeyDown={(e : React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+              setEmail(e.currentTarget.value);
+            }}}
         />
        
       </span>
@@ -45,7 +49,12 @@ export default function Login() {
           className="inputtext"
           id="password"
           value={password}
-          onKeyDown={(e) => e.key === "Enter"}
+          onKeyDown={(e : React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+              setPassword(e.currentTarget.value);
+              context.apiCalls.login();
+            }
+          }}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
           }
@@ -58,7 +67,7 @@ export default function Login() {
         <div className="template button signin p-p-0">
           {/*                 <Button label='Sign in' className="button signin p-p-0" onClick={handleSubmit}>  
                 </Button> */}
-          <SubmitButton
+          <SubmitButton                   
             onclik={context.apiCalls.login}
             ctx={{ email: email, password: password }}
             isLogin={true}

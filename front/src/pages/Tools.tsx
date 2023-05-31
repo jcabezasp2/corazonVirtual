@@ -47,7 +47,7 @@ export default function Claims(props: Iprops) {
 
         const res = await context.apiCalls.deleteTool(id);
       console.log("dentro de ondelete")
-      if (res.status === 200) {
+      if (res != null) {
           setStatus(Status.success);
           toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
       } else {
@@ -55,7 +55,7 @@ export default function Claims(props: Iprops) {
           toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
       }
       
-      initialize() 
+      window.location.reload(); 
       
   }
 

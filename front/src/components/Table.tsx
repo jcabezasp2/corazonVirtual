@@ -31,7 +31,7 @@ export default function Table(props: Iprops) {
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
             currentPageReportTemplate="{first} al {last} de {totalRecords}" paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
                 {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string) => { return DataColumn(key, key, { width: '10rem' }) })}
-                {props.showOptions &&<Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={props.onDelete()} onEdit={`${props.onEdit}/${rowData.Id}`} />} style={{ width: '10%' }}/>}
+                {props.showOptions &&<Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={props.onDelete(rowData.Id)} onEdit={`${props.onEdit}/${rowData.Id}`} />} style={{ width: '10%' }}/>}
             </DataTable>
         </div>
     );

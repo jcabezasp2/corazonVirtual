@@ -30,7 +30,8 @@ export default function Procedures(props: Iprops) {
         <ProcedureCard
           key={procedure.id}
           title={procedure.name}
-          destiny={`/procedimientos/${procedure.id}`}
+          destiny={`/procedimientos/formulario/${procedure.id}`}
+          // destiny={`/procedimientos/${procedure.id}`}
           image={procedure.image ? procedure.image : defaultImage}
           numberOfSteps={procedure.numberOfSteps}
           onEdit={() => {

@@ -44,9 +44,11 @@ export default function ToolForm(props: Iprops) {
     const handleName = (e: string) => {
         setName(e);
     }
-    const handleSelect = (e: any) => {
-        setIdAsociados(e);
-        console.log("dentro de handleSelect toolform",idAsociados)
+    const handleSelect = (e: any) => {             
+        let ids = (e);
+        let id = ids.map((id: any) => id.code)
+        setIdAsociados(id)   
+        console.log("dentro de handleSelect toolform--asociados",idAsociados,"ids", ids, "id", id)                
     }    
     const handleFile = (e :any) => {
         setFile(e);
@@ -58,17 +60,21 @@ export default function ToolForm(props: Iprops) {
     React.useEffect(() => {        
         allSteps();
         if(id){
-            context.apiCalls.getProcedure(id).then((procedure: any)=>{
-                setName(procedure.name);   
+            const procedureEdit = async () => {
+            console.log("id",id)
+           const res = await context.apiCalls.getProcedure(id)
+           const data = await res.json();
+           console.log(data)
+                setName(data.name);   
                 console.log(name)           
-                //setFile(step.file);     
-            })
-            context.apiCalls.getStepByProcedureId(id).then((step: any)=>{
-                setIdAsociados(step.id)
-                console.log("dentro de useEffect toolform",idAsociados)
-            }
-            )}
+                setFile(data.file);  
+                // setIdAsociados(data.steps)   
 
+
+            }
+               procedureEdit();
+        }
+     
     }, [])
 
     const allSteps = async () => {
@@ -86,7 +92,23 @@ export default function ToolForm(props: Iprops) {
     }
 
     const handleProcedure = async () => {
-        const res = await context.apiCalls.createProcedure(name, file, idAsociados);
+        if(id){
+            const resEdit = await context.apiCalls.editProcedure(id,name,file);
+            const resEdit2 = await context.apiCalls.addStepTool(id, idAsociados);
+            if (resEdit.status === 200) {
+                setStatus(Status.success);
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                console.log('funciona edit teps')
+                console.log(resEdit)
+            } else {
+                setStatus(Status.error);
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                 console.log('no funciona edit teps')
+            }
+              
+        }else{  
+
+        const res = await context.apiCalls.createProcedure(name, file);
         console.log("res",res)
         if (res.status === 200) {
             setStatus(Status.success);
@@ -95,8 +117,10 @@ export default function ToolForm(props: Iprops) {
             setStatus(Status.error);
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
         }
-
         procedimientos();
+    }
+
+        
     }
 
    
@@ -120,7 +144,10 @@ export default function ToolForm(props: Iprops) {
         }else{
             console.log('no funciona addproceduresteps')
         }
+        window.location.reload();
     }
+
+   
 
 
 

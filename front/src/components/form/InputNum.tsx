@@ -19,7 +19,10 @@ export default function InputNum(props : Iprops) {
         
         <div className="card flex justify-content-center">
         <div className="p-float-label">            
-            <InputNumber id="inputNum" value={props.num} onValueChange={(e: InputNumberValueChangeEvent) => props.handleNum(e.target.value)}  showButtons  />
+            <InputNumber id="inputNum" value={props.num} onKeyDown={(e: any) => 
+            {if( e.key === "Enter"){
+            props.handleNum(e.target.value)}}}
+            onValueChange={(e: InputNumberValueChangeEvent) => props.handleNum(e.target.value)}  showButtons  />
             <label htmlFor="inputNum">{props.labelnum}</label>
         </div> 
         </div>
