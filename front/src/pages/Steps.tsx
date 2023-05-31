@@ -12,6 +12,7 @@ import { Toast } from "primereact/toast";
 
 
 
+
 class Iprops {}
 
 export default function Steps(props: Iprops) {
@@ -43,9 +44,12 @@ export default function Steps(props: Iprops) {
        initialize();
     }, []);
 
-    const onDelete = async (id: number) => {
+
+    const  onDelete =  async (id: number) => {
+        window.location.reload();
+        console.log("id dentro de ondelete antes de borrar", id)
         const res = await context.apiCalls.deleteStep(id);
-        console.log("dentro de ondelete")
+        console.log("dentro de ondelete despues de borrar")
         if (res.status === 200) {
             setStatus(Status.success);
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
@@ -53,10 +57,11 @@ export default function Steps(props: Iprops) {
             setStatus(Status.error);
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
         }
-        initialize();
+      
        
     }
 
+  
 
   return (
     <div id="stepsView">
@@ -65,7 +70,7 @@ export default function Steps(props: Iprops) {
             dataElements={steps}
             showOptions
             onEdit = "/pasos/formulario"
-            onDelete={onDelete}
+            onDelete={(e:any) => onDelete}
             />
         <Toast ref={toast} />
     </div>
