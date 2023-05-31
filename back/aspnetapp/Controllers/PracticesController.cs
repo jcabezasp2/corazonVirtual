@@ -55,11 +55,8 @@ namespace aspnetapp.Controllers
         ///
         ///     POST /practicas
         ///     {
-        ///        "date": "2021-05-05T00:00:00",
-        ///        "observations": "Observations",
-        ///        "duration": 60,
-        ///        "procedureId": 1,
-        ///        "stepId": 1
+        ///        "ProcedureId": 1,
+        ///        "StepId": 1
         ///     }
         ///
         /// </remarks>
@@ -128,11 +125,7 @@ namespace aspnetapp.Controllers
         ///
         ///     PUT /practicas/1
         ///     {
-        ///        "date": "2023-05-20T13:52:50.921Z",
-        ///        "observations": "Observations",
-        ///        "duration": 60,
-        ///        "procedureId": 1,
-        ///        "stepId": 1
+        ///        "IsFinished": true
         ///     }
         ///
         /// </remarks>
