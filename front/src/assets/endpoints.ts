@@ -140,7 +140,6 @@ export const lockUnlockUser = async (id :string) => {
     };
     const res = await fetch(`${constants.API_URL}usuarios/bloquearDesbloquear`, opciones);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    console.log(res)
 }
 
 
@@ -288,12 +287,6 @@ export const editStep = async (id :number, name :string, description :string, im
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
-}
-
-export const blockUser = async (id :number) => {
-    const apiKey = sessionStorage.getItem('apiKey');
-
-    // TODO implementar bloqueo de usuario
 }
 
 export const createStep = async (name :string, description :string, image :string, duration :string, previousStep :boolean) => {
