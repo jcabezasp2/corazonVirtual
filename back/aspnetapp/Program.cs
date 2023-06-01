@@ -37,6 +37,7 @@ builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=po
 
 
 var db = builder.Services.BuildServiceProvider().GetService<dataContext>();
+db.Database.Migrate();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
