@@ -501,19 +501,23 @@ namespace aspnetapp.Controllers
                 // Alternatively, you can regenerate the security stamp using:
                 user.SecurityStamp = Guid.NewGuid().ToString();
             }
+            
+            var responseMsg = "";
 
             if (user.LockoutEnabled)
             {
                 user.LockoutEnabled = false;
+                responseMsg = "Usuario desbloqueado";
             }
             else
             {
                 user.LockoutEnabled = true;
+                responseMsg = "Usuario bloqueado";
             }
 
             await _userManager.UpdateAsync(user);
 
-            return Ok();
+            return Ok(responseMsg);
         }
     }
 }
