@@ -3,10 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2rem;
     
 }
 
 #inputsform-procedureform{
+    display: flex;
+    flex-direction: column;
     gap: 0 !important;
 }
 

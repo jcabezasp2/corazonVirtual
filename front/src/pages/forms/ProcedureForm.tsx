@@ -13,13 +13,14 @@ import InputNum from "../../components/form/InputNum";
 import InputTxt from "../../components/form/InputTxt";
 import Select from "../../components/form/Select";
 import SelectMulti from "../../components/form/SelectMulti";
-import { ListBox } from "primereact/listbox";
 import { appContext } from "../../App";
 import '../../css/toolform.css';
 import { MultiSelect } from "primereact/multiselect";
 import "./../../css/procedureform.css";
 import { useParams } from 'react-router-dom';
 import { getStep } from "../../assets/endpoints";
+import PickListt from "../../components/form/Picklist";
+import PickSteps from '../../interfaces/PickSteps';
 
 
 class Iprops {
@@ -31,26 +32,31 @@ export default function ToolForm(props: Iprops) {
 
     const { id } = useParams();
 
-    const [name, setName] = React.useState<string>('');
-    const [file, setFile] = React.useState<string>('');
-    const [status, setStatus] = React.useState<Status>(Status.error);
-    const [labelname, setLabelname] = React.useState<string>('Nombre del procedimiento');
+    const [name, setName] = useState<string>('');
+    const [file, setFile] = useState<string>('');
+    const [status, setStatus] = useState<Status>(Status.error);
+    const [labelname, setLabelname] = useState<string>('Nombre del procedimiento');
     const context = React.useContext(appContext);    
-    const [placeholder, setPlaceholder] = React.useState<string>('Selecciona los pasos asociados');    
-    const [options, setoptions] = React.useState<any[]>([])
-    const [idAsociados, setIdAsociados] = React.useState<[]>([]);
+    const [placeholder, setPlaceholder] = useState<string>('Selecciona los pasos asociados');    
+    const [options, setoptions] = useState<any[]>([])
+    const [idAsociados, setIdAsociados] = useState<string[]>([]);
     const toast = useRef(null);
+    const [source, setSource] = useState<PickSteps[]>([]);
+    const [target, setTarget] = useState<PickSteps[]>([]);
 
     const handleName = (e: string) => {
         setName(e);
     }
-    const handleSelect = (e: any) => {             
-        let ids = (e);
-        let id = ids.map((id: any) => id.code)
-        setIdAsociados(id)   
-        console.log("dentro de handleSelect toolform--asociados",idAsociados,"ids", ids, "id", id)                
+    const handleSelect = (e: PickSteps[]) => {             
+        // let ids = (e);
+        // let id = ids.map((id: any) => id.code)
+        // setIdAsociados(id)   
+        // console.log("dentro de handleSelect toolform--asociados",idAsociados,"ids", ids, "id", id) 
+        const ids = e.map((item) => item.code);
+        setIdAsociados(ids);
+        console.log('ids asociados', idAsociados);               
     }    
-    const handleFile = (e :any) => {
+    const handleFile = (e :string) => {
         setFile(e);
         console.log("dentro de handleFile procedureform",file)
     }  
@@ -68,7 +74,7 @@ export default function ToolForm(props: Iprops) {
                 setName(data.name);   
                 console.log(name)           
                 setFile(data.file);  
-                // setIdAsociados(data.steps)   
+                setIdAsociados(data.steps)   
 
 
             }
@@ -81,14 +87,22 @@ export default function ToolForm(props: Iprops) {
         const res = await context.apiCalls.getSteps();
         console.log("res",res)
         
-        const options = res.map((step: any) => {
+        const steps = res.map((step: PickSteps) => {
             return {
+                id: step.id,
+                code: step.id,
                 name: step.name,
-                code: step.id
-            }
-        })
-        setoptions(options);
-        console.log("options",options)
+                description: step.description,
+                image: step.image,
+                rating: step.id,
+
+               
+        }})
+        
+
+        setSource(steps);
+        // setoptions(options);
+        console.log("source",source)
     }
 
     const handleProcedure = async () => {
@@ -151,6 +165,16 @@ export default function ToolForm(props: Iprops) {
        
     }
 
+    const onChange = (event: { source: PickSteps[]; target: PickSteps[] }) => {
+        setSource(event.source);
+        console.log("evente source", source)
+        setTarget(event.target);
+        console.log("evente target", target)
+        const ids = target.map((item) => item.code);
+        setIdAsociados(ids);
+        console.log('ids asociados', idAsociados); 
+    };
+
    
 
 
@@ -163,14 +187,9 @@ export default function ToolForm(props: Iprops) {
                         <div id="inputtxt-procedureform" className="col-6 ">                        
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
                         </div>                        
-                        <div className="p-field col-6">                            
-                            <SelectMulti                            
-                            handleSelect={handleSelect}
-                            idAsociados={idAsociados}
-                            options={options}
-                            placeholder={placeholder}
-                            
-                            />
+                        <div className="p-field col-10">                            
+                          
+                            <PickListt source={source} onChange={onChange} target={target}/>
                         </div>
                        </div>     
                         <div className="col-8 file-tool">

@@ -2,7 +2,7 @@
     width: min-content;
     margin: auto;
     display: grid;
-    grid-template-columns: 200px 200px 200px;
+    grid-template-columns: 8rem 8rem 8rem;
    
 }
 
