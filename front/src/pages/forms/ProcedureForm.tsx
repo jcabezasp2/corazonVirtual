@@ -95,11 +95,13 @@ export default function ToolForm(props: Iprops) {
         if(id){
             const resEdit = await context.apiCalls.editProcedure(id,name,file);
             const resEdit2 = await context.apiCalls.addStepTool(id, idAsociados);
-            if (resEdit.status === 200) {
+            if (resEdit.status === 200 && resEdit2 === 200) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
                 console.log('funciona edit teps')
                 console.log(resEdit)
+                console.log(resEdit2)
+                window.location.reload();
             } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
@@ -113,11 +115,12 @@ export default function ToolForm(props: Iprops) {
         if (res.status === 200) {
             setStatus(Status.success);
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+             procedimientos();
         } else {
             setStatus(Status.error);
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
         }
-        procedimientos();
+       
     }
 
         
@@ -141,10 +144,11 @@ export default function ToolForm(props: Iprops) {
     if(res2 != null){
         console.log('funciona addproceduresteps')
         console.log(res2)
+        window.location.reload();
         }else{
             console.log('no funciona addproceduresteps')
         }
-        window.location.reload();
+       
     }
 
    

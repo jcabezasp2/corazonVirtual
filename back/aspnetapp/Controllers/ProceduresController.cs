@@ -97,7 +97,7 @@ namespace aspnetapp.Controllers
         ///     PUT /procedimientos/1
         ///     {
         ///        "name": "string",
-        ///        "image": file
+        ///        "image": "string"
         ///     }
         ///
         /// </remarks>
@@ -144,7 +144,7 @@ namespace aspnetapp.Controllers
         ///     POST /procedimientos
         ///     {
         ///        "name": "string",
-        ///        "image": file,
+        ///        "image": "string",
         ///     }
         ///
         /// </remarks>
@@ -292,11 +292,25 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
-            var procedureSteps = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).ToListAsync();
-            if (procedureSteps == null)
+            var index = 0;
+
+            foreach (var stepId in stepIds)
             {
-                return NotFound();
+                var step = await _context.Steps.FindAsync(stepId);
+                if (step == null)
+                {
+                    return NotFound();
+                }
+                var procedureStep = new ProcedureStep
+                {
+                    ProcedureId = procedure.Id,
+                    StepId = step.Id,
+                    Order = index
+                };
+                index++;
+                _context.ProcedureStep.Add(procedureStep);
             }
+
             await _context.SaveChangesAsync();
 
             return Ok();
