@@ -38,7 +38,7 @@ export default function SelectMulti(props: Iprops) {
         <div className="card flex justify-content-center">
             <MultiSelect
                 display="chip"
-                value={props.idAsociados}
+                value={selected}
                 onChange={(e: MultiSelectChangeEvent) => {
                     setSelected(e.value);
                     props.handleSelect(e.value);
