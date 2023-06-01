@@ -175,8 +175,12 @@ export const getProcedure = async (id :number) => {
 }
 
 // export const addProcedure = async (name :string, description :string, image :string) => {
-   export const createProcedure = async (name : string, image : string) => {
+   export const createProcedure = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
+    const { name, imageDirection } = ctx;
+    console.log('Aqui', name, imageDirection)
+
+
     let opciones :any = {
         method: 'POST',
         headers: {
@@ -184,9 +188,10 @@ export const getProcedure = async (id :number) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "image": image })
+        body: JSON.stringify({ "name": name, "image": imageDirection })
     };
     const res = await fetch(`${constants.API_URL}procedimientos`, opciones);
+    console.log(res)
     return res
 }
 
@@ -565,15 +570,20 @@ export const getImage = async (path :string) => {
     return data        
 }
 
+// function to upload an image to the server
 export const uploadImage = async (file :any) => {
+    console.log('entrando a uploadImage')
     const apiKey = sessionStorage.getItem('apiKey');
+    let formData = new FormData();
+    formData.append('image', file);
 
     let opciones :any = {
         method: 'POST',
         headers: {
-            'Api-Key': apiKey
+            'Api-Key': apiKey,
+            'Content-Type': 'multipart/form-data'
         },
-        body: file
+        body: formData
     };
 
     const res = await fetch(`${constants.API_URL}images`, opciones);
@@ -581,4 +591,29 @@ export const uploadImage = async (file :any) => {
     const data = await res.json();
     console.log(data);
     return data        
+
+        
+}
+
+// function to upload an image to the server
+export const uploadImageBase64 = async (file :any) => {
+    
+    const apiKey = sessionStorage.getItem('apiKey');
+    const base64 = file.split(',')[1];
+    
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Api-Key': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "image": base64 })
+    };
+
+    const res = await fetch(`${constants.API_URL}images/base64`, opciones);
+    console.log(res);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    return res.text();
+
+
 }

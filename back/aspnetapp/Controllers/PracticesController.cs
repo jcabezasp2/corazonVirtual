@@ -43,7 +43,26 @@ namespace aspnetapp.Controllers
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<ActionResult<IEnumerable<Practice>>> GetPractices()
         {
-            return await _context.Practices.ToListAsync();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var role = await _userManager.GetRolesAsync(user);
+
+            if (role.Contains("Teacher"))
+            {
+                return await _context.Practices.ToListAsync();
+            }
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            return await _context.Practices.Where(x => x.UserId == user.Id).ToListAsync(); 
+
+
+
+
+
+
         }
 
         /// <summary>
