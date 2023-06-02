@@ -26,8 +26,6 @@ export default function Users(props: Iprops) {
     const initialize = async () => {
         const response = await context.apiCalls.getAllUsers();
 
-        console.log(response)
-
         const users = response.map((user: any) => {
             return {
                 Id: user.user.id,
@@ -45,7 +43,7 @@ export default function Users(props: Iprops) {
         initialize();
     }, []);
 
-    const blockOptions = (user: any) => {
+    const blockOptions = (user : any) => {
         if (!user.user.lockoutEnabled) {
             if (user.role == Role.Admin) {
                 return <Button label="Bloquear" className="p-button-danger" disabled />
@@ -58,12 +56,9 @@ export default function Users(props: Iprops) {
     }
 
     const lockUnlock = async (user: any) => {
-
         if (user.role == Role.Admin) return;
-        let res: Response = await context.apiCalls.lockUnlockUser(user.user.id);
-        console.log(res);
+        await context.apiCalls.lockUnlockUser(user.user.id);
         initialize();
-
     }
 
     return <div id="usersView">

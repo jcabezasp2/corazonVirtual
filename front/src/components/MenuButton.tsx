@@ -18,13 +18,15 @@ export default function MenuButton() {
   React.useEffect(() => {
 
       let options: MenuItem[] = [];
+
+      let loggedItems: MenuItem[] = publicItems.filter((item: MenuItem) => item.label !== 'Informacion');
     
       if (context.user.role === Role.Student) {
-        options = [...publicItems, ...studentItems, ...commonItems];
+        options = [...loggedItems, ...studentItems, ...commonItems];
       } else if (context.user.role === Role.Teacher) {
-        options = [...publicItems, ...teacherItems, ...commonItems];
+        options = [...loggedItems, ...teacherItems, ...commonItems];
       } else if (context.user.role === Role.Admin) {
-        options = [...adminItems, ...commonItems];
+        options = [...loggedItems, ...commonItems];
       }else{
         options = [...publicItems];
       }
