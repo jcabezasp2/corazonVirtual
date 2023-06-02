@@ -46,13 +46,17 @@ export default function Steps(props: Iprops) {
 
 
     const  onDelete =  async (id: number) => {
-        window.location.reload();
+        
         console.log("id dentro de ondelete antes de borrar", id)
         const res = await context.apiCalls.deleteStep(id);
         console.log("dentro de ondelete despues de borrar")
-        if (res.status === 200) {
-            setStatus(Status.success);
+        if (res.ok) {
+            setStatus(Status.success);         
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+            setTimeout(function(){
+                window.location.reload();
+             }, 5000);
+            
         } else {
             setStatus(Status.error);
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
