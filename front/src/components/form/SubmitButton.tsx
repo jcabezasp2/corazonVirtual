@@ -70,7 +70,7 @@ export default function SubmitButton(props : Iprops) {
 
         context.changeUSer(newUser);
         setStatus(Status.success);
-      } else if (response.status === 200) {
+      } else if (response.status === 200 || response.status === 201) {
         setStatus(Status.success);
       } else if (response.status === 404) {
         setStatus(Status.info);

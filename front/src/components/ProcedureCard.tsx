@@ -7,7 +7,7 @@ import OptionsButton from './OptionsButton';
 import React from "react";
 
 class Iprops {
-  key!: number;
+  id!: number;
   title!: string;
   destiny!: string;
   image!: string;
@@ -26,9 +26,11 @@ export default function ProcedureCard(props: Iprops) {
       src={props.image}
     />
   );
+
+   console.log("en procedurecard: id", props.id)
   const footer = (
     <div className="flex flex-wrap justify-content-end gap-2">
-      {context.user.role == Role.Teacher && <OptionsButton id={props.key} onEdit={props.destiny} onDelete={props.onDelete(props.key)} />}
+      {context.user.role == Role.Teacher && <OptionsButton id={props.id} onEdit={props.destiny} onDelete={props.onDelete(props.id)} />}
       <Button label="Ir al procedimiento" onClick={()=>{navigate(props.destiny)} }/>
     </div>
   );

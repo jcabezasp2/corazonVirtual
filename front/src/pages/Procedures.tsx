@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { appContext } from "../App";
@@ -8,7 +8,8 @@ import defaultImage from "./../../src/img/defaultImage.jpeg";
 import { Role } from "../assets/constants";
 import { DataView } from "primereact/dataview";
 import { Skeleton } from "primereact/skeleton";
-
+import { Toast } from "primereact/toast";
+import { Status } from "../assets/constants";
 interface Iprocedure {
   id: number;
   name: string;
@@ -23,21 +24,43 @@ export default function Procedures(props: Iprops) {
   const context = React.useContext(appContext);
 
   const [procedures, setProcedures] = React.useState([]);
+  const toast = useRef(null);
+  const [status, setStatus] = React.useState<Status>(Status.error);
+
+
+  const onDelete = async (id: number) => {
+    
+    console.log("id dentro de ondelete antes de borrar", id)
+    const res = await context.apiCalls.deleteProcedure(id);
+    console.log("dentro de ondelete despues de borrar: res", res)
+    if (res.ok) {
+        setStatus(Status.success);
+        toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+        setTimeout(function(){
+          window.location.reload();
+       }, 5000);
+    } else {
+        setStatus(Status.error);
+        toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+    }
+  }
+
 
   const gridItem = (procedure: any) => {
+    
     return procedure ? (
       <div className="procedure">
         <ProcedureCard
-          key={procedure.id}
+          id={procedure.id}
           title={procedure.name}
           destiny={`/procedimientos/formulario/${procedure.id}`}
           // destiny={`/procedimientos/${procedure.id}`}
           image={procedure.image ? procedure.image : defaultImage}
           numberOfSteps={procedure.numberOfSteps}
           onEdit={() => {
-            navigate(`/procedimientos/formulario/${procedure.id}`);
+            navigate(`procedimientos/formulario/${procedure.id}`);
           }}
-          onDelete={context.apiCalls.deleteProcedure}
+          onDelete={(e: any) => onDelete}
         />
       </div>
     ) : (
@@ -66,6 +89,7 @@ export default function Procedures(props: Iprops) {
     const procedures = await res.json();
     setProcedures(
       procedures.map((procedure: any) => {
+        console.log("en procedures: procedure.id",procedure.id)
         return {
           id: procedure.id,
           name: procedure.name,
@@ -87,6 +111,9 @@ export default function Procedures(props: Iprops) {
   React.useEffect(() => {
     initialize();
   }, []);
+
+
+
 
   return (
     <div id="proceduresView">
@@ -111,6 +138,7 @@ export default function Procedures(props: Iprops) {
           />
         </div>
       </div>
+      <Toast ref={toast} />
     </div>
   );
 }

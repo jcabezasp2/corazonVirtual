@@ -11,51 +11,71 @@ import File from "../../components/form/File";
 import SubmitButton from "../../components/form/SubmitButton";
 import InputNum from "../../components/form/InputNum";
 import InputTxt from "../../components/form/InputTxt";
-import Select from "../../components/form/Select";
-import SelectMulti from "../../components/form/SelectMulti";
-import { ListBox } from "primereact/listbox";
 import { appContext } from "../../App";
-import '../../css/toolform.css';
+import '../../css/picklist.css';
 import { MultiSelect } from "primereact/multiselect";
 import "./../../css/procedureform.css";
 import { useParams } from 'react-router-dom';
 import { getStep } from "../../assets/endpoints";
+import { FileUpload } from 'primereact/fileupload';
+import PickListt from "../../components/form/Picklist";
+import PickSteps from '../../interfaces/PickSteps';
 
 
 class Iprops {
 }
 
-
+interface Iprocedure {
+    name: string;
+    imageDirection: string;
+}
 
 export default function ToolForm(props: Iprops) {
 
-    const { id } = useParams();
+    const context = React.useContext(appContext);
 
-    const [name, setName] = React.useState<string>('');
+    const { id } = useParams();
+    const [name , setName] = useState<string>('');
+    const [imageDirection , setImageDirection] = useState<string>('');
+    const [ctx, setCtx] = useState<any>(null);
     const [file, setFile] = React.useState<string>('');
     const [status, setStatus] = React.useState<Status>(Status.error);
-    const [labelname, setLabelname] = React.useState<string>('Nombre del procedimiento');
-    const context = React.useContext(appContext);    
+    const [labelname, setLabelname] = React.useState<string>('Nombre del procedimiento');  
     const [placeholder, setPlaceholder] = React.useState<string>('Selecciona los pasos asociados');    
     const [options, setoptions] = React.useState<any[]>([])
     const [idAsociados, setIdAsociados] = React.useState<[]>([]);
     const toast = useRef(null);
+    const [source, setSource] = useState<PickSteps[]>([]);
+    const [target, setTarget] = useState<PickSteps[]>([]);
+
+
+    React.useEffect(() => {
+        let currentCtx : Iprocedure = {
+            name: name ? name : '',
+            imageDirection: imageDirection ? imageDirection :  '',
+        };
+        setCtx(currentCtx);
+    }, [name, imageDirection]);
+
+
+
+    const onUpload = async ({files} : any) => {
+        console.log('files', files)
+        const [file] = files;
+        const reader = new FileReader();
+        reader.onload = async (e: any) => {
+            let result = await context.apiCalls.uploadImageBase64(e.target.result);
+            console.log('result', result)
+            setImageDirection(result);
+        };
+        reader.readAsDataURL(file);
+
+    };
+
 
     const handleName = (e: string) => {
         setName(e);
     }
-    const handleSelect = (e: any) => {             
-        let ids = (e);
-        let id = ids.map((id: any) => id.code)
-        setIdAsociados(id)   
-        console.log("dentro de handleSelect toolform--asociados",idAsociados,"ids", ids, "id", id)                
-    }    
-    const handleFile = (e :any) => {
-        setFile(e);
-        console.log("dentro de handleFile procedureform",file)
-    }  
-    
-          
 
     React.useEffect(() => {        
         allSteps();
@@ -69,9 +89,9 @@ export default function ToolForm(props: Iprops) {
                 console.log(name)           
                 setFile(data.file);  
                 // setIdAsociados(data.steps)   
+                setIdAsociados(data.steps)   
 
-
-            }
+             }
                procedureEdit();
         }
      
@@ -80,16 +100,32 @@ export default function ToolForm(props: Iprops) {
     const allSteps = async () => {
         const res = await context.apiCalls.getSteps();
         console.log("res",res)
-        
-        const options = res.map((step: any) => {
-            return {
-                name: step.name,
-                code: step.id
-            }
-        })
-        setoptions(options);
-        console.log("options",options)
+    const steps = res.map((step: PickSteps) => {
+        return {
+            id: step.id,
+            code: step.id,
+            name: step.name,          
+            description: step.description,
+            image: step.image,
+            rating: step.id,
+       
+        }})
+
+
+        setSource(steps);
+        // setoptions(options);
+        console.log("source",source)
     }
+
+    const handleSelect = (e: PickSteps[]) => {             
+        // let ids = (e);
+        // let id = ids.map((id: any) => id.code)
+        // setIdAsociados(id)   
+        // console.log("dentro de handleSelect toolform--asociados",idAsociados,"ids", ids, "id", id) 
+        const ids = e.map((item) => item.code);
+        setIdAsociados(ids);
+        console.log('ids asociados', idAsociados);               
+    }    
 
     const handleProcedure = async () => {
         if(id){
@@ -109,7 +145,6 @@ export default function ToolForm(props: Iprops) {
             }
               
         }else{  
-
         const res = await context.apiCalls.createProcedure(name, file);
         console.log("res",res)
         if (res.status === 200) {
@@ -122,11 +157,9 @@ export default function ToolForm(props: Iprops) {
         }
        
     }
-
         
     }
 
-   
     const procedimientos = async () => {
         const res = await context.apiCalls.getProcedures();
         const allprocedures = await res.json();   
@@ -136,11 +169,9 @@ export default function ToolForm(props: Iprops) {
        
         let id = allprocedures.length
         console.log(id)
-
    
     const res2 = await context.apiCalls.addStepTool(id, idAsociados);
         console.log("ids asociados",idAsociados)
-
     if(res2 != null){
         console.log('funciona addproceduresteps')
         console.log(res2)
@@ -148,12 +179,18 @@ export default function ToolForm(props: Iprops) {
         }else{
             console.log('no funciona addproceduresteps')
         }
-       
+
     }
 
-   
-
-
+    const onChange = (event: { source: PickSteps[]; target: PickSteps[] }) => {
+        setSource(event.source);
+        console.log("evente source", source)
+        setTarget(event.target);
+        console.log("evente target", target)
+        const ids = target.map((item) => item.code);
+        setIdAsociados(ids);
+        console.log('ids asociados', idAsociados); 
+    };
 
     return (      
         <div  className='p-3 col-12 flex flex-column justify-content-center align-items-center'>
@@ -163,18 +200,13 @@ export default function ToolForm(props: Iprops) {
                         <div id="inputtxt-procedureform" className="col-6 ">                        
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
                         </div>                        
-                        <div className="p-field col-6">                            
-                            <SelectMulti                            
-                            handleSelect={handleSelect}
-                            idAsociados={idAsociados}
-                            options={options}
-                            placeholder={placeholder}
-                            
-                            />
+                        <div id="picklist" className="p-field col-10"> 
+                         <PickListt source={source} onChange={onChange} target={target}/>
                         </div>
                        </div>     
-                        <div className="col-8 file-tool">
-                            <File file={file} handleFile={handleFile}/>
+                        <div className="p-float-label col-8 file-tool">
+                        <FileUpload name="image" customUpload={true} uploadHandler={onUpload}  mode="basic" accept="image/*" auto={true} />
+                            <label htmlFor="file">Upload</label>
                         </div>
                         <div  id="button-procedureform" className="col-2">
                             <SubmitButton                                

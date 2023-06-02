@@ -50,12 +50,15 @@ export default function Claims(props: Iprops) {
       if (res != null) {
           setStatus(Status.success);
           toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+          setTimeout(function(){
+            window.location.reload();
+         }, 5000); 
       } else {
           setStatus(Status.error);
           toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
       }
       
-      window.location.reload(); 
+    
       
   }
 
