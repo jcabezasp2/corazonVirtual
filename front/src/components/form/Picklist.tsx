@@ -18,7 +18,7 @@ export default function PickListt(props : Iprops) {
   
     const itemTemplate = (item: PickSteps) => {
         return (
-            <div className="flex flex-wrap p-2 align-items-center gap-3">
+            <div  className="flex flex-wrap p-2 align-items-center gap-3">
                 {/* <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={`${item.image}`} alt={item.name} /> */}
                 <div className="flex-1 flex flex-column gap-2">
                     <span className="font-bold">{item.name}</span>
@@ -32,11 +32,11 @@ export default function PickListt(props : Iprops) {
     };
 
     return (
-        <div className="card">
+        <div id="picklist-items" className="card picklist-items">
             <PickList 
             source={props.source} 
             target={props.target} 
-            onChange={props.onChange} 
+            onChange={(e: any) => props.onChange} 
             itemTemplate={itemTemplate} 
             breakpoint="1400px" 
             style={{display:'flex', flexDirection:'row'}}
