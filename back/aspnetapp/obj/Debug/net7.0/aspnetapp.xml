@@ -904,5 +904,17 @@
         <member name="M:aspnetapp.Migrations._10.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:aspnetapp.Migrations._11">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._11.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._11.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._11.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
