@@ -35,6 +35,7 @@ namespace aspnetapp.Controllers
         /// <response code="401">If the user is not authenticated</response>
         /// <response code="500">If there is a connection failure with the database </response>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<ActionResult<string>> PostImage([FromForm] Image image)
         {
             if (image.Img != null)
@@ -117,6 +118,7 @@ namespace aspnetapp.Controllers
         /// <response code="401">If the user is not authenticated</response>
         /// <response code="500">If there is a connection failure with the database </response>
         [HttpPost("base64")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<ActionResult<string>> PostImageBase64([FromBody] Image64 image)
         {
            // convert string from base64 to image
