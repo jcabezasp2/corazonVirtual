@@ -15,21 +15,21 @@ export default function Information(props: Iprops) {
         <Card className="card">
           <Image
             onClick={() =>
-              window.location.replace(
-                "https://alojaweb.educastur.es/web/iesmontenaranco"
-              )
+              window.location.replace("https://www.iesaglinares.com/")
             }
-            src="./src/img/logo_monte_naranco.png"
+            width={"auto"}
+            src="./src/img/logo_augusto.png"
             alt="Logotipo del instituto Monte Naranco"
           />
         </Card>
         <Card className="card">
           <Image
             onClick={() =>
-              window.location.replace("https://www.iesaglinares.com/")
+              window.location.replace(
+                "https://alojaweb.educastur.es/web/iesmontenaranco"
+              )
             }
-            width={"auto"}
-            src="./src/img/logo_augusto.png"
+            src="./src/img/logo_monte_naranco.png"
             alt="Logotipo del instituto Monte Naranco"
           />
         </Card>

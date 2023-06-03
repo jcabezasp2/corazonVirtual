@@ -9,6 +9,7 @@ import { Image } from 'primereact/image';
 import defaultImage from './../img/defaultImage.jpeg'
 import Modal from "../components/Modal";
 import { Toast } from "primereact/toast";
+import "./../css/steps.css"
 
 
 
@@ -69,6 +70,7 @@ export default function Steps(props: Iprops) {
 
   return (
     <div id="stepsView">
+
         <Button label="Crear paso" severity="secondary" onClick={()=> {navigate("/pasos/formulario")}}/>
         <Table 
             dataElements={steps}

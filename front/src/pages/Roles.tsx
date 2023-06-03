@@ -28,7 +28,7 @@ export default function Roles(props: Iprops) {
             return {
                 Id: rol.id,
                 Nombre: rol.name,
-                Permisos: <Button label="Editar permisos" severity="secondary" onClick={()=> {navigate(`/admin/roles/${rol.id}/permisos`)}}/>
+                // Permisos: <Button label="Editar permisos" severity="secondary" onClick={()=> {navigate(`/admin/roles/${rol.id}/permisos`)}}/>
             }
         });
         setRoles(roles);
@@ -39,7 +39,6 @@ export default function Roles(props: Iprops) {
      }, []);
 
   return <div id="roleView">
-    <Button label="Crear rol" severity="secondary" onClick={()=> {navigate("/admin/roles/formulario")}}/>
     <Table dataElements={roles} onDelete={()=>{}} onEdit=""/>
 
   </div>;

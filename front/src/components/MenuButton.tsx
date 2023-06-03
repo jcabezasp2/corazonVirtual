@@ -164,7 +164,7 @@ export default function MenuButton() {
           maskClassName="mask"
           className="speeddial-bottom-right"
           model={context.user.role === Role.Student? [ ...logout, ...studentItems, ...commonItems] : context.user.role === Role.Teacher? [ ...logout, ...teacherItems, ...commonItems] : context.user.role === Role.Admin? [ ...logout, ...adminItems, ...commonItems] : [...publicItems]}
-          radius={180}
+          radius={280}
           type="quarter-circle"
           direction="down-left"
           transitionDelay={180}

@@ -4,13 +4,11 @@
     
 }
 
-.p-speeddial-item{
 
-}
 
 .p-speeddial-item{
     width: 70% !important;
-    background-color: transparent !important;
+    border-radius: 50%;
 }
 
 .p-speeddial-item:hover {
@@ -31,13 +29,17 @@ button:hover svg {
    border: 0 !important;
 }
 
+.p-speeddial-action{
+    width: 4rem !important;
+}
+
 .p-speeddial-item:hover svg{
     fill:url(#MyGradient);
 }
 
 
 .p-speeddial-item > a{
-    background-color: transparent;
+    background-color: #A9A9A9 !important;
     padding: 15%;
 }
 

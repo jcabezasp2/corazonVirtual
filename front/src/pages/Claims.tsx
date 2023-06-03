@@ -40,7 +40,6 @@ export default function Claims(props: Iprops) {
      }, []);
 
   return <div id="claimsView">
-    <Button label="Crear permiso" severity="secondary" onClick={()=> {navigate("/admin/permisos/formulario")}}/>
     <Table dataElements={claims} onDelete={()=>{}} onEdit=""/>
 
   </div>;
