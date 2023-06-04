@@ -11,7 +11,8 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls, Sky } from "@react-three/drei";
 import { Suspense } from "react";
 import Model from "../components/Model";
-import { classNames } from "primereact/utils";
+import { TabView, TabPanel } from 'primereact/tabview';
+
 
 interface IStep {
     id: number;
@@ -20,6 +21,7 @@ interface IStep {
     image: string;
     duration: number;
     previousStep: boolean;
+    tools: any[];
 }
 
 export default function Procedure() {
@@ -33,28 +35,30 @@ export default function Procedure() {
   const [steps, setSteps] = React.useState([]);
   const [currentStep, setCurrentStep] = React.useState<IStep>();
   const [currentStepIndex, setCurrentStepIndex] = React.useState(0);
-  const [tool, setTool] = React.useState<any>();
 
   React.useEffect(() => {
     if (steps) {
       setCurrentStep(steps[currentStepIndex]);
       setProgress(Math.round((currentStepIndex / steps.length) * 100));
-        if(currentStep != undefined){         
-        const tool = context.apiCalls.getToolByStepId(currentStep.id);
-        //if(tool[0].modelo != undefined)
-        //setTool(tool[0]?.modelo || null);
-        }
     }
   }, [currentStepIndex]);
 
   const initialize = async () => {
     const res = await context.apiCalls.getStepByProcedureId(id);
-    setSteps(res);
+    const steps = res.map((item: any, index: number) => {
+      return {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        image: item.image,
+        duration: item.duration,
+        previousStep: item.previousStep,
+        tools: item.tools,
+        index: index,
+      };
+    });
+    setSteps(steps);
     setCurrentStep(res[0]);
-    const tools = await context.apiCalls.getToolByStepId(res[0].id);
-    console.log('tools', tools)
-    setTool(tools[0].modelo);
-    console.log('tool', tool)
     setIsLoading(false);
   };
 
@@ -69,31 +73,41 @@ export default function Procedure() {
      <>
         <Timeline value={steps} selected={currentStepIndex}></Timeline>
         <div className="selectedStep">
-            <Card  title={currentStep?.name}>
-                <p>{currentStep?.description}</p>
-                {tool.modelo != undefined && (
-                    <Canvas camera={{ position: [0, 0, 3] }}>
-                    <Suspense fallback={null}>
-                      <Model path={`${tool.Modelo}`} />
-                    </Suspense>
-                    <OrbitControls />
-                    <ambientLight intensity={0.3} />
-                    <directionalLight intensity={0.4} position={[0, 1, 1]} />
-                    <Sky sunPosition={[0, 1, 1]} turbidity={40} />
-                  </Canvas>
-                )}
+            <Card  >
+                {(currentStepIndex < steps.length)?
+                 <p>{currentStep?.description}</p>
+                :
+                <p>Procedimiento finalizado</p>}
+                <TabView>
+                  {
+                   currentStep?.tools.map((tool: any) => {
+                    return (
+                      <TabPanel header={tool.name}>
+                        <p>{tool.description}</p>
+                        <Canvas camera={{ position: [0, 0, 3] }}>
+                          <Suspense fallback={null}>
+                            <Model path={`${tool.modelo}`} scale={tool.optimalScale} />
+                          </Suspense>
+                          <OrbitControls />
+                          <ambientLight intensity={0.3} />
+                          <directionalLight intensity={0.4} position={[0, 1, 1]} />
+                          <Sky sunPosition={[0, 1, 1]} turbidity={40} />
+                        </Canvas>
+                      </TabPanel>
+                    );
+                  })}
+                </TabView>
             </Card>
-            <ProgressBar value={progress}></ProgressBar>
-            <Button label="Avanzar" className="" onClick={() => {
-                if (currentStepIndex <= steps.length - 1) {
-                    console.log('currentStepIndex', currentStepIndex)
-                    setCurrentStepIndex(currentStepIndex + 1);
-                } else {
-                    // TODO hacer algo cuando se termina el procedimiento
-                }
+            {(currentStepIndex < steps.length) ? <Button label="Avanzar" className="" onClick={() => {     
+                    setCurrentStepIndex(currentStepIndex + 1);   
             }}></Button>
+          : <Button label="Volver a inicio" className="" onClick={() => {
+            navigate("/");
+          }}></Button>
+          }
+            
         </div>
-        {(currentStepIndex == steps.length) && <Card className="finalCard" title="Finalizado"></Card> }
+        <ProgressBar className="progress" value={progress}></ProgressBar>
       </>}
     </div>
   );

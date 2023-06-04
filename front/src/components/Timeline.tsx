@@ -15,19 +15,39 @@ interface IStep {
   color: string;
   image: string;
   previousStep: boolean;
+  class: string;
+  index: number;
+  typography: string;
 }
 
 export default function Timeline(props: Iprops) {
   const navigate = useNavigate();
 
+  const calculateClass = (index: number) => {
+    let result : string;
+
+    if (index === props.selected) {
+        result = "selectedStep";
+    } else if (index < props.selected) {
+        result = "stepDone";
+    } else if(index > (props.selected + 5)) {
+        result = "stepHidden";
+    }else {
+        result = "step";
+    }
+
+
+    return result;
+  };
+
   const initialize = async () => {
-    console.log(props.value);
-    const steps: IStep[] = props.value.map((item: any, index: number) => {
+    const steps: IStep[] = props.value.slice(props.selected, props.selected + 5).map((item: any, index: number) => {
         return {
             name: item.name,
             image: item.image,
-            icon: item.previousStep ? "pi pi-calendar" : "pi pi-heart",
-            color: item.previousStep ? "#4caf50" : "#007ad9",
+            color: item.index == props.selected? "black" :  item.previousStep ? "#B0E0E6" : "#2c5772",
+            typography: item.index == props.selected? "#dfdfdf" : "white",
+            index: item.index,
             };
         });
 
@@ -35,10 +55,16 @@ export default function Timeline(props: Iprops) {
     };
 
     React.useEffect(() => {
-        let currentSteps = [...steps];
-        currentSteps.shift();
+        const currentSteps: IStep[] = props.value.slice(props.selected, props.selected + 5).map((item: any, index: number) => {
+            return {
+                name: item.name,
+                image: item.image,
+                color: item.index == props.selected? "black" :  item.previousStep ? "#B0E0E6" : "#2c5772",
+                typography: item.index == props.selected? "#dfdfdf" : "white",
+                index: item.index
+            };
+        });
         setSteps([...currentSteps]);
-        console.log('steps', steps)
 
     }, [props.selected]);
 
@@ -51,15 +77,15 @@ export default function Timeline(props: Iprops) {
   const customizedMarker = (item: IStep) => {
     return (
       <span
-        className="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1"
-        style={{ backgroundColor: item.color }}
+        className={`flex w-2rem h-2rem align-items-center justify-content-center border-circle shadow-1`}
+        style={{ backgroundColor: item.color, color: item.typography}}
       >
-        <i className={item.icon}></i>
+        {item.index +1}
       </span>
     );
   };
 
-  const customizedContent = (item: IStep) => {
+  const customizedContent = (item: IStep, index: number) => {
     return (
       <Card title={item.name}>
       </Card>
