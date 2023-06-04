@@ -17,6 +17,14 @@
     background-color: white !important;
 }
 
+.p-scrollpanel .p-scrollpanel-bar{
+    background-color: #2c5772 !important;
+}
+
+.p-scrollpanel-wrapper{
+    z-index: 0;
+}
+
 .loading{
     width: 80vw;
     position: relative;
@@ -65,6 +73,10 @@
     text-align: center;
 }
 
-
+.custombar1{
+     width: 100% !important;
+    /* El componente solo acepta unidades en pixeles, vw o vh */
+     height: 10vh !important; 
+}
 
 

@@ -12,6 +12,7 @@ import { Environment, OrbitControls, Sky } from "@react-three/drei";
 import { Suspense } from "react";
 import Model from "../components/Model";
 import { TabView, TabPanel } from 'primereact/tabview';
+import { ScrollPanel } from 'primereact/scrollpanel';
 
 
 interface IStep {
@@ -75,7 +76,11 @@ export default function Procedure() {
         <div className="selectedStep">
             <Card  >
                 {(currentStepIndex < steps.length)?
-                 <p>{currentStep?.description}</p>
+                <ScrollPanel className="custombar1">
+                <p>
+                {currentStep?.description}
+                </p>
+            </ScrollPanel>
                 :
                 <p>Procedimiento finalizado</p>}
                 <TabView>

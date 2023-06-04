@@ -92,6 +92,7 @@ namespace aspnetapp.Controllers
         ///        "name": "Tool 1",
         ///        "description": "Description of tool 1",
         ///        "modelo": "file"
+        ///        "OptimalScale": 0.1
         ///     }
         ///
         /// </remarks>
@@ -145,6 +146,7 @@ namespace aspnetapp.Controllers
         ///        "name": "Tool 1",
         ///        "description": "Description of tool 1",
         ///        "modelo": file,
+        ///        "OptimalScale": 0.1
         ///     }
         /// 
         /// </remarks>

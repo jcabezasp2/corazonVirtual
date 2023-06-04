@@ -23,22 +23,6 @@ interface IStep {
 export default function Timeline(props: Iprops) {
   const navigate = useNavigate();
 
-  const calculateClass = (index: number) => {
-    let result : string;
-
-    if (index === props.selected) {
-        result = "selectedStep";
-    } else if (index < props.selected) {
-        result = "stepDone";
-    } else if(index > (props.selected + 5)) {
-        result = "stepHidden";
-    }else {
-        result = "step";
-    }
-
-
-    return result;
-  };
 
   const initialize = async () => {
     const steps: IStep[] = props.value.slice(props.selected, props.selected + 5).map((item: any, index: number) => {
