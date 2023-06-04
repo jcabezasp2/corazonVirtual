@@ -9,7 +9,6 @@ En <http://localhost:5050> se puede acceder a pgadmin para ver la base de datos.
 - usuario: root@example.com
 - contraseña: root
 
-He escogido Postgres porque es el que más me gusta, pero se puede cambiar por otro.<br>
 Una vez dentro de pgadmin hay que ir a la pestaña de servers y crear un nuevo servidor.<br>
 Los datos de conexión son:
 - Nombre de la conexion corazon_virtual
@@ -17,7 +16,6 @@ Los datos de conexión son:
 - Username: root
 - Password: root
 
-En un futuro se añadira persistencia para que no sea necesario volver a configurar cada vez que se levante el contenedor.
 
 <h3>Backend</h3>
 
