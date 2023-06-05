@@ -17,6 +17,15 @@ export default function MenuButton() {
 
 
   const publicItems: MenuItem[] = [
+    // {
+    //     label: "Inicio",
+    //     icon: (
+    //         <Icon type = {Icons.Home} text="Inicio"/>
+    //     ),
+    //     command: () => {
+    //       navigate("/");
+    //     },
+    // },
     {
       label: "Utensilios",
       icon: (

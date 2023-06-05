@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Identity;
 namespace aspnetapp.Controllers
 {
     [Route("pasos")]
@@ -15,10 +15,17 @@ namespace aspnetapp.Controllers
     public class StepsController : ControllerBase
     {
         private readonly dataContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public StepsController(dataContext context)
+        public StepsController(dataContext context,
+         UserManager<IdentityUser> userManager,
+         RoleManager<IdentityRole> roleManager
+         )
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -118,6 +125,11 @@ namespace aspnetapp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStep(int id, Step step)
         {
+            if (!hasPermission("UpdateStep"))
+            {
+                return Unauthorized();
+            }
+
             if(_context.Steps == null)
             {
                 return NotFound();
@@ -152,6 +164,7 @@ namespace aspnetapp.Controllers
         ///        "description": "Description of step 1",
         ///        "image": file,
         ///        "duration": "10"
+        ///        "previousStep": true
         ///     }
         /// 
         /// </remarks>
@@ -165,6 +178,11 @@ namespace aspnetapp.Controllers
         [HttpPost]
         public async Task<ActionResult<Step>> PostStep(Step step)
         {
+            if (!hasPermission("CreateStep"))
+            {
+                return Unauthorized();
+            }
+
           if (_context.Steps == null)
           {
               return Problem("Entity set 'dataContext.Steps'  is null.");
@@ -194,6 +212,11 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStep(int id)
         {
+            if (!hasPermission("DeleteStep"))
+            {
+                return Unauthorized();
+            }
+
             if (_context.Steps == null)
             {
                 return NotFound();
@@ -264,7 +287,12 @@ namespace aspnetapp.Controllers
         [HttpPost("{id}/herramientas")]
         public async Task<IActionResult> AddToolToStep(int id, int toolId)
         {
-             var step = await _context.Steps.SingleOrDefaultAsync(s => s.Id == id);
+            if (!hasPermission("CreateStep"))
+            {
+                return Unauthorized();
+            }
+
+            var step = await _context.Steps.FindAsync(id);
 
              
                 if (step == null)
@@ -283,30 +311,16 @@ namespace aspnetapp.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Ok();
-        //     if (_context.Steps == null)
-        //   {
-        //       return NotFound();
-        //   }
-        //     var step = await _context.Steps.FindAsync(id);
+            return Ok();
+        }
 
-        //     if (step == null)
-        //     {
-        //         return NotFound();
-        //     }
-           
-        //     var toolToAdd = await _context.Tools.FindAsync(toolId);
+         private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
 
-        //     if (toolToAdd == null)
-        //     {
-        //         return NotFound();
-        //     }
-       
-        //     step.Tools.Add(toolToAdd);
-
-        //     await _context.SaveChangesAsync();
-
-        //     return Ok();
+            return roleClaims.Any(c => c.Value == permission);
         }
 
     }
