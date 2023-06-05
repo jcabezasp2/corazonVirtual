@@ -36,15 +36,15 @@ export default function MenuButton() {
   }, [context.user]);
 
   const publicItems: MenuItem[] = [
-    {
-        label: "Inicio",
-        icon: (
-            <Icon type = {Icons.Home} text="Inicio"/>
-        ),
-        command: () => {
-          navigate("/");
-        },
-    },
+    // {
+    //     label: "Inicio",
+    //     icon: (
+    //         <Icon type = {Icons.Home} text="Inicio"/>
+    //     ),
+    //     command: () => {
+    //       navigate("/");
+    //     },
+    // },
     {
       label: "Utensilios",
       icon: (
@@ -162,7 +162,7 @@ export default function MenuButton() {
 
   return (
       <div id="menu_button" >
-      <Tooltip target=".p-speeddial-action" position="right" />
+        <Tooltip target=".p-speeddial-action" position="right" />
         <SpeedDial
           mask
           maskClassName="mask"
