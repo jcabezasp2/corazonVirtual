@@ -12,7 +12,7 @@ class Iprops {
   destiny!: string;
   image!: string;
   numberOfSteps!: number;
-  onEdit!: Function;
+  onEdit!: string;
   onDelete!: Function;
 }
 
@@ -22,6 +22,7 @@ export default function ProcedureCard(props: Iprops) {
 
   const header = (
     <img
+     
       alt={props.title}
       src={props.image}
     />
@@ -30,7 +31,7 @@ export default function ProcedureCard(props: Iprops) {
    console.log("en procedurecard: id", props.id)
   const footer = (
     <div className="flex flex-wrap justify-content-end gap-2">
-      {context.user.role == Role.Teacher && <OptionsButton id={props.id} onEdit={props.destiny} onDelete={props.onDelete(props.id)} />}
+      {context.user.role == Role.Teacher && <OptionsButton id={props.id} onEdit={props.onEdit} onDelete={props.onDelete(props.id)} />}
       <Button label="Ir al procedimiento" onClick={()=>{navigate(props.destiny)} }/>
     </div>
   );

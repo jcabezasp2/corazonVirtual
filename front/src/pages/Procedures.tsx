@@ -26,6 +26,7 @@ export default function Procedures(props: Iprops) {
   const [procedures, setProcedures] = React.useState([]);
   const toast = useRef(null);
   const [status, setStatus] = React.useState<Status>(Status.error);
+  
 
 
   const onDelete = async (id: number) => {
@@ -38,12 +39,13 @@ export default function Procedures(props: Iprops) {
         toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
         setTimeout(function(){
           window.location.reload();
-       }, 5000);
+       }, 1000);
     } else {
         setStatus(Status.error);
         toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
     }
   }
+
 
 
   const gridItem = (procedure: any) => {
@@ -57,9 +59,7 @@ export default function Procedures(props: Iprops) {
           //Si la cambias para que vaya a la ruta de editar, deja de poderse entrar al procedimiento
           image={procedure.image ? procedure.image : defaultImage}
           numberOfSteps={procedure.numberOfSteps}
-          onEdit={() => {
-            navigate(`procedimientos/formulario/${procedure.id}`);
-          }}
+          onEdit={`formulario/${procedure.id}`}
           onDelete={(e: any) => onDelete}
         />
       </div>

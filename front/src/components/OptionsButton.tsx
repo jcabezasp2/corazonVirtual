@@ -18,9 +18,7 @@ export default function OptionsButton(props : Iprops) {
             label: 'Borrar',
             icon: 'pi pi-trash',
             command: () => {
-                props.onDelete(props.id);
-                console.log("option button: props.id",props.id)
-            
+                props.onDelete(props.id);            
             }
         },
     ];

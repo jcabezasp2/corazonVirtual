@@ -1,5 +1,7 @@
 .tool-form{
     width: auto;
+    height: auto;
+    margin-top: 5rem !important;
 }
 
 
@@ -13,10 +15,19 @@
     
 }
 
-.input-tool-form>div>span>input{
-    width: 52.5rem !important;
+.input-tool-form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6rem !important;
+    
 }
 
-.file-tool{
-    
+.input-tool-form>div>span>input{
+    width: 35rem !important;
+}
+
+#editor-toolform> div > div{
+    height: 5rem !important;
+    margin-bottom: 3rem !important;
 }

@@ -224,8 +224,12 @@ export const editProcedure = async (id :number, name :string, description :strin
     const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
     return res
 }
-export const addProcedureSteps = async (id :number, stepIds :[]) => {
-    const apiKey = sessionStorage.getItem('apiKey');
+//  export const addProcedureSteps = async (id :number, stepIds :[]) => {
+    export const addProcedureSteps = async (procedureId : number, ctx: { stepIds: any[] }) => { 
+    const apiKey = sessionStorage.getItem('apiKey');          
+    const {stepIds} = ctx;   
+    console.log("procedureId", procedureId, "stepIds", stepIds)
+   
     let opciones :any = {
         method: 'POST',
         headers: {
@@ -233,9 +237,9 @@ export const addProcedureSteps = async (id :number, stepIds :[]) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "procedureId": id, "stepIds": stepIds })
+        body: JSON.stringify({ "procedureId": procedureId, "stepIds": stepIds })
     };
-    const res = await fetch(`${constants.API_URL}procedimientos/${id}/pasos`, opciones);
+    const res = await fetch(`${constants.API_URL}procedimientos/${procedureId}/pasos`, opciones);
     return res
 }
 
@@ -328,10 +332,11 @@ export const deleteStep = async (id :number) => {
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
-}
+   
+    return res
+}  
+
+
 
 export const getStepByProcedureId = async (id :number) => {
     const apiKey = sessionStorage.getItem('apiKey');
@@ -467,9 +472,10 @@ export const createTool = async (name :string, description :string, modelo :stri
     };
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data        
+    return res; 
+    // if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    // const data = await res.json();
+    // return data        
 }
 //Update tool
 export const updateTool = async (id :number, name :string, description :string, modelo :string) => { 

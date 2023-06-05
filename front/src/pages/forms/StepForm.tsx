@@ -2,7 +2,6 @@ import { Status } from '../../assets/constants';
 import React, { useRef } from 'react';
 import TxtEditor from "../../components/form/TxtEditor"
 import Toggle from "../../components/form/Toggle";
-import File from "../../components/form/File";
 import SubmitButton from "../../components/form/SubmitButton";
 import { useParams, useNavigate } from 'react-router-dom';
 import "./../../css/stepform.css";
@@ -11,6 +10,7 @@ import InputNum from "../../components/form/InputNum";
 import InputTxt from "../../components/form/InputTxt";
 import Select1 from '../../components/form/Select';
 import { Toast } from "primereact/toast";
+import { FileUpload } from 'primereact/fileupload';
 
 class Iprops {
 
@@ -29,7 +29,7 @@ export default function StepForm(props: Iprops) {
     const [description, setDescription] = React.useState<string>('');
     const [previousStep, setpreviousStep] = React.useState<boolean>(false);
     const [status, setStatus] = React.useState<Status>(Status.error);
-    const [file, setFile] = React.useState<string>('');
+    const [image, setImage] = React.useState<string>('');
     const [num, setNum] = React.useState<number>(0);
     const [duration, setDuration] = React.useState<string>('');; 
     const navigate = useNavigate();
@@ -52,11 +52,6 @@ export default function StepForm(props: Iprops) {
                 
     }
 
-    const handleFile = (e :any) => {
-        setFile(e);
-        console.log("dentro de handleFile toolform",file)
-    }  
-
     const handleDescription = (e: string) => {
         setDescription(e);
     }
@@ -67,7 +62,9 @@ export default function StepForm(props: Iprops) {
 
    
     const handleSelect = (e: any) => {
-        setidAsociados(e);
+        let select = e;
+        setidAsociados(select.code);
+        
         console.log("dentro de handleSelect stepform",idAsociados)
     }
 
@@ -105,7 +102,7 @@ export default function StepForm(props: Iprops) {
             setName(step.name);
             setDescription(step.description);
             setNum(parseInt(step.duration))
-            //setFile(step.file);
+            setImage(step.image);
             setpreviousStep(step.previousStep);
 
         })
@@ -118,17 +115,34 @@ export default function StepForm(props: Iprops) {
         }
 
   }, [])
-    
 
-    async function steps() {
+
+  const onUpload = async ({files} : any) => {
+    console.log('files', files)
+    const [file] = files;
+    const reader = new FileReader();
+    reader.onload = async (e: any) => {
+        let result = await context.apiCalls.uploadImageBase64(e.target.result);
+        console.log('result', result)
+        setImage(result);
+    };
+    reader.readAsDataURL(file);
+
+};
+
+const handleStep = async () => {
+    // async function steps() {
         if(id){
-            console.log("edit",name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idAsociados)
-            const resEdit = context.apiCalls.editStep(id,name, description, file, duration, previousStep);
-            if (resEdit.status === 200) {
+            console.log("edit",name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
+            const resEdit = context.apiCalls.editStep(id,name, description, image, duration, previousStep);
+            if (resEdit.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
                 console.log('funciona edit teps')
                 console.log(resEdit)
+                // setTimeout(function(){
+                //     window.location.reload();
+                //  }, 2000);
             } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
@@ -136,13 +150,15 @@ export default function StepForm(props: Iprops) {
             }
             window.location.reload();
         }else{  
-        console.log(name,"--------", description,"--------", file, "--------", duration,"--------", previousStep, "---------", idAsociados)
-        const res = await context.apiCalls.createStep(name, description, file, duration, previousStep);
-            if (res.status === 200) {
+        console.log(name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
+        const res = await context.apiCalls.createStep(name, description, image, duration, previousStep);
+        console.log("res",res)
+            if (res != null) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
                 console.log('funciona createsteps')
                 console.log(res)
+                
             } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
@@ -160,29 +176,36 @@ export default function StepForm(props: Iprops) {
         console.log(allSteps)
         console.log(allSteps.length)
        
-        let id = allSteps.length
-        console.log(id)
-       
-        console.log("idAsociados", idAsociados.code)
-    const res2 = await context.apiCalls.addStepTool(id, idAsociados.code);
+        const lastItem = allSteps.reduce((prev:any, current:any) => {
+            return prev.id > current.id ? prev : current;
+          });
+          console.log("lastItem",lastItem)        
+        const stepId = lastItem.id;               
+        console.log("stepid",stepId)       
+        console.log("idAsociados", idAsociados)
+
+    const res2 = await context.apiCalls.addStepTool(idAsociados, stepId);
     if(res2 != null){
         console.log('funciona addsteptool')
         console.log(res2)
+        // setTimeout(function(){
+        //     window.location.reload();
+        //  }, 2000);
         }else{
             console.log('no funciona addsteptool')
         }
-        window.location.reload();
+        
     }
 
-    const handleStep = () => {
-        steps();
-    }
+    // const handleStep = () => {
+    //     steps();
+    // }
 
 
     return (
         <div  className='p-3 col-12 flex flex-column justify-content-center align-items-center'>
         <div id="stepform" className='p-3 col-10 '>
-            <h1 id="h1form-stepform" className='mt-6 text-align-center'>StepForm</h1>
+          
            
             <div id="inputsform-stepform" className="row py-0 col-12">      
                 <div className='col-4 py-3' id="inputtxt-stepform">                
@@ -196,21 +219,7 @@ export default function StepForm(props: Iprops) {
             
             <div id="inputsform2-stepform" className='row  py-0 '>
                 <div className='col-3' id="inputselect-stepform">  
-                    {/* <ListBoxx
-                            // options={options}
-                            options={options} 
-                            handleList={handleList}
-                         
-                      
-                            /> */}
-          
-                            {/* <SelectMulti                            
-                            handleSelect={handleSelect}
-                            idAsociados={idAsociados}
-                            options={options}
-                            placeholder='Selecciona una herramienta'
-                            
-                            /> */}
+                    
                             <Select1
                              handleSelect={handleSelect}
                              idAsociados={idAsociados}
@@ -228,6 +237,10 @@ export default function StepForm(props: Iprops) {
                 />
                 </div>
                 </div>
+                <div className='col-12 flex justify-content-center align-content-center' id="file-stepform" >
+
+                <FileUpload name="image" customUpload={true} uploadHandler={onUpload}  mode="basic" accept="image/*" auto={true} />
+                </div>   
             <div className='py-0 flex justify-content-center'>
                 <div className='col-10' id="editor-stepform">
                 <TxtEditor
@@ -238,13 +251,12 @@ export default function StepForm(props: Iprops) {
             </div>
            
 
-            {/* <File file={file} handleFile={handleFile}/> */}
 
             <div className='pt-8 flex justify-content-center'>
                 <div className='col-4'>
                 <SubmitButton
                     onclik={handleStep}
-                    ctx={{name: name, description : description, image : null, duration : num, previousStep : previousStep, toolId : idAsociados}}
+                    ctx={{name: name, description : description, image : image, duration : num, previousStep : previousStep, toolId : idAsociados}}
                     isLogin={false}
                 />
                  <Toast ref={toast} />

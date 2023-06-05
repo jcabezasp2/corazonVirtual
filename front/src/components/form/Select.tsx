@@ -1,19 +1,16 @@
 
 import React, { useState } from "react";
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-// TODO esta sin terminar
+
 interface Iprops {
-    // nameSelect: string;
-    // code: number;
-    // allcodes: number[];
+   
     idAsociados: any;
     handleSelect: Function;
     placeholder: string;
     options: List[];
 }
 interface List {
-    // label: string;
-    // value: number;
+  
     name: string;
     code: number;
   }
@@ -33,7 +30,7 @@ export default function Select1(props : Iprops) {
       }, []);
 
       
-      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados, "id asociado", props.idAsociados.code)
+      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados)
       
 
 
@@ -42,8 +39,11 @@ export default function Select1(props : Iprops) {
             <span className="p-float-label">
             <Dropdown 
             id="select"
-            value={props.idAsociados} 
-            onChange={(e: DropdownChangeEvent) => props.handleSelect(e.value)} 
+            value={selected} 
+            onChange={(e: DropdownChangeEvent) => {
+              props.handleSelect(e.value);
+              setSelected(e.value);
+            }} 
             options={options}
             placeholder={props.placeholder}            
             optionLabel="name"            

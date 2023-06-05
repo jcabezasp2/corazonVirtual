@@ -247,13 +247,12 @@ namespace aspnetapp.Controllers
         ///
         ///     POST /pasos/1/herramientas
         ///     [
-        ///        0,
-        ///        1
+        ///       1
         ///     ]
         ///
         /// </remarks>
         /// <param name="id"></param>
-        /// <param name="tools"></param>
+        /// <param name="toolId"></param>      
         /// <returns>Nothing</returns>
         /// <response code="200">Ok</response>
         /// <response code="400">If the id is not equal to the step id</response>
@@ -263,27 +262,51 @@ namespace aspnetapp.Controllers
 
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost("{id}/herramientas")]
-        public async Task<IActionResult> AddToolToStep(int id, Tool tool)
+        public async Task<IActionResult> AddToolToStep(int id, int toolId)
         {
-            var step = await _context.Steps.FindAsync(id);
+             var step = await _context.Steps.SingleOrDefaultAsync(s => s.Id == id);
 
-            if (step == null)
-            {
-                return NotFound();
-            }
+             
+                if (step == null)
+                {
+                    return NotFound();
+                }
+                
+            var toolToAdd = await _context.Tools.FirstOrDefaultAsync(t => t.Id == toolId);
 
-            var toolToAdd = await _context.Tools.FindAsync(tool.Id);
+                if (toolToAdd == null)
+                {
+                    return NotFound();
+                }
 
-            if (toolToAdd == null)
-            {
-                return NotFound();
-            }
+                step.Tools.Add(toolToAdd);
 
-            step.Tools.Add(toolToAdd);
+                await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
+                return Ok();
+        //     if (_context.Steps == null)
+        //   {
+        //       return NotFound();
+        //   }
+        //     var step = await _context.Steps.FindAsync(id);
 
-            return Ok();
+        //     if (step == null)
+        //     {
+        //         return NotFound();
+        //     }
+           
+        //     var toolToAdd = await _context.Tools.FindAsync(toolId);
+
+        //     if (toolToAdd == null)
+        //     {
+        //         return NotFound();
+        //     }
+       
+        //     step.Tools.Add(toolToAdd);
+
+        //     await _context.SaveChangesAsync();
+
+        //     return Ok();
         }
 
     }
