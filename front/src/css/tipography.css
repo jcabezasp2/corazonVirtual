@@ -10,6 +10,16 @@ body {
   color: #000000;
 }
 
+*{
+  font-family: 'Open Sans', sans-serif ;
+  font-weight: 400;
+}
+
+.p-inputtext{
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 400;
+}
+
 p {margin-bottom: 1rem;}
 
 h1, h2, h3, h4, h5 {

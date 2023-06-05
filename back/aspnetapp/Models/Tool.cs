@@ -9,5 +9,7 @@ public class Tool
 
     public string Modelo { get; set; }   
 
+    public double OptimalScale { get; set; }
+
     public virtual ICollection<Step>? Steps { get; set; }
 }

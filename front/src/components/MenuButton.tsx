@@ -13,27 +13,8 @@ export default function MenuButton() {
   const navigate = useNavigate();
   const context = React.useContext(appContext);
 
-  const [items, setItems] = React.useState<MenuItem[]>([]);
 
-  React.useEffect(() => {
 
-      let options: MenuItem[] = [];
-
-      let loggedItems: MenuItem[] = publicItems.filter((item: MenuItem) => item.label !== 'Informacion');
-    
-      if (context.user.role === Role.Student) {
-        options = [...loggedItems, ...studentItems, ...commonItems];
-      } else if (context.user.role === Role.Teacher) {
-        options = [...loggedItems, ...teacherItems, ...commonItems];
-      } else if (context.user.role === Role.Admin) {
-        options = [...loggedItems, ...commonItems];
-      }else{
-        options = [...publicItems];
-      }
-      options = options.reverse();
-      setItems(options);
-      //setItems(items.reverse());
-  }, [context.user]);
 
   const publicItems: MenuItem[] = [
     // {
@@ -66,16 +47,18 @@ export default function MenuButton() {
           navigate("/informacion");
         },
       },
+      {
+        label: "Inicio",
+        icon: (
+            <Icon type = {Icons.Home} text="Contacto"/>
+        ),
+        command: () => {
+          navigate("/");
+        }
+      }
   ];
 
   const studentItems: MenuItem[] = [
-    {
-      label: "Procedimientos",
-      icon: <Icon type={Icons.Procedure} text="Procedimientos"/>,
-      command: () => {
-        navigate("/procedimientos");
-      },
-    },
     {
       label: "Practicas",
       icon: <Icon type={Icons.ListCheck} text="Practicas"/>,
@@ -83,14 +66,28 @@ export default function MenuButton() {
         navigate("/practicas");
       },
     },
+    {
+      label: "Procedimientos",
+      icon: <Icon type={Icons.Procedure} text="Procedimientos"/>,
+      command: () => {
+        navigate("/procedimientos");
+      },
+    },
   ];
 
   const teacherItems: MenuItem[] = [
     {
-      label: "Estudiantes",
-      icon: <Icon type={Icons.Student} text="Estudiantes"/>,
+      label: "Practicas",
+      icon: <Icon type={Icons.ListCheck} text="Practicas"/>,
       command: () => {
-        navigate("/estudiantes");
+        navigate("/practicas");
+      },
+    },
+    {
+      label: "Procedimientos",
+      icon: <Icon type={Icons.Procedure} text="Procedimientos"/>,
+      command: () => {
+        navigate("/procedimientos");
       },
     },
     {
@@ -101,17 +98,10 @@ export default function MenuButton() {
       },
     },
     {
-      label: "Practicas",
-      icon: <Icon type={Icons.ListCheck} text="Practicas"/>,
+      label: "Estudiantes",
+      icon: <Icon type={Icons.Student} text="Estudiantes"/>,
       command: () => {
-        navigate("/practicas");
-      },
-    },
-    {
-      label: "Procedimientos",
-      icon: <Icon type={Icons.Procedure} text="Procedimientos"/>,
-      command: () => {
-        navigate("/procedimientos");
+        navigate("/estudiantes");
       },
     },
   ];
@@ -142,12 +132,27 @@ export default function MenuButton() {
 
   const commonItems: MenuItem[] = [
     {
+      label: "Utensilios",
+      icon: (
+        <Icon
+        type = {Icons.Tools}
+        text="Utensilios"
+        />
+      ),
+      command: () => {
+        navigate("/herramientas");
+      },
+    },
+    {
       label: "Panel de usuario",
       icon: <Icon type={Icons.Identity} />,
       command: () => {
         navigate("/panel");
       },
     },
+  ];
+
+  const logout : MenuItem[] = [
     {
       label: "Cerrar sesion",
       icon: <Icon type={Icons.Logout} />,
@@ -162,13 +167,13 @@ export default function MenuButton() {
 
   return (
       <div id="menu_button" >
-        <Tooltip target=".p-speeddial-action" position="right" />
+      <Tooltip target=".p-speeddial-action" position="left" />
         <SpeedDial
           mask
           maskClassName="mask"
           className="speeddial-bottom-right"
-          model={items}
-          radius={180}
+          model={context.user.role === Role.Student? [ ...logout, ...studentItems, ...commonItems] : context.user.role === Role.Teacher? [ ...logout, ...teacherItems, ...commonItems] : context.user.role === Role.Admin? [ ...logout, ...adminItems, ...commonItems] : [...publicItems]}
+          radius={280}
           type="quarter-circle"
           direction="down-left"
           transitionDelay={180}

@@ -33,7 +33,8 @@ export default function Users(props: Iprops) {
                 Email: user.user.email,
                 Rol: user.role,
                 Bloqueado: user.user.lockoutEnabled ? 'Si' : 'No',
-                Bloquear: blockOptions(user)
+                Bloquear: blockOptions(user),
+                'Cambio de rol': <Button label="Asignar Rol" onClick={() => navigate(`/admin/roles/${user.user.id}`)} className="p-button-info" />
             }
         });
         setUsers(users);

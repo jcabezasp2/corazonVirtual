@@ -904,5 +904,41 @@
         <member name="M:aspnetapp.Migrations._10.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:aspnetapp.Migrations._11">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._11.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._11.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._11.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._12">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._12.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._12.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._12.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._13">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._13.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._13.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._13.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

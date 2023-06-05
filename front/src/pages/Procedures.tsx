@@ -53,8 +53,8 @@ export default function Procedures(props: Iprops) {
         <ProcedureCard
           id={procedure.id}
           title={procedure.name}
-          destiny={`/procedimientos/formulario/${procedure.id}`}
-          // destiny={`/procedimientos/${procedure.id}`}
+          destiny={`/procedimientos/${procedure.id}`}//Esta es la ruta que se sigue cuando se hace click en el boton de ir al procedimiento
+          //Si la cambias para que vaya a la ruta de editar, deja de poderse entrar al procedimiento
           image={procedure.image ? procedure.image : defaultImage}
           numberOfSteps={procedure.numberOfSteps}
           onEdit={() => {

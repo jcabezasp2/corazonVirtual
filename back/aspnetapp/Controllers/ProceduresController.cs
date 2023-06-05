@@ -249,6 +249,10 @@ namespace aspnetapp.Controllers
                     {
                         return NotFound();
                     }
+
+                    var tools = await _context.Tools.Where(s=> s.Steps.Contains(step)).ToListAsync();
+                    step.Tools = tools;
+
                     steps.Add(step);
                 }
     

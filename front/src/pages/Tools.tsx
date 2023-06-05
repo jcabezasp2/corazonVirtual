@@ -22,6 +22,7 @@ interface ITool {
   name: string;
   description: string;
   modelo: string;
+  optimalScale: number;
   
 }
 
@@ -69,7 +70,7 @@ export default function Claims(props: Iprops) {
           <div className="flex flex-column align-items-center gap-3 py-5">
             <Canvas camera={{ position: [0, 0, 3] }}>
               <Suspense fallback={null}>
-                <Model path={`${tool.Modelo}`} />
+                <Model path={`${tool.Modelo}`} scale={tool.Escala} />
               </Suspense>
               <OrbitControls />
               <ambientLight intensity={0.3} />
@@ -85,8 +86,7 @@ export default function Claims(props: Iprops) {
               className="p-button"
               onClick={() => {setModalVisible(true); setSelectedTool(tool);}}
             ></Button>
-            
-            <OptionsButton id={tool.id}   onEdit={`formulario/${tool.id}`} onDelete={onDelete}/>
+            {context.user.role == Role.Teacher && <OptionsButton id={tool.id}   onEdit={`formulario/${tool.id}`} onDelete={onDelete}/>}
             
           </div>
         </div>
@@ -139,13 +139,14 @@ export default function Claims(props: Iprops) {
 
   const initialize = async () => {
     const response = await context.apiCalls.getTools();
-
+    console.log("response",response)
     const tools = response.map((tool: ITool) => {
       return {
         id: tool.id,
         Nombre: tool.name,
         Descripcion: tool.description,
         Modelo: tool.modelo,
+        Escala: tool.optimalScale,
       };
     });
     setTools(tools);

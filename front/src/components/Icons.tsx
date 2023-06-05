@@ -7,12 +7,36 @@ class Iprops {
     text?: string;
 }
 
+const viewBox = (type : Icons) => {
+
+  switch (type) {
+    case Icons.Tools:
+      return "-100 0 750 512";
+    case Icons.Identity:
+      return "-100 0 750 512";
+    case Icons.Logout:
+      return "-100 0 750 512";
+    case Icons.Menu:
+      return "-100 0 750 512";
+    case Icons.Close:
+      return "-100 0 750 512";
+    case Icons.Info:
+      return "-300 0 750 512";
+    default:
+      return "-100 0 750 512";
+  }
+
+
+}
+
+
+
 export default function Icon(props : Iprops) {
 
     return (
     
     <div className="icon" data-pr-tooltip={props.text}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 0 750 512"><path d={props.type}/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox(props.type)}><path d={props.type}/>
     <style type="text/css">
         fill:url(#MyGradient)
       </style>

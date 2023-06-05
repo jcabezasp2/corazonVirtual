@@ -20,6 +20,7 @@ export default function Login() {
 
   return (
     <Card className="login ">
+      <form>
       <h3 className="h3 text-4xl font-bold text-center ">Iniciar sesión</h3>
 
       <span className="p-inputgroup">
@@ -74,6 +75,7 @@ export default function Login() {
           />
         </div>
       </div>
+      </form>
     </Card>
   );
 }
