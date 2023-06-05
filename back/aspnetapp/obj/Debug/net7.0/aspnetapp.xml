@@ -564,6 +564,7 @@
                     "name": "Tool 1",
                     "description": "Description of tool 1",
                     "modelo": "file"
+                    "OptimalScale": 0.1
                  }
             
              </remarks>
@@ -588,6 +589,7 @@
                     "name": "Tool 1",
                     "description": "Description of tool 1",
                     "modelo": file,
+                    "OptimalScale": 0.1
                  }
              
              </remarks>
@@ -938,6 +940,18 @@
             <inheritdoc />
         </member>
         <member name="M:aspnetapp.Migrations._13.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:aspnetapp.Migrations._14">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._14.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._14.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._14.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

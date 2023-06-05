@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace aspnetapp.Controllers
 {
@@ -15,10 +16,15 @@ namespace aspnetapp.Controllers
     public class ProceduresController : ControllerBase
     {
         private readonly dataContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ProceduresController(dataContext context)
+        public ProceduresController(dataContext context, UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -39,14 +45,15 @@ namespace aspnetapp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Procedure>>> GetProcedures()
         {
-          if (_context.Procedures == null)
-          {
-              return NotFound();
-          }
+            if (_context.Procedures == null)
+            {
+                return NotFound();
+            }
 
             var procedures = await _context.Procedures.ToListAsync();
 
-            procedures.ForEach(p => {
+            procedures.ForEach(p =>
+            {
                 p.Steps = _context.ProcedureStep.Where(ps => ps.ProcedureId == p.Id).OrderBy(ps => ps.Order).ToList();
             });
 
@@ -72,10 +79,10 @@ namespace aspnetapp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Procedure>> GetProcedure(int id)
         {
-          if (_context.Procedures == null)
-          {
-              return NotFound();
-          }
+            if (_context.Procedures == null)
+            {
+                return NotFound();
+            }
             var procedure = await _context.Procedures.FindAsync(id);
 
             if (procedure == null)
@@ -113,18 +120,22 @@ namespace aspnetapp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProcedure(int id, Procedure procedure)
         {
+            if (!hasPermission("UpdateProcedure"))
+            {
+                return Unauthorized();
+            }
 
-          if (_context.Procedures == null)
-          {
-              return NotFound();
-          }
-           
-           var oldProcedure = _context.Procedures.Find(id);
+            if (_context.Procedures == null)
+            {
+                return NotFound();
+            }
 
-           if(oldProcedure == null)
-           {
-               return NotFound();
-           }
+            var oldProcedure = _context.Procedures.Find(id);
+
+            if (oldProcedure == null)
+            {
+                return NotFound();
+            }
 
             oldProcedure.Name = procedure.Name;
             oldProcedure.Image = procedure.Image;
@@ -132,7 +143,7 @@ namespace aspnetapp.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-        
+
         }
 
         /// <summary>
@@ -157,10 +168,16 @@ namespace aspnetapp.Controllers
         [HttpPost]
         public async Task<ActionResult<Procedure>> PostProcedure(Procedure procedure)
         {
-          if (_context.Procedures == null)
-          {
-              return Problem("Entity set 'dataContext.Procedures'  is null.");
-          }
+        
+            if (!hasPermission("CreateProcedure"))
+            {
+                return Unauthorized();
+            }
+
+            if (_context.Procedures == null)
+            {
+                return Problem("Entity set 'dataContext.Procedures'  is null.");
+            }
             _context.Procedures.Add(procedure);
             await _context.SaveChangesAsync();
 
@@ -185,6 +202,11 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProcedure(int id)
         {
+            if (!hasPermission("DeleteProcedure"))
+            {
+                return Unauthorized();
+            }
+
             if (_context.Procedures == null)
             {
                 return NotFound();
@@ -229,34 +251,34 @@ namespace aspnetapp.Controllers
             {
                 return NotFound();
             }
-                var procedure = await _context.Procedures.FindAsync(id);
-                if (procedure == null)
+            var procedure = await _context.Procedures.FindAsync(id);
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+
+            var procedureSteps = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).ToListAsync();
+            if (procedureSteps == null)
+            {
+                return NotFound();
+            }
+
+            var steps = new List<Step>();
+            foreach (var procedureStep in procedureSteps)
+            {
+                var step = await _context.Steps.FindAsync(procedureStep.StepId);
+                if (step == null)
                 {
                     return NotFound();
                 }
-    
-                var procedureSteps = await _context.ProcedureStep.Where(ps => ps.ProcedureId == procedure.Id).ToListAsync();
-                if (procedureSteps == null)
-                {
-                    return NotFound();
-                }
-    
-                var steps = new List<Step>();
-                foreach (var procedureStep in procedureSteps)
-                {
-                    var step = await _context.Steps.FindAsync(procedureStep.StepId);
-                    if (step == null)
-                    {
-                        return NotFound();
-                    }
 
-                    var tools = await _context.Tools.Where(s=> s.Steps.Contains(step)).ToListAsync();
-                    step.Tools = tools;
+                var tools = await _context.Tools.Where(s => s.Steps.Contains(step)).ToListAsync();
+                step.Tools = tools;
 
-                    steps.Add(step);
-                }
-    
-                return steps;
+                steps.Add(step);
+            }
+
+            return steps;
         }
 
         /// <summary>
@@ -282,10 +304,15 @@ namespace aspnetapp.Controllers
         [HttpPost("{id}/pasos")]
         public async Task<ActionResult<Procedure>> PostProcedureStep(int id, int[] stepIds)
         {
-          if (_context.Procedures == null)
-          {
-              return NotFound();
-          }
+            if (!hasPermission("CreateProcedure"))
+            {
+                return Unauthorized();
+            }
+
+            if (_context.Procedures == null)
+            {
+                return NotFound();
+            }
             var procedure = await _context.Procedures.FindAsync(id);
             if (procedure == null)
             {
@@ -318,6 +345,15 @@ namespace aspnetapp.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
+
+            return roleClaims.Any(c => c.Value == permission);
         }
     }
 }

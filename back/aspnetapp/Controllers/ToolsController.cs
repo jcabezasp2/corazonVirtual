@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace aspnetapp.Controllers
 {
@@ -15,10 +16,15 @@ namespace aspnetapp.Controllers
     public class ToolsController : ControllerBase
     {
                 private readonly dataContext _context;
+                private readonly UserManager<IdentityUser> _userManager;
+                private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ToolsController(dataContext context)
+        public ToolsController(dataContext context, UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         
         
@@ -109,6 +115,11 @@ namespace aspnetapp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTool(int id, Tool tool)
         {
+            if (!hasPermission("UpdateTool"))
+            {
+                return Unauthorized();
+            }
+
             if (id != tool.Id)
             {
                 return BadRequest();
@@ -160,6 +171,11 @@ namespace aspnetapp.Controllers
         [HttpPost]
         public async Task<ActionResult<Tool>> PostTool(Tool tool)
         {
+        if (!hasPermission("CreateTool"))
+        {
+              return Unauthorized();
+        }
+
           if (_context.Tools == null)
           {
               return Problem("Entity set 'dataContext.Tools'  is null.");
@@ -189,6 +205,11 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTool(int id)
         {
+            if (!hasPermission("DeleteTool"))
+            {
+              return Unauthorized();
+            }
+
             if (_context.Tools == null)
             {
                 return NotFound();
@@ -210,8 +231,14 @@ namespace aspnetapp.Controllers
             return (_context.Tools?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+         private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
 
-
+            return roleClaims.Any(c => c.Value == permission);
+        }
     }
  
  }
