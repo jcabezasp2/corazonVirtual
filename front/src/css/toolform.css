@@ -1,7 +1,11 @@
 .tool-form{
     width: auto;
     height: auto;
-    margin-top: 5rem !important;
+    margin-top: 5.5rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
 
@@ -9,8 +13,8 @@
 .panel-tool{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center !important;
+    align-items: center !important;
     margin-top: 3rem;
     
 }
@@ -19,15 +23,24 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 6rem !important;
+    /* gap: 6rem !important; */
     
 }
 
 .input-tool-form>div>span>input{
-    width: 35rem !important;
+    width: 30rem !important;
 }
 
 #editor-toolform> div > div{
     height: 5rem !important;
     margin-bottom: 3rem !important;
+}
+
+.fila2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4rem !important;
+
 }

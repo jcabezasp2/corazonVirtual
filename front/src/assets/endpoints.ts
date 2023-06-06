@@ -455,7 +455,7 @@ export const getTool = async (id :number) => {
     return data        
 }
 //Create tool
-export const createTool = async (name :string, description :string, modelo :string) => {
+export const createTool = async (name :string, description :string, modelo :string, num : number) => {
     const apiKey = sessionStorage.getItem('apiKey');
 
     let opciones :any = {
@@ -465,7 +465,7 @@ export const createTool = async (name :string, description :string, modelo :stri
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo })
+        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo, "optimalScale": num })
     };
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
@@ -475,7 +475,7 @@ export const createTool = async (name :string, description :string, modelo :stri
     return data        
 }
 //Update tool
-export const updateTool = async (id :number, name :string, description :string, modelo :string) => { 
+export const updateTool = async (id :number, name :string, description :string, modelo :string, num : number) => { 
     const apiKey = sessionStorage.getItem('apiKey');
 
     let opciones :any = {
@@ -485,7 +485,7 @@ export const updateTool = async (id :number, name :string, description :string, 
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo })
+        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo, "optimalScale" : num })
     };
 
     const res = await fetch(`${constants.API_URL}herramientas/${id}`, opciones);

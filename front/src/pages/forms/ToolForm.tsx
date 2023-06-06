@@ -8,6 +8,7 @@ import { appContext } from "../../App";
 import '../../css/toolform.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FileUpload } from 'primereact/fileupload';
+import InputNum from "../../components/form/InputNum";
 
 class Iprops {
 }
@@ -24,6 +25,8 @@ export default function ToolForm(props: Iprops) {
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
     const [labeldescription, setLabeldescription] = React.useState<string>('Descripción de la herramienta');
+    const [labelnum, setLabeNum] = React.useState<string>('Escala');
+    const [num, setNum] = React.useState<number>(0.7);
     const context = React.useContext(appContext);
     const toast = useRef(null);
     const navigate = useNavigate();
@@ -34,6 +37,9 @@ export default function ToolForm(props: Iprops) {
     const handleDescription = (e: string) => {
         setDescription(e);
     }    
+    const handleNum = (e: number) => {
+        setNum(e);
+    }    
   
     React.useEffect(() => {
       
@@ -41,7 +47,9 @@ export default function ToolForm(props: Iprops) {
         context.apiCalls.getTool(id).then((tool: any)=>{
             setName(tool.name);
             setDescription(tool.description);           
-            setImage(tool.image);            
+            setImage(tool.modelo); 
+            setNum(tool.optimalScale) 
+
         })}      
 
   }, [id])
@@ -69,8 +77,8 @@ const handleTool = async () => {
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-                console.log("dentro update", id, name, description, image)
-                const resUpdate = await context.apiCalls.updateTool(id,name, description, image);
+                console.log("dentro update", id, name, description, image, num)
+                const resUpdate = await context.apiCalls.updateTool(id,name, description, image, num);
                 console.log("resUpdate",resUpdate)
                 if (resUpdate.ok) {
                     setStatus(Status.success);
@@ -91,7 +99,7 @@ const handleTool = async () => {
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-            const res = await context.apiCalls.createTool(name, description, image);
+            const res = await context.apiCalls.createTool(name, description, image, num);
                 if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
@@ -119,15 +127,24 @@ const handleTool = async () => {
           
                     <div className="col-12 panel-tool">
                        
-                        <div className="col-8 input-tool-form">                        
+                        <div className="col-5 input-tool-form">                        
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
-                    
-                        <div className="col-8 file-tool">
+                        </div>
+                        
+                        <div className="col-12 fila2">
+                        <div className="col-2 file-tool">
                      
                             <FileUpload name="image" customUpload={true} uploadHandler={onUpload}  mode="basic" accept="image/*" auto={true} />
                             <label htmlFor="file"></label>
                         
-                        </div>           </div>                    
+                        </div>
+                        <div className="col-3 num-tool">
+                     
+                        <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>
+                        
+                        </div>
+                        </div>
+                        </div>                    
                         <div className="col-8" id="editor-toolform">
                             <TxtEditor description={description} handleDescription={handleDescription} />
                         </div>
@@ -141,7 +158,7 @@ const handleTool = async () => {
                               />
                                <Toast ref={toast} />
                         </div>
-                    </div>
+                   
                 
        
                 </div>
