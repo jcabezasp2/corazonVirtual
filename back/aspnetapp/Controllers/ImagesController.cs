@@ -47,6 +47,7 @@ namespace aspnetapp.Controllers
 
                 if(extension == "fbx"){
                     folder = "images3d";
+                     
                 }else if(extension == "png" || extension == "jpg" || extension == "jpeg"){
                     folder = "images";
                 }else {
@@ -90,14 +91,16 @@ namespace aspnetapp.Controllers
 
             if(id.Split('.').Last() == "fbx")
                 image = System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images3d", id)) ? System.IO.File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images3d", id)) : null;
+               
             else
                 image = System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", id)) ? System.IO.File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", id)) : null;
+                
 
             if (image == null)
             {
                 return NotFound();
             }
-
+            
             return Ok(image);
         }
 
@@ -136,7 +139,7 @@ namespace aspnetapp.Controllers
                 {
                     await bits.WriteAsync(bytes, 0, bytes.Length);
                 }
-
+   
                 return Ok($"{Request.Scheme}://{Request.Host}/images/{imageName}");
         }
 
@@ -164,7 +167,7 @@ namespace aspnetapp.Controllers
 
                 var bytes = Convert.FromBase64String(image.Image);
                 var imageName = $"{Guid.NewGuid()}.fbx";
-                var folder = "images3d";
+                var folder = "images3d";               
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, imageName);
 
                 if(!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder)))
@@ -175,7 +178,8 @@ namespace aspnetapp.Controllers
                     await bits.WriteAsync(bytes, 0, bytes.Length);
                 }
 
-                return Ok($"{Request.Scheme}://{Request.Host}/images3d/{imageName}");
+                // return Ok($"{Request.Scheme}://{Request.Host}/images3d/{imageName}");
+                return Ok($"{imageName}");
         }
     }
 }

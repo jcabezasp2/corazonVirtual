@@ -1,5 +1,5 @@
 import { Toast } from "primereact/toast";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef} from "react";
 import { Status } from '../../assets/constants';
 import TxtEditor from "../../components/form/TxtEditor";
 import SubmitButton from "../../components/form/SubmitButton";
@@ -25,8 +25,8 @@ export default function ToolForm(props: Iprops) {
     const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
     const [labeldescription, setLabeldescription] = React.useState<string>('Descripción de la herramienta');
     const context = React.useContext(appContext);
-    const reader = new FileReader();
     const toast = useRef(null);
+    const navigate = useNavigate();
 
     const handleName = (e: string) => {
         setName(e);
@@ -69,15 +69,16 @@ const handleTool = async () => {
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-                console.log("dentro update")
-                const resUpdate = context.apiCalls.updateTool(id,name, description, image);
-                if (resUpdate.status === 200) {
+                console.log("dentro update", id, name, description, image)
+                const resUpdate = await context.apiCalls.updateTool(id,name, description, image);
+                console.log("resUpdate",resUpdate)
+                if (resUpdate.ok) {
                     setStatus(Status.success);
                     toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
                     console.log('funciona update tools')
                     console.log(resUpdate)
                     setTimeout(function(){
-                        window.location.reload();
+                        navigate('/herramientas')
                     }, 2000);
                 } else {
                     setStatus(Status.error);

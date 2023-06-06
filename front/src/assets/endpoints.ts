@@ -210,7 +210,7 @@ export const deleteProcedure = async (id :number) => {
     return res
 }
 
-export const editProcedure = async (id :number, name :string, description :string, image :string) => {
+export const editProcedure = async (id :number, name :string, imageDirection :string) => {
     const apiKey = sessionStorage.getItem('apiKey');
     let opciones :any = {
         method: 'PUT',
@@ -219,7 +219,7 @@ export const editProcedure = async (id :number, name :string, description :strin
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image })
+        body: JSON.stringify({ "name": name, "image": imageDirection })
     };
     const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
     return res
@@ -293,9 +293,7 @@ export const editStep = async (id :number, name :string, description :string, im
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    return res
 }
 
 export const createStep = async (name :string, description :string, image :string, duration :string, previousStep :boolean) => {
@@ -313,9 +311,8 @@ export const createStep = async (name :string, description :string, image :strin
     };
 
     const res = await fetch(`${constants.API_URL}pasos`, opciones);
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    return res
+   
 }
 
 export const deleteStep = async (id :number) => {
@@ -492,9 +489,7 @@ export const updateTool = async (id :number, name :string, description :string, 
     };
 
     const res = await fetch(`${constants.API_URL}herramientas/${id}`, opciones);
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data        
+    return res      
 }
 //Delete tool
 export const deleteTool = async (id :number) => {
@@ -575,6 +570,24 @@ export const getImage = async (path :string) => {
     const data = await res.blob();
     return data        
 }
+//Calls to the Images API endpoints
+export const getImageFbx = async (path :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}images3d/${path}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.blob();
+    return data 
+    }
+
+//Calls to the Images API endpoints
 
 // function to upload an image to the server
 export const uploadImage = async (file :any) => {

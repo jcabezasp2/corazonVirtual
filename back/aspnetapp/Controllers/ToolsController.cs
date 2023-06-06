@@ -120,30 +120,49 @@ namespace aspnetapp.Controllers
                 return Unauthorized();
             }
 
-            if (id != tool.Id)
+            // if (id != tool.Id)
+            // {
+            //     return BadRequest();
+            // }
+
+            // _context.Entry(tool).State = EntityState.Modified;
+
+            // try
+            // {
+            //     await _context.SaveChangesAsync();
+            // }
+            // catch (DbUpdateConcurrencyException)
+            // {
+            //     if (!ToolExists(id))
+            //     {
+            //         return NotFound();
+            //     }
+            //     else
+            //     {
+            //         throw;
+            //     }
+            // }
+
+            // return NoContent();
+            if (_context.Tools == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(tool).State = EntityState.Modified;
+            var oldTool = _context.Tools.Find(id);
 
-            try
+            if (oldTool == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ToolExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+            oldTool.Name = tool.Name;
+            oldTool.Modelo = tool.Modelo;
+            oldTool.Description = tool.Description;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
         }
 
         /// <summary>

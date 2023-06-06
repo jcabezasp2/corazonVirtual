@@ -118,6 +118,7 @@ export default function ToolForm(props: Iprops) {
                         toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
                          
                     } else{
+                        console.log("edit", name, imageDirection, stepIds)
                     const resEdit = await context.apiCalls.editProcedure(id,name,imageDirection);
                     const resEdit2 = await context.apiCalls.addStepTool(id, idAsociados);
                     if (resEdit.ok && resEdit2.ok) {
@@ -149,6 +150,7 @@ export default function ToolForm(props: Iprops) {
                         if (res.ok) {
                             setStatus(Status.success);
                             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                            procedimientos();
                             setTimeout(function(){
                                 window.location.reload();
                             }, 1000);
