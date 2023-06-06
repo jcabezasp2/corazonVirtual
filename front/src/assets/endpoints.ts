@@ -473,9 +473,9 @@ export const createTool = async (name :string, description :string, modelo :stri
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
     return res; 
-    // if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    // const data = await res.json();
-    // return data        
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data        
 }
 //Update tool
 export const updateTool = async (id :number, name :string, description :string, modelo :string) => { 
@@ -623,3 +623,28 @@ export const uploadImageBase64 = async (file :any) => {
 
 
 }
+
+// function to upload an image to the server
+export const uploadImageBase64Fbx = async (file :any) => {
+    
+    const apiKey = sessionStorage.getItem('apiKey');
+    const base64 = file.split(',')[1];
+    
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Api-Key': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "image": base64 })
+    };
+
+    const res = await fetch(`${constants.API_URL}images/base64fbx`, opciones);
+    console.log(res);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    return res.text();
+
+
+}
+
+

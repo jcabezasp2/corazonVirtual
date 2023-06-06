@@ -113,6 +113,11 @@ export default function ToolForm(props: Iprops) {
         
             const handleProcedure = async () => {
                 if(id){
+                    if(name === '' || imageDirection === '' || stepIds === ''){
+                        setStatus(Status.empty);
+                        toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+                         
+                    } else{
                     const resEdit = await context.apiCalls.editProcedure(id,name,imageDirection);
                     const resEdit2 = await context.apiCalls.addStepTool(id, idAsociados);
                     if (resEdit.ok && resEdit2.ok) {
@@ -124,25 +129,34 @@ export default function ToolForm(props: Iprops) {
                         setTimeout(function(){
                             window.location.reload();
                          }, 1000);
+
                     } else {
                         setStatus(Status.error);
                         toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
                          console.log('no funciona edit teps')
                     }
-                      
-                }else{  
-                const res = await context.apiCalls.createProcedure(ctx);
-                console.log("res",res)
-                if (res.ok) {
-                    setStatus(Status.success);
-                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                    setTimeout(function(){
-                        window.location.reload();
-                     }, 1000);
-                } else {
-                    setStatus(Status.error);
-                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                }
+                    }
+                }else{ 
+                  
+                    if(name === '' || imageDirection === '' || stepIds === ''){
+                        setStatus(Status.empty);
+                        toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+                        
+                    } else{
+                       
+                        const res = await context.apiCalls.createProcedure(ctx);
+                        console.log("res",res)                
+                        if (res.ok) {
+                            setStatus(Status.success);
+                            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                            setTimeout(function(){
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            setStatus(Status.error);
+                            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                        }
+                    }
                
             }
                 

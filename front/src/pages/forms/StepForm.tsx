@@ -133,23 +133,32 @@ export default function StepForm(props: Iprops) {
 const handleStep = async () => {
     // async function steps() {
         if(id){
-            console.log("edit",name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
-            const resEdit = context.apiCalls.editStep(id,name, description, image, duration, previousStep);
-            if (resEdit.ok) {
-                setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                console.log('funciona edit teps')
-                console.log(resEdit)
-                // setTimeout(function(){
-                //     window.location.reload();
-                //  }, 2000);
-            } else {
-                setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                 console.log('no funciona edit teps')
+            if(name === '' || description === '' || image === '' || duration === ''){
+                setStatus(Status.empty);
+                 toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+            }else{
+                console.log("edit",name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
+                const resEdit = context.apiCalls.editStep(id,name, description, image, duration, previousStep);
+                if (resEdit.ok) {
+                    setStatus(Status.success);
+                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                    console.log('funciona edit teps')
+                    console.log(resEdit)
+                    setTimeout(function(){
+                        window.location.reload();
+                     }, 2000);
+                    
+                    } else {
+                    setStatus(Status.error);
+                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                    console.log('no funciona edit teps')
+                }
             }
-            window.location.reload();
         }else{  
+            if(name === '' || description === '' || image === '' || duration === ''){
+                setStatus(Status.empty);
+                 toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+            }else{
         console.log(name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
         const res = await context.apiCalls.createStep(name, description, image, duration, previousStep);
         console.log("res",res)
@@ -164,6 +173,7 @@ const handleStep = async () => {
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
                 console.log('no funciona createsteps')
             }
+        }
         }
         stepTool();
 

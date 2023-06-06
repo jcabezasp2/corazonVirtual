@@ -51,12 +51,13 @@ export default function ToolForm(props: Iprops) {
     const [file] = files;
     const reader = new FileReader();
     reader.onload = async (e: any) => {
-        let result = await context.apiCalls.uploadImageBase64(e.target.result);
+       
+        let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
         console.log('result', result)
         setImage(result);
     };
     reader.readAsDataURL(file);
-
+    console.log(reader)
 };
 
     
@@ -64,39 +65,47 @@ const handleTool = async () => {
         
         
         if(id){
-            console.log("dentro update")
-            const resUpdate = context.apiCalls.updateTool(id,name, description, image);
-            if (resUpdate.status === 200) {
+            if(name === '' || description === '' || image === ''){
+                setStatus(Status.empty);
+                 toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+            }else{
+                console.log("dentro update")
+                const resUpdate = context.apiCalls.updateTool(id,name, description, image);
+                if (resUpdate.status === 200) {
+                    setStatus(Status.success);
+                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                    console.log('funciona update tools')
+                    console.log(resUpdate)
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    setStatus(Status.error);
+                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                    console.log('no funciona update tools')
+                }
+                }
+        }else{  
+            if(name === '' || description === '' || image === ''){
+                setStatus(Status.empty);
+                 toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+            }else{
+            const res = await context.apiCalls.createTool(name, description, image);
+                if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                console.log('funciona update tools')
-                console.log(resUpdate)
+                console.log('funciona tool')
+                console.log(res)
                 setTimeout(function(){
-                    window.location.reload();
-                 }, 2000);
-            } else {
+                        window.location.reload();
+                    }, 2000);
+                } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                 console.log('no funciona update tools')
-            }
-            
-        }else{  
-         
-        const res = await context.apiCalls.createTool(name, description, image);
-            if (res.ok) {
-            setStatus(Status.success);
-            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-            console.log('funciona tool')
-            console.log(res)
-            setTimeout(function(){
-                    window.location.reload();
-                 }, 2000);
-             } else {
-            setStatus(Status.error);
-            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-            console.log('no funciona tool')
-            console.log("res",res)
-            }     
+                console.log('no funciona tool')
+                console.log("res",res)
+                }     
+                }
             }
          
         }

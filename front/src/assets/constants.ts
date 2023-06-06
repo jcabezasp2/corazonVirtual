@@ -4,7 +4,8 @@ export enum Status{
     'success',
     'info',
     'warn',
-    'error'
+    'error',
+    'empty',
 }
 
 export enum Role{
