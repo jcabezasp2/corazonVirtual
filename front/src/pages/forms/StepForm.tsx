@@ -147,7 +147,7 @@ const handleStep = async () => {
                     // const res2 = await context.apiCalls.addStepTool(id, idAsociados);
                     // console.log(res2)
                     setTimeout(function(){
-                        window.location.reload();
+                        navigate('/pasos')
                      }, 2000);
                   
                     } else {

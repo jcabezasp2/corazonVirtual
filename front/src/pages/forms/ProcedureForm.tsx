@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { FileUpload } from 'primereact/fileupload';
 import PickListt from "../../components/form/Picklist";
 import PickSteps from '../../interfaces/PickSteps';
+import { useNavigate } from "react-router-dom";
 
 class Iprops {
 }
@@ -41,6 +42,7 @@ export default function ToolForm(props: Iprops) {
     const [idProcedure, setIdProcedure] = React.useState<number>();
     const [stepIds, setStepIds] = React.useState<any>([]);
     const toast = useRef<any>(null);
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         let currentCtx : Iprocedure = {
@@ -82,7 +84,6 @@ export default function ToolForm(props: Iprops) {
                         setName(data.name);   
                         console.log(name)           
                         setImageDirection(data.image);
-                        // setFile(data.file);  
                         setIdAsociados(data.steps)   
                         setTarget(data.steps)
         
@@ -124,11 +125,11 @@ export default function ToolForm(props: Iprops) {
                     if (resEdit.ok && resEdit2.ok) {
                         setStatus(Status.success);
                         toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                        console.log('funciona edit teps')
+                        console.log('funciona edit procedure')
                         console.log(resEdit)
                         console.log(resEdit2)
                         setTimeout(function(){
-                            window.location.reload();
+                           navigate('/procedimientos')
                          }, 1000);
 
                     } else {
