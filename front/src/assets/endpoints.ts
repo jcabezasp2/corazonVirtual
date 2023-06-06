@@ -174,7 +174,7 @@ export const getProcedure = async (id :number) => {
     return res
 }
 
-// export const addProcedure = async (name :string, description :string, image :string) => {
+
    export const createProcedure = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
     const { name, imageDirection, stepIds } = ctx;
@@ -467,9 +467,7 @@ export const createTool = async (name :string, description :string, modelo :stri
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
     return res; 
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data        
+         
 }
 //Update tool
 export const updateTool = async (id :number, name :string, description :string, modelo :string, num : number) => { 

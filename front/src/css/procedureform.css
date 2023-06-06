@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    gap: 2rem;
+    align-items: center; 
+    margin-top: 4rem !important;
   
     
 }
@@ -15,7 +15,9 @@
 }
 
 #inputtxt-procedureform > div > span > input{
-    width: 26rem !important;
+    width: 24rem !important;
+   
+
 }
 
 #button-procedureform{

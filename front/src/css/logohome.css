@@ -32,24 +32,41 @@
 
 
 .logo1{
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
     font-weight: 900;
     color: black;
     display:flex;
     z-index: 1;
 }
 
+
+
+.logo1 .icon{
+    width: 25% !important;
+    height: 25% !important;
+    margin: 0 0.5rem; 
+    
+}
+
+.logo1 h1{
+    align-self: flex-start !important
+}
+
 .logo1:hover h1{
     cursor: pointer;
-    text-shadow: 0 0 0  !important;
+    text-shadow: 0.5px 0.5px 0.5px  !important;    
 }
+
+
 
 .logo1:hover svg{
     cursor: pointer;
+    fill:url(#MyGradient);   
 }
 
 #where{
     text-align: center;
     font-size: 1.5rem;
     color : var(--primary-color);
+    padding: 1rem;
 }

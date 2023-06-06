@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import "../../css/picklist.css";
 import "./../../css/procedureform.css";
 import { appContext } from "../../App";
+import { Toast } from "primereact/toast";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {}
 
@@ -31,14 +33,14 @@ export default function ToolForm(props: Iprops) {
   };
 
   //Parte de la imagen del procedimiento
-  const [image, setImage] = useState<string>("");
+  const [imageDirection, setImageDirection] = useState<string>("");
 
   const onUpload = async ({ files }: any) => {
     const [file] = files;
     const reader = new FileReader();
     reader.onload = async (e: any) => {
       let result = await context.apiCalls.uploadImageBase64(e.target.result);
-      setImage(result);
+      setImageDirection(result);
     };
     reader.readAsDataURL(file);
   };
@@ -56,6 +58,10 @@ export default function ToolForm(props: Iprops) {
     setStepIds(ids);
   };
 
+//Validación
+const toast = useRef<any>(null);
+const [status, setStatus] = React.useState<Status>(Status.error);
+
   //Funcionalidad de carga de la pagina
   React.useEffect(() => {
     allSteps();
@@ -64,8 +70,7 @@ export default function ToolForm(props: Iprops) {
         const res = await context.apiCalls.getProcedure(id);
         const data = await res.json();
         setName(data.name);
-        setImage(data.image);
-        // setFile(data.file);
+        setImageDirection(data.image);       
         setIdAsociados(data.steps);
         setTarget(data.steps);
       };
@@ -95,22 +100,83 @@ export default function ToolForm(props: Iprops) {
   React.useEffect(() => {
     let currentCtx : Iprocedure = {
         name: name ? name : '',
-        imageDirection: image ? image :  '',
+        imageDirection: imageDirection ? imageDirection :  '',
         stepIds : stepIds ? stepIds : [],
     };
     setCtx(currentCtx);
-}, [name, image, stepIds]);
+}, [name, imageDirection, stepIds]);
+
+
+
+//Funcionalidad de creación y edición de herramientas
+const navigate = useNavigate();
+
+const handleProcedure = async () => {
+    if(id){
+        if(name === '' || imageDirection === '' || stepIds === ''){
+            setStatus(Status.empty);
+            toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+             
+        } else{
+            console.log("edit", name, imageDirection, stepIds)
+        const resEdit = await context.apiCalls.editProcedure(id,name,imageDirection);
+      
+        if (resEdit.ok ) {
+            setStatus(Status.success);
+            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+            console.log('funciona edit procedure')
+            console.log(resEdit)
+            console.log(resEdit2)
+            setTimeout(function(){
+               navigate('/procedimientos')
+             }, 1000);
+
+        } else {
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+             console.log('no funciona edit teps')
+        }
+        }
+    }else{ 
+      
+        if(name === '' || imageDirection === '' || stepIds === ''){
+            setStatus(Status.empty);
+            toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+            
+        } else{
+           
+            const res = await context.apiCalls.createProcedure(ctx);
+            console.log("res",res)                
+            if (res.ok) {
+                setStatus(Status.success);
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });                
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            } else {
+                setStatus(Status.error);
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+            }
+        }
+   
+}
+    
+}
+
+
 
   return (
-    <div id="procedureform">
-      <div>
+    <div  className='p-3 col-12 flex flex-column justify-content-center align-items-center'>
+      <div id="procedureform" className='p-6 col-12 '>
+      <div id="inputsform-procedureform" className="flex row py-0 col-12">
+             <div id="inputtxt-procedureform" className="col-8 ">  
         <InputTxt
           name={name}
           handleName={handleName}
           labelname={"Nombre del procedimiento"}
         />
       </div>
-      <div className="upload">
+      <div className=" col-4 file-tool">
         <FileUpload
           name="image"
           customUpload={true}
@@ -121,16 +187,21 @@ export default function ToolForm(props: Iprops) {
         />
         <label htmlFor="file"></label>
       </div>
-      <div>
+      </div>
+      <div id="picklist" className="p-field col-10"> 
         <PickListt source={source} onChange={onChange} target={target} />
       </div>
-      <div>
+      <div  id="button-procedureform" className="col-2">
         <SubmitButton
           isLogin={false}
-          onclik={context.apiCalls.createProcedure}
+          onclik={handleProcedure}
           ctx={ctx}
         />
+          <Toast ref={toast} />
       </div>
     </div>
+    </div> 
   );
 }
+
+
