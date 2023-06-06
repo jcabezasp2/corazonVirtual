@@ -156,6 +156,7 @@ namespace aspnetapp.Controllers
         ///     {
         ///        "name": "string",
         ///        "image": "string",
+        ///        "steps": [1,2,3]
         ///     }
         ///
         /// </remarks>
@@ -166,7 +167,7 @@ namespace aspnetapp.Controllers
         /// <response code="500">If there is a connection failure with the database </response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
-        public async Task<ActionResult<Procedure>> PostProcedure(Procedure procedure)
+        public async Task<ActionResult<Procedure>> PostProcedure(ProcedureRequest procedureReq)
         {
         
             if (!hasPermission("CreateProcedure"))
@@ -178,8 +179,36 @@ namespace aspnetapp.Controllers
             {
                 return Problem("Entity set 'dataContext.Procedures'  is null.");
             }
+
+            var procedure = new Procedure
+            {
+                Name = procedureReq.name,
+                Image = procedureReq.image
+            };
+
             _context.Procedures.Add(procedure);
+
             await _context.SaveChangesAsync();
+
+            if (procedureReq.steps != null)
+            {
+                var index = 0;
+
+                foreach (var step in procedureReq.steps)
+                {
+                    var procedureStep = new ProcedureStep
+                    {
+                        ProcedureId = procedure.Id,
+                        StepId = step,
+                        Order = index
+                    };
+
+                    index++;
+                    _context.ProcedureStep.Add(procedureStep);
+                }
+
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction(nameof(GetProcedure), new { id = procedure.Id }, procedure);
         }

@@ -177,10 +177,8 @@ export const getProcedure = async (id :number) => {
 // export const addProcedure = async (name :string, description :string, image :string) => {
    export const createProcedure = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-    const { name, imageDirection } = ctx;
-    console.log('Aqui', name, imageDirection)
-
-
+    const { name, imageDirection, stepIds } = ctx;
+    console.log('ctx', ctx)
     let opciones :any = {
         method: 'POST',
         headers: {
@@ -188,8 +186,9 @@ export const getProcedure = async (id :number) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "image": imageDirection })
+        body: JSON.stringify({ "name": name, "image": imageDirection, "steps": stepIds })
     };
+    console.log('opciones', opciones)
     const res = await fetch(`${constants.API_URL}procedimientos`, opciones);
     console.log(res)
     return res
@@ -224,11 +223,9 @@ export const editProcedure = async (id :number, name :string, imageDirection :st
     const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
     return res
 }
-//  export const addProcedureSteps = async (id :number, stepIds :[]) => {
     export const addProcedureSteps = async (procedureId : number, ctx: { stepIds: any[] }) => { 
     const apiKey = sessionStorage.getItem('apiKey');          
     const {stepIds} = ctx;   
-    console.log("procedureId", procedureId, "stepIds", stepIds)
    
     let opciones :any = {
         method: 'POST',
