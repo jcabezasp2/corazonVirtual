@@ -19,6 +19,7 @@ import Roles from './pages/Roles';
 import Claims from './pages/Claims';
 import Tools from './pages/Tools';
 import Information from './pages/Information';
+import NewStudents from './pages/NewStudents';
 import { Role } from './assets/constants';
 import './css/app.css';
 
@@ -78,6 +79,7 @@ function App() {
           <Route path="/procedimientos/:id" element={user.role == Role.Guest? <Home /> : <Procedure />} />
           <Route path="/practicas" element={user.role != Role.Guest? <Practices /> : <Home />} />
           <Route path="/estudiantes" element={user.role == Role.Teacher? <Students /> : <Home />} />
+          <Route path='/estudiantes/añadir' element={user.role == Role.Teacher ? <NewStudents /> : <Home />} /> 
           <Route path="/herramientas" element={ <Tools />} />
           <Route path="/herramientas/formulario" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
           <Route path="/herramientas/formulario/:id" element={user.role == Role.Teacher?<ToolForm /> : <Home /> } />
