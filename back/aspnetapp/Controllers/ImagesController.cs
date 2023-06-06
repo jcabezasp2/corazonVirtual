@@ -47,6 +47,7 @@ namespace aspnetapp.Controllers
 
                 if(extension == "fbx"){
                     folder = "images3d";
+                     
                 }else if(extension == "png" || extension == "jpg" || extension == "jpeg"){
                     folder = "images";
                 }else {
@@ -90,14 +91,16 @@ namespace aspnetapp.Controllers
 
             if(id.Split('.').Last() == "fbx")
                 image = System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images3d", id)) ? System.IO.File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images3d", id)) : null;
+               
             else
                 image = System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", id)) ? System.IO.File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", id)) : null;
+                
 
             if (image == null)
             {
                 return NotFound();
             }
-
+            
             return Ok(image);
         }
 
@@ -136,13 +139,47 @@ namespace aspnetapp.Controllers
                 {
                     await bits.WriteAsync(bytes, 0, bytes.Length);
                 }
-
+   
                 return Ok($"{Request.Scheme}://{Request.Host}/images/{imageName}");
         }
 
+        /// <summary>
+        /// POST a fbx with a base64 string
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /images/base64fbx
+        ///     {
+        ///        "Img": "base64 string"
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>Route of uploaded image</returns>
+        /// <response code="200">Returns the image route</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is a connection failure with the database </response>
+        [HttpPost("base64fbx")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        public async Task<ActionResult<string>> PostImageBase64Fbx([FromBody] Image64 image)
+        {
+           // convert string from base64 to image
 
-        
+                var bytes = Convert.FromBase64String(image.Image);
+                var imageName = $"{Guid.NewGuid()}.fbx";
+                var folder = "images3d";               
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, imageName);
 
+                if(!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder)))
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder));
 
+                using (var bits = new FileStream(path, FileMode.Create))
+                {
+                    await bits.WriteAsync(bytes, 0, bytes.Length);
+                }
+
+                // return Ok($"{Request.Scheme}://{Request.Host}/images3d/{imageName}");
+                return Ok($"{imageName}");
+        }
     }
 }

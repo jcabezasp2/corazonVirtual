@@ -50,6 +50,11 @@ namespace aspnetapp.Controllers
         [Route("create")]
         public async Task<ActionResult<Role>> Create(Role role)
         {
+            if (!hasPermission("CreateRole"))
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -90,6 +95,11 @@ namespace aspnetapp.Controllers
         [Route("delete")]
         public async Task<ActionResult<Role>> Delete(Role role)
         {
+            if (!hasPermission("DeleteRole"))
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -131,6 +141,11 @@ namespace aspnetapp.Controllers
         [Route("adduser")]
         public async Task<ActionResult<Role>> AddUserToRole(UserRole userRole)
         {
+            if (!hasPermission("CreateUser"))
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -181,6 +196,11 @@ namespace aspnetapp.Controllers
         [Route("addPermission")]
         public async Task<ActionResult<Role>> AddPermissionToRole(AddClaimToRole permission)
         {
+            if (!hasPermission("CreateRole"))
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -249,6 +269,15 @@ namespace aspnetapp.Controllers
         {
             var claims = await _context.Permissions.ToListAsync();
             return Ok(claims);
+        }
+
+         private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
+
+            return roleClaims.Any(c => c.Value == permission);
         }
 
     }

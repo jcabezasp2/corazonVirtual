@@ -1,3 +1,7 @@
+#stepform{
+ margin-top: 7rem !important;
+}
+
 #inputtxt-stepform > div > span > input{
     width: 26rem !important;
 }

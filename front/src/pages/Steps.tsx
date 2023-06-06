@@ -56,7 +56,7 @@ export default function Steps(props: Iprops) {
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
             setTimeout(function(){
                 window.location.reload();
-             }, 5000);
+             }, 1000);
             
         } else {
             setStatus(Status.error);

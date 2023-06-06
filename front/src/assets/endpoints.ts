@@ -183,19 +183,18 @@ export const getProcedure = async (id: number) => {
 // export const addProcedure = async (name :string, description :string, image :string) => {
 export const createProcedure = async (ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-    const { name, imageDirection } = ctx;
-    console.log('Aqui', name, imageDirection)
-
-
-    let opciones: any = {
+    const { name, imageDirection, stepIds } = ctx;
+    console.log('ctx', ctx)
+    let opciones :any = {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "image": imageDirection })
+        body: JSON.stringify({ "name": name, "image": imageDirection, "steps": stepIds })
     };
+    console.log('opciones', opciones)
     const res = await fetch(`${constants.API_URL}procedimientos`, opciones);
     console.log(res)
     return res
@@ -216,7 +215,7 @@ export const deleteProcedure = async (id: number) => {
     return res
 }
 
-export const editProcedure = async (id: number, name: string, description: string, image: string) => {
+export const editProcedure = async (id :number, name :string, imageDirection :string) => {
     const apiKey = sessionStorage.getItem('apiKey');
     let opciones: any = {
         method: 'PUT',
@@ -225,23 +224,25 @@ export const editProcedure = async (id: number, name: string, description: strin
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image })
+        body: JSON.stringify({ "name": name, "image": imageDirection })
     };
     const res = await fetch(`${constants.API_URL}procedimientos/${id}`, opciones);
     return res
 }
-export const addProcedureSteps = async (id: number, stepIds: []) => {
-    const apiKey = sessionStorage.getItem('apiKey');
-    let opciones: any = {
+    export const addProcedureSteps = async (procedureId : number, ctx: { stepIds: any[] }) => { 
+    const apiKey = sessionStorage.getItem('apiKey');          
+    const {stepIds} = ctx;   
+   
+    let opciones :any = {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "procedureId": id, "stepIds": stepIds })
+        body: JSON.stringify({ "procedureId": procedureId, "stepIds": stepIds })
     };
-    const res = await fetch(`${constants.API_URL}procedimientos/${id}/pasos`, opciones);
+    const res = await fetch(`${constants.API_URL}procedimientos/${procedureId}/pasos`, opciones);
     return res
 }
 
@@ -295,9 +296,7 @@ export const editStep = async (id: number, name: string, description: string, im
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    return res
 }
 
 export const createStep = async (name: string, description: string, image: string, duration: string, previousStep: boolean) => {
@@ -315,9 +314,8 @@ export const createStep = async (name: string, description: string, image: strin
     };
 
     const res = await fetch(`${constants.API_URL}pasos`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    return res
+   
 }
 
 export const deleteStep = async (id: number) => {
@@ -334,10 +332,11 @@ export const deleteStep = async (id: number) => {
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
-}
+   
+    return res
+}  
+
+
 
 export const getStepByProcedureId = async (id: number) => {
     const apiKey = sessionStorage.getItem('apiKey');
@@ -459,7 +458,7 @@ export const getTool = async (id: number) => {
     return data
 }
 //Create tool
-export const createTool = async (name: string, description: string, modelo: string) => {
+export const createTool = async (name :string, description :string, modelo :string, num : number) => {
     const apiKey = sessionStorage.getItem('apiKey');
 
     let opciones: any = {
@@ -469,16 +468,17 @@ export const createTool = async (name: string, description: string, modelo: stri
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo })
+        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo, "optimalScale": num })
     };
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    return res; 
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
 }
 //Update tool
-export const updateTool = async (id: number, name: string, description: string, modelo: string) => {
+export const updateTool = async (id :number, name :string, description :string, modelo :string, num : number) => { 
     const apiKey = sessionStorage.getItem('apiKey');
 
     let opciones: any = {
@@ -488,13 +488,11 @@ export const updateTool = async (id: number, name: string, description: string, 
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo })
+        body: JSON.stringify({ "name": name, "description": description, "modelo": modelo, "optimalScale" : num })
     };
 
     const res = await fetch(`${constants.API_URL}herramientas/${id}`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    return res      
 }
 //Delete tool
 export const deleteTool = async (id: number) => {
@@ -575,6 +573,24 @@ export const getImage = async (path: string) => {
     const data = await res.blob();
     return data
 }
+//Calls to the Images API endpoints
+export const getImageFbx = async (path :string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    
+    let opciones :any = {
+        method: 'GET',
+        headers: {
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}images3d/${path}`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.blob();
+    return data 
+    }
+
+//Calls to the Images API endpoints
 
 // function to upload an image to the server
 export const uploadImage = async (file: any) => {
@@ -623,3 +639,28 @@ export const uploadImageBase64 = async (file: any) => {
 
 
 }
+
+// function to upload an image to the server
+export const uploadImageBase64Fbx = async (file :any) => {
+    
+    const apiKey = sessionStorage.getItem('apiKey');
+    const base64 = file.split(',')[1];
+    
+    let opciones :any = {
+        method: 'POST',
+        headers: {
+            'Api-Key': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "image": base64 })
+    };
+
+    const res = await fetch(`${constants.API_URL}images/base64fbx`, opciones);
+    console.log(res);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    return res.text();
+
+
+}
+
+
