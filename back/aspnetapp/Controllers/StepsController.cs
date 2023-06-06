@@ -176,7 +176,7 @@ namespace aspnetapp.Controllers
         /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
-        public async Task<ActionResult<Step>> PostStep(Step step)
+        public async Task<ActionResult<Step>> PostStep(StepRequest steprequest)
         {
             if (!hasPermission("CreateStep"))
             {
@@ -187,10 +187,34 @@ namespace aspnetapp.Controllers
           {
               return Problem("Entity set 'dataContext.Steps'  is null.");
           }
-            _context.Steps.Add(step);
-            await _context.SaveChangesAsync();
+                
+                var step = new Step
+                {
+                    Name = steprequest.name,
+                    Description = steprequest.description,
+                    Image = steprequest.image,
+                    duration = steprequest.duration,
+                    PreviousStep = steprequest.previousStep
+                };
+    
+                _context.Steps.Add(step);
 
-            return CreatedAtAction("GetStep", new { id = step.Id }, step);
+                await _context.SaveChangesAsync();
+
+                foreach (var toolId in steprequest.tools)
+                {
+                    var tool = _context.Tools.Find(toolId);
+                    if (tool == null)
+                    {
+                        return NotFound();
+                    }
+                    var sql = @"INSERT INTO ""StepTool"" (""StepsId"", ""ToolsId"") VALUES (" + step.Id + ", " + toolId + ")";
+
+                    _context.Database.ExecuteSqlRaw(sql);
+                     
+                }
+    
+                return CreatedAtAction("GetStep", new { id = step.Id }, step);
         }
 
         /// <summary>
