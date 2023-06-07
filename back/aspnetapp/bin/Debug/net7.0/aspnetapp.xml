@@ -228,7 +228,7 @@
              <response code="401">If the user is not authenticated</response>
              <response code="500">If there is a connection failure with the database </response>
         </member>
-        <member name="M:aspnetapp.Controllers.ProceduresController.PostProcedure(aspnetapp.Models.Procedure)">
+        <member name="M:aspnetapp.Controllers.ProceduresController.PostProcedure(aspnetapp.Models.ProcedureRequest)">
              <summary>
              Create a procedure
              </summary>
@@ -239,6 +239,7 @@
                  {
                     "name": "string",
                     "image": "string",
+                    "steps": [1,2,3]
                  }
             
              </remarks>
@@ -474,7 +475,7 @@
              <response code="401">If the user is not authenticated</response>
              <response code="500">If there is an internal server error</response>
         </member>
-        <member name="M:aspnetapp.Controllers.StepsController.PostStep(aspnetapp.Models.Step)">
+        <member name="M:aspnetapp.Controllers.StepsController.PostStep(aspnetapp.Models.StepRequest)">
              <summary>
              Create a step
              </summary>

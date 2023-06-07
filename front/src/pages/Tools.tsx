@@ -32,7 +32,7 @@ export default function Claims(props: Iprops) {
   const [tools, setTools] = React.useState([]);
   const [selectedTool, setSelectedTool] = React.useState<any>();
   const [modalVisible, setModalVisible] = useState(false);
-  const toast = useRef(null);
+  const toast = useRef<any>(null);
   const [status, setStatus] = React.useState<Status>(Status.error);
   const [toolID, setToolID] = React.useState<number>(0)
 

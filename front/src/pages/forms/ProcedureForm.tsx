@@ -4,7 +4,7 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { FileUpload } from "primereact/fileupload";
 import InputTxt from "../../components/form/InputTxt";
 import PickListt from "../../components/form/Picklist";
-import PickSteps from "../../interfaces/PickSteps";
+import Picklist from "../../interfaces/Picklist";
 import { useParams } from "react-router-dom";
 import "../../css/picklist.css";
 import "./../../css/procedureform.css";
@@ -46,12 +46,12 @@ export default function ToolForm(props: Iprops) {
   };
 
   //Parte de los pasos del procedimiento
-  const [source, setSource] = React.useState<PickSteps[]>([]);
+  const [source, setSource] = React.useState<Picklist[]>([]);
   const [stepIds, setStepIds] = React.useState<any>([]);
-  const [target, setTarget] = React.useState<PickSteps[]>([]);
+  const [target, setTarget] = React.useState<Picklist[]>([]);
   const [idAsociados, setIdAsociados] = React.useState<any>([]);
 
-  const onChange = (event: { source: PickSteps[]; target: PickSteps[] }) => {
+  const onChange = (event: { source: Picklist[]; target: Picklist[] }) => {
     setSource(event.source);
     setTarget(event.target);
     const ids = event.target.map((item) => item.code);
@@ -80,7 +80,7 @@ const [status, setStatus] = React.useState<Status>(Status.error);
 
   const allSteps = async () => {
     const res = await context.apiCalls.getSteps();
-    const steps = res.map((step: PickSteps) => {
+    const steps = res.map((step: Picklist) => {
       return {
         id: step.id,
         code: step.id,
@@ -126,7 +126,7 @@ const handleProcedure = async () => {
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
             console.log('funciona edit procedure')
             console.log(resEdit)
-            console.log(resEdit2)
+         
             setTimeout(function(){
                navigate('/procedimientos')
              }, 1000);

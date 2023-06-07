@@ -184,7 +184,7 @@ export const getProcedure = async (id: number) => {
 export const createProcedure = async (ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
     const { name, imageDirection, stepIds } = ctx;
-    console.log('ctx', ctx)
+  
     let opciones :any = {
         method: 'POST',
         headers: {
@@ -281,8 +281,9 @@ export const getStep = async (id: number) => {
     return data
 }
 
-export const editStep = async (id: number, name: string, description: string, image: string, duration: string, previousStep: boolean) => {
+export const editStep = async (id: number,ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
+    const { name, description, image, duration, previousStep, toolsId } = ctx;
 
     let opciones: any = {
         method: 'PUT',
@@ -292,16 +293,16 @@ export const editStep = async (id: number, name: string, description: string, im
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep })
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "toolsId": toolsId  })
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
     return res
 }
 
-export const createStep = async (name: string, description: string, image: string, duration: string, previousStep: boolean) => {
+export const createStep = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-
+    const { name, description, image, duration, previousStep, toolsId } = ctx;
     let opciones: any = {
         method: 'POST',
         headers: {
@@ -310,7 +311,7 @@ export const createStep = async (name: string, description: string, image: strin
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep })
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "tools": toolsId })
     };
 
     const res = await fetch(`${constants.API_URL}pasos`, opciones);

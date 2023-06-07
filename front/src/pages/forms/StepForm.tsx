@@ -1,5 +1,5 @@
 import { Status } from '../../assets/constants';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import TxtEditor from "../../components/form/TxtEditor"
 import Toggle from "../../components/form/Toggle";
 import SubmitButton from "../../components/form/SubmitButton";
@@ -11,34 +11,41 @@ import InputTxt from "../../components/form/InputTxt";
 import Select1 from '../../components/form/Select';
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
-
+import PickListt from "../../components/form/Picklist";
+import "../../css/picklist.css";
+import Picklist from "../../interfaces/Picklist";
 class Iprops {
 
 }
 
-
+interface ICreateStep {
+    name: string;
+    image: string;   
+    description: string,
+    duration: string,
+    previousStep: boolean, 
+    tools: any[],
+}
 
 
 export default function StepForm(props: Iprops) {
 
     const { id } = useParams();
 
-    const [name, setName] = React.useState<string>('');
-    const [labelname, setLabelname] =React.useState<string>('Nombre del paso');
-    const [labelnum, setLabelnum] =React.useState<string>('Tiempo de duración del paso');
+    const [name, setName] = React.useState<string>('');    
     const [description, setDescription] = React.useState<string>('');
     const [previousStep, setpreviousStep] = React.useState<boolean>(false);
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [image, setImage] = React.useState<string>('');
     const [num, setNum] = React.useState<number>(0);
-    const [duration, setDuration] = React.useState<string>('');; 
+    const [duration, setDuration] = React.useState<string>(''); 
     const navigate = useNavigate();
-    const context = React.useContext(appContext);
-    const [placeholder, setPlaceholder] = React.useState<string>('Selecciona una herramienta')
+    const context = React.useContext(appContext);    
     const [options, setoptions] = React.useState<any[]>([]);
-    const [idAsociados, setidAsociados] = React.useState<number>(0);
-    const toast = useRef(null);
-
+    const [tools, setTools] = React.useState<any[]>([]);
+    const toast = useRef<any>(null);
+    const [source, setSource] = React.useState<Picklist[]>([]);
+    const [target, setTarget] = React.useState<Picklist[]>([]);
 
     const handleName = (e: string) => {
         setName(e);
@@ -63,9 +70,9 @@ export default function StepForm(props: Iprops) {
    
     const handleSelect = (e: any) => {
         let select = e;
-        setidAsociados(select.code);
+        setTools(select.code);
         
-        console.log("dentro de handleSelect stepform",idAsociados)
+        console.log("dentro de handleSelect stepform",tools)
     }
 
    
@@ -80,11 +87,7 @@ export default function StepForm(props: Iprops) {
               }));
             setoptions(options)
             console.log(options,"options")
-            let allcodes = allTools.map((tool: any) => {
-                return tool.id
-            })
-            
-            // console.log(allcodes,"allcodes")
+          
        
         }else{
             console.log('no funciona allTools')
@@ -94,7 +97,6 @@ export default function StepForm(props: Iprops) {
 
     
 
-
     React.useEffect(() => {
         allTools();
         if(id){
@@ -102,20 +104,56 @@ export default function StepForm(props: Iprops) {
             setName(step.name);
             setDescription(step.description);
             setNum(parseInt(step.duration))
+            // setNum(step.duration);
             setImage(step.image);
             setpreviousStep(step.previousStep);
+            setTools(step.tools);
 
         })
         context.apiCalls.getToolByStepId(id).then((tool: any)=>{
             let utensiliosId = tool.map((tool: any) => tool.id);
-            setidAsociados(utensiliosId);
-            console.log("id asociados de params id", idAsociados)
+            setTools(utensiliosId);
+            console.log("id asociados de params id", tools)
         }
         )
         }
 
   }, [])
 
+    //Funcionalidad del boton de submit
+  const [ctx, setCtx] = useState<any>(null);
+
+  React.useEffect(() => {
+    let currentCtx : ICreateStep = {     
+        name: name ? name : '',
+        image: image ? image :  '',
+        description : description ? description : '',
+        duration : duration ? duration : '',
+        previousStep : previousStep ? previousStep : false,
+        tools : tools ? tools : [],        
+    };
+    setCtx(currentCtx);
+}, [name, image, description, num, previousStep, tools]);
+
+    // React.useEffect(() => {
+    //     let currentCtx : IStep = { 
+    //         id: id ? id : 0,    
+    //         name: name ? name : '',
+    //         image: image ? image :  '',
+    //         description : description ? description : '',
+    //         duration : num ? num : 0,
+    //         previousStep : previousStep ? previousStep : false,
+    //         tools : tools ? tools : 0,        
+    //     };
+    //     setCtx(currentCtx);
+    // }, [name, image, description, num, previousStep, tools]);
+
+    const onChange = (event: { source: Picklist[]; target: Picklist[] }) => {
+        setSource(event.source);
+        setTarget(event.target);
+        const ids = event.target.map((item) => item.code);
+        setTools(ids);
+      };
 
   const onUpload = async ({files} : any) => {
     console.log('files', files)
@@ -131,20 +169,20 @@ export default function StepForm(props: Iprops) {
 };
 
 const handleStep = async () => {
-    // async function steps() {
+ 
         if(id){
-            if(name === '' || description === '' || image === '' || duration === ''){
+            if(ctx.name === '' || ctx.description === '' || ctx.image === '' || ctx.duration === ''){
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-                console.log("edit",name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
-                const resEdit = await context.apiCalls.editStep(id,name, description, image, duration, previousStep);
+                console.log("edit",ctx)
+                const resEdit = await context.apiCalls.editStep(id,name, description, image, duration, previousStep, tools);
                 if (resEdit.ok) {
                     setStatus(Status.success);
                     toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
                     console.log('funciona edit teps')
                     console.log(resEdit)
-                    // const res2 = await context.apiCalls.addStepTool(id, idAsociados);
+                    // const res2 = await context.apiCalls.addStepTool(id, tools);
                     // console.log(res2)
                     setTimeout(function(){
                         navigate('/pasos')
@@ -158,19 +196,19 @@ const handleStep = async () => {
                 }
             }
         }else{  
-            if(name === '' || description === '' || image === '' || duration === ''){
+            if((ctx.name === '' || ctx.description === '' || ctx.image === '' || ctx.duration === '')){
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-        console.log(name,"--------", description,"--------", image, "--------", duration,"--------", previousStep, "---------", idAsociados)
-            const res = await context.apiCalls.createStep(name, description, image, duration, previousStep);
+        console.log(ctx)
+            const res = await context.apiCalls.createStep(name, description, image, duration, previousStep, tools);
             console.log("res",res)
             if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
                 console.log('funciona createsteps')
                 console.log(res)
-                stepTool();
+                
             } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
@@ -183,36 +221,7 @@ const handleStep = async () => {
     }
 
 
-    async function stepTool() {
-        const allSteps = await context.apiCalls.getSteps();
-        
-        console.log(allSteps)
-        console.log(allSteps.length)
-       
-        const lastItem = allSteps.reduce((prev:any, current:any) => {
-            return prev.id > current.id ? prev : current;
-          });
-          console.log("lastItem",lastItem)        
-        const stepId = lastItem.id;               
-        console.log("stepid",stepId)       
-        console.log("idAsociados", idAsociados)
-
-    const res2 = await context.apiCalls.addStepTool(stepId, idAsociados);
-    if(res2 != null){
-        console.log('funciona addsteptool')
-        console.log(res2)
-        // setTimeout(function(){
-        //     window.location.reload();
-        //  }, 2000);
-        }else{
-            console.log('no funciona addsteptool')
-        }
-        
-    }
-
-    // const handleStep = () => {
-    //     steps();
-    // }
+   
 
 
     return (
@@ -222,10 +231,10 @@ const handleStep = async () => {
            
             <div id="inputsform-stepform" className="row py-0 col-12">      
                 <div className='col-4 py-3' id="inputtxt-stepform">                
-                    <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
+                    <InputTxt name={name} handleName={handleName} labelname={'Nombre del paso'}/>                        
                 </div>                
                 <div className='col-3 ' id="inputnumb-stepform"> 
-                <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>
+                <InputNum num={num} handleNum={handleNum} labelnum={'Tiempo de duración del paso'}/>
                            
                 </div>
             </div>             
@@ -235,9 +244,10 @@ const handleStep = async () => {
                     
                             <Select1
                              handleSelect={handleSelect}
-                             idAsociados={idAsociados}
+                             tools={tools}
                              options={options}
-                             placeholder={placeholder}/>
+                             placeholder={"Selecciona una herramienta"}/>
+                              {/* <PickListt source={source} onChange={onChange} target={target} /> */}
                 </div>    
                 <div className='col-3' id="toggle-stepform" > 
                 <Toggle
@@ -269,7 +279,7 @@ const handleStep = async () => {
                 <div className='col-4'>
                 <SubmitButton
                     onclik={handleStep}
-                    ctx={{name: name, description : description, image : image, duration : num, previousStep : previousStep, toolId : idAsociados}}
+                    ctx={ctx}
                     isLogin={false}
                 />
                  <Toast ref={toast} />
