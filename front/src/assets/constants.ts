@@ -8,6 +8,14 @@ export enum Status{
     'empty',
 }
 
+export enum Size{
+    'sm',
+    'md',
+    'lg',
+    'xl',
+    'xxl',
+}
+
 export enum Role{
     Admin = 'Admin',
     Teacher = 'Teacher',
