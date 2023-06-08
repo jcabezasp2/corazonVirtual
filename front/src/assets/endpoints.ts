@@ -283,7 +283,7 @@ export const getStep = async (id: number) => {
 
 export const editStep = async (id: number,ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-    const { name, description, image, duration, previousStep, toolsId } = ctx;
+    const { name, description, image, duration, previousStep, tools } = ctx;
 
     let opciones: any = {
         method: 'PUT',
@@ -293,7 +293,7 @@ export const editStep = async (id: number,ctx: any) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "toolsId": toolsId  })
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "toolsId": tools  })
     };
 
     const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
@@ -302,7 +302,7 @@ export const editStep = async (id: number,ctx: any) => {
 
 export const createStep = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-    const { name, description, image, duration, previousStep, toolsId } = ctx;
+    const { name, description, image, duration, previousStep, tools } = ctx;
     let opciones: any = {
         method: 'POST',
         headers: {
@@ -311,7 +311,7 @@ export const createStep = async (ctx : any) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "tools": toolsId })
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "tools": tools })
     };
 
     const res = await fetch(`${constants.API_URL}pasos`, opciones);
@@ -332,8 +332,7 @@ export const deleteStep = async (id: number) => {
         }
     };
 
-    const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);
-   
+    const res = await fetch(`${constants.API_URL}pasos/${id}`, opciones);   
     return res
 }  
 
@@ -474,9 +473,7 @@ export const createTool = async (name :string, description :string, modelo :stri
 
     const res = await fetch(`${constants.API_URL}herramientas`, opciones);
     return res; 
-    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    
 }
 //Update tool
 export const updateTool = async (id :number, name :string, description :string, modelo :string, num : number) => { 
@@ -509,9 +506,7 @@ export const deleteTool = async (id: number) => {
     };
 
     const res = await fetch(`${constants.API_URL}herramientas/${id}`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
-    const data = await res.json();
-    return data
+    return res
 }
 
 //Tools by step id
@@ -661,7 +656,22 @@ export const uploadImageBase64Fbx = async (file :any) => {
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     return res.text();
 
-
 }
+
+// function to delete an image from the server
+export const deleteImage = async (path: string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+
+    let opciones: any = {
+        method: 'DELETE',
+        headers: {
+            'Api-Key': apiKey
+        }
+    };
+
+    const res = await fetch(`${constants.API_URL}images/${path}`, opciones);
+    return res
+}
+
 
 

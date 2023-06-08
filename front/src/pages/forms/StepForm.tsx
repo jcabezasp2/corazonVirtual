@@ -11,9 +11,8 @@ import InputTxt from "../../components/form/InputTxt";
 import Select1 from '../../components/form/Select';
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
-import PickListt from "../../components/form/Picklist";
-import "../../css/picklist.css";
-import Picklist from "../../interfaces/Picklist";
+import { Image } from 'primereact/image';
+import { Button } from 'primereact/button';
 class Iprops {
 
 }
@@ -22,7 +21,7 @@ interface ICreateStep {
     name: string;
     image: string;   
     description: string,
-    duration: string,
+    duration: number,
     previousStep: boolean, 
     tools: any[],
 }
@@ -38,14 +37,14 @@ export default function StepForm(props: Iprops) {
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [image, setImage] = React.useState<string>('');
     const [num, setNum] = React.useState<number>(0);
-    const [duration, setDuration] = React.useState<string>(''); 
+    const [duration, setDuration] = React.useState<number>(0); 
     const navigate = useNavigate();
     const context = React.useContext(appContext);    
     const [options, setoptions] = React.useState<any[]>([]);
     const [tools, setTools] = React.useState<any[]>([]);
     const toast = useRef<any>(null);
-    const [source, setSource] = React.useState<Picklist[]>([]);
-    const [target, setTarget] = React.useState<Picklist[]>([]);
+    const [src, setSrc] = React.useState<string>('');
+   
 
     const handleName = (e: string) => {
         setName(e);
@@ -53,9 +52,9 @@ export default function StepForm(props: Iprops) {
 
     const handleNum = (e: number) => {
         setNum(e);
-        setDuration(String(num))
+        // setDuration(String(num))
         console.log(num,"num", typeof num, "type")
-        console.log(duration, "duration", typeof duration, "type")
+        // console.log(duration, "duration", typeof duration, "type")
                 
     }
 
@@ -103,11 +102,12 @@ export default function StepForm(props: Iprops) {
         context.apiCalls.getStep(id).then((step: any)=>{
             setName(step.name);
             setDescription(step.description);
-            setNum(parseInt(step.duration))
-            // setNum(step.duration);
+            // setNum(parseInt(step.duration));
+            setNum(step.duration);
             setImage(step.image);
             setpreviousStep(step.previousStep);
             setTools(step.tools);
+            setSrc(step.image)
 
         })
         context.apiCalls.getToolByStepId(id).then((tool: any)=>{
@@ -128,50 +128,60 @@ export default function StepForm(props: Iprops) {
         name: name ? name : '',
         image: image ? image :  '',
         description : description ? description : '',
-        duration : duration ? duration : '',
+        duration : num ? num : 0,
         previousStep : previousStep ? previousStep : false,
         tools : tools ? tools : [],        
     };
     setCtx(currentCtx);
 }, [name, image, description, num, previousStep, tools]);
 
-    // React.useEffect(() => {
-    //     let currentCtx : IStep = { 
-    //         id: id ? id : 0,    
-    //         name: name ? name : '',
-    //         image: image ? image :  '',
-    //         description : description ? description : '',
-    //         duration : num ? num : 0,
-    //         previousStep : previousStep ? previousStep : false,
-    //         tools : tools ? tools : 0,        
-    //     };
-    //     setCtx(currentCtx);
-    // }, [name, image, description, num, previousStep, tools]);
+   
 
-    const onChange = (event: { source: Picklist[]; target: Picklist[] }) => {
-        setSource(event.source);
-        setTarget(event.target);
-        const ids = event.target.map((item) => item.code);
-        setTools(ids);
-      };
+const onUpload = async ({ files }: any) => {  
+    const [file] = files;    
+console.log("file", files, "antes del delete")
 
-  const onUpload = async ({files} : any) => {
-    console.log('files', files)
-    const [file] = files;
-    const reader = new FileReader();
-    reader.onload = async (e: any) => {
-        let result = await context.apiCalls.uploadImageBase64(e.target.result);
-        console.log('result', result)
-        setImage(result);
-    };
-    reader.readAsDataURL(file);
-
+if(image === ""){
+const reader = new FileReader();
+reader.onload = async (e: any) => {
+  let result = await context.apiCalls.uploadImageBase64(e.target.result);
+  console.log("result",result)
+  setImage(result);
+  console.log("image ",image)
+  setSrc(result)
 };
+reader.readAsDataURL(file);   
+
+}else{
+let img = image.split("images/")
+console.log("image", image)
+let deleteImg = img[1]
+ let res = await context.apiCalls.deleteImage(deleteImg);
+ if(res.ok){
+console.log("delete",deleteImg)
+ }else{
+  console.log("no borra")
+ }
+
+
+const reader = new FileReader();
+reader.onload = async (e: any) => {
+  let result = await context.apiCalls.uploadImageBase64(e.target.result);
+  console.log("result",result)
+  setImage(result);
+  console.log("image direction",image)
+  setSrc(result)
+};
+reader.readAsDataURL(file);
+}
+}
+
+
 
 const handleStep = async () => {
  
         if(id){
-            if(ctx.name === '' || ctx.description === '' || ctx.image === '' || ctx.duration === ''){
+            if(ctx.name === '' || ctx.description === '' || ctx.image === '' || ctx.duration === 0){
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
@@ -196,7 +206,7 @@ const handleStep = async () => {
                 }
             }
         }else{  
-            if((ctx.name === '' || ctx.description === '' || ctx.image === '' || ctx.duration === '')){
+            if((ctx.name === '' || ctx.description === '' || ctx.image === '' || ctx.duration === 0)){
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
@@ -234,8 +244,8 @@ const handleStep = async () => {
                     <InputTxt name={name} handleName={handleName} labelname={'Nombre del paso'}/>                        
                 </div>                
                 <div className='col-3 ' id="inputnumb-stepform"> 
-                <InputNum num={num} handleNum={handleNum} labelnum={'Tiempo de duración del paso'}/>
-                           
+                <InputNum num={num} handleNum={handleNum} labelnum={'Tiempo de duración del paso'} />
+                                
                 </div>
             </div>             
             
@@ -247,7 +257,7 @@ const handleStep = async () => {
                              tools={tools}
                              options={options}
                              placeholder={"Selecciona una herramienta"}/>
-                              {/* <PickListt source={source} onChange={onChange} target={target} /> */}
+                            
                 </div>    
                 <div className='col-3' id="toggle-stepform" > 
                 <Toggle
@@ -260,10 +270,19 @@ const handleStep = async () => {
                 />
                 </div>
                 </div>
-                <div className='col-12 flex justify-content-center align-content-center' id="file-stepform" >
+                <div id="inputsform3-stepform" className='row  py-0 '>
+                <div className='col-5 flex justify-content-center align-content-center' id="file-stepform" >
+                <FileUpload name="image"               
+                onSelect={onUpload}
+                 mode="basic" 
+                 accept="image/*" 
+                 auto={true} />
 
-                <FileUpload name="image" customUpload={true} uploadHandler={onUpload}  mode="basic" accept="image/*" auto={true} />
-                </div>   
+                </div>
+                <div className='col-4 flex justify-content-center align-content-center' id="img-stepform" >
+                <Image src={src} />
+                </div>
+                </div> 
             <div className='py-0 flex justify-content-center'>
                 <div className='col-10' id="editor-stepform">
                 <TxtEditor

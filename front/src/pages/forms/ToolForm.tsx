@@ -9,7 +9,8 @@ import '../../css/toolform.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FileUpload } from 'primereact/fileupload';
 import InputNum from "../../components/form/InputNum";
-
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 class Iprops {
 }
 
@@ -21,15 +22,18 @@ export default function ToolForm(props: Iprops) {
 
     const [name, setName] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
-    const [image, setImage] = React.useState<any>();
+    // const [image, setImage] = React.useState<any>();
+    const [image, setImage] = useState<string>("");
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
     const [labeldescription, setLabeldescription] = React.useState<string>('Descripción de la herramienta');
     const [labelnum, setLabeNum] = React.useState<string>('Escala');
-    const [num, setNum] = React.useState<number>(0.7);
+    const [num, setNum] = React.useState<number>(0.1);
     const context = React.useContext(appContext);
-    const toast = useRef(null);
+    const toast = useRef<any>(null);
     const navigate = useNavigate();
+    const [src, setSrc] = useState<string>('');
+
 
     const handleName = (e: string) => {
         setName(e);
@@ -54,19 +58,60 @@ export default function ToolForm(props: Iprops) {
 
   }, [id])
 
-  const onUpload = async ({files} : any) => {
-    console.log('files', files)
-    const [file] = files;
+//   const onUpload = async ({files} : any) => {
+//     console.log('files', files)
+//     const [file] = files;
+//     setSrc(file.name)
+//     const reader = new FileReader();
+//     reader.onload = async (e: any) => {
+       
+//         let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
+//         console.log('result', result)
+//         setImage(result);
+        
+//     };
+//     reader.readAsDataURL(file);
+//     console.log(reader)
+// };
+const onUpload = async ({ files }: any) => {  
+    const [file] = files;    
+    console.log("file", files, "antes del delete")
+
+    if(image === ""){
     const reader = new FileReader();
     reader.onload = async (e: any) => {
-       
-        let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
-        console.log('result', result)
-        setImage(result);
+    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
+    console.log("result",result)
+    setImage(result);
+    console.log("image en image vacio",image)
+    setSrc(file.name)
+    };
+    reader.readAsDataURL(file);   
+
+    }else{
+        console.log("image en image no vacio", image)
+    let img = image.split("images/")
+    
+    let deleteImg = img[1]
+    let res = await context.apiCalls.deleteImage(deleteImg);
+    if(res.ok){
+    console.log("delete",deleteImg)
+    }else{
+    console.log("no borra")
+    }
+    console.log("file", files, "despues de borrar, antes de resubir")
+
+    const reader = new FileReader();
+    reader.onload = async (e: any) => {
+    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
+    console.log("result",result)
+    setImage(result);
+    console.log("image direction",image)
+    setSrc(file.name)
     };
     reader.readAsDataURL(file);
-    console.log(reader)
-};
+    }
+}
 
     
 const handleTool = async () => {
@@ -126,22 +171,25 @@ const handleTool = async () => {
         <div className='col-12 tool-form'>           
           
                     <div className="col-12 panel-tool">
-                       
+                    <div className="col-12 fila1">
                         <div className="col-5 input-tool-form">                        
                             <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
                         </div>
-                        
+                        <div className="col-3 num-tool">                     
+                        <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>                        
+                        </div>
+                        </div>
                         <div className="col-12 fila2">
-                        <div className="col-2 file-tool">
+                        <div id="file-tool" className="col-5 file-tool">
                      
-                            <FileUpload name="image" customUpload={true} uploadHandler={onUpload}  mode="basic" accept="image/*" auto={true} />
+                            <FileUpload name="image" 
+                            onSelect={onUpload}
+                            mode="basic" accept="image/*" auto={true} />
                             <label htmlFor="file"></label>
                         
-                        </div>
-                        <div className="col-3 num-tool">
-                     
-                        <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>
-                        
+                           </div>
+                           <div className='col-5 flex justify-content-center align-content-center' id="img-toolform" >
+                           <InputText disabled placeholder={src} />
                         </div>
                         </div>
                         </div>                    
