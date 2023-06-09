@@ -92,7 +92,9 @@ namespace aspnetapp.Controllers
                 RoleClaims = roleClaims,
             };
 
-            return Ok(retorn);
+            return new ObjectResult(retorn) { StatusCode = 201 };
+
+            //return Ok(retorn);
         }
 
         /// <summary>
@@ -519,5 +521,16 @@ namespace aspnetapp.Controllers
 
             return Ok(responseMsg);
         }
+
+        private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
+
+            return roleClaims.Any(c => c.Value == permission);
+        }
+        
+       
     }
 }

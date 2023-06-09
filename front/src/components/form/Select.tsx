@@ -1,26 +1,23 @@
 
 import React, { useState } from "react";
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-// TODO esta sin terminar
+
 interface Iprops {
-    // nameSelect: string;
-    // code: number;
-    // allcodes: number[];
-    idAsociados: any;
+   
+    tools: any;
     handleSelect: Function;
     placeholder: string;
     options: List[];
 }
 interface List {
-    // label: string;
-    // value: number;
+  
     name: string;
     code: number;
   }
 
 export default function Select1(props : Iprops) {
 
-    const [selected, setSelected] = useState<number | null>(null);
+    const [selected, setSelected] = useState<any[]>([]);
     
       const options : List[] = props.options.map((item: any) => ({
         name: item.name,
@@ -29,11 +26,11 @@ export default function Select1(props : Iprops) {
 
 
       React.useEffect(() => {
-        setSelected(props.idAsociados)
+        setSelected(props.tools)
       }, []);
 
       
-      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados, "id asociado", props.idAsociados.code)
+      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.tools)
       
 
 
@@ -42,10 +39,13 @@ export default function Select1(props : Iprops) {
             <span className="p-float-label">
             <Dropdown 
             id="select"
-            value={props.idAsociados} 
-            onChange={(e: DropdownChangeEvent) => props.handleSelect(e.value)} 
+            value={selected} 
+            onChange={(e: DropdownChangeEvent) => {
+              props.handleSelect(e.value);
+              setSelected(e.value);
+            }} 
             options={options}
-            placeholder={props.placeholder}            
+            // placeholder={props.placeholder}            
             optionLabel="name"            
             className="w-full md:w-22rem" 
             style={{color: 'var(--surface-800)' }}            

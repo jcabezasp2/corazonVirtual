@@ -63,6 +63,7 @@
     width: 100% !important;
     height: fit-content;
     padding: 1rem 2rem 1rem 2rem !important;
+    line-height: normal !important;
 }
 .allbutton:focus {
     box-shadow: 0 0 0 1px var(--surface-700) !important;

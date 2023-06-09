@@ -17,6 +17,15 @@ export default function MenuButton() {
 
 
   const publicItems: MenuItem[] = [
+    // {
+    //     label: "Inicio",
+    //     icon: (
+    //         <Icon type = {Icons.Home} text="Inicio"/>
+    //     ),
+    //     command: () => {
+    //       navigate("/");
+    //     },
+    // },
     {
       label: "Utensilios",
       icon: (
@@ -99,13 +108,6 @@ export default function MenuButton() {
 
   const adminItems: MenuItem[] = [
     {
-      label: "Usuarios",
-      icon: <Icon type={Icons.Identity} />,
-      command: () => {
-        navigate("/admin/usuarios");
-      },
-    },
-    {
       label: "Roles",
       icon: <Icon type={Icons.Role} />,
       command: () => {
@@ -117,6 +119,20 @@ export default function MenuButton() {
       icon: <Icon type={Icons.Check} />,
       command: () => {
         navigate("/admin/permisos");
+      },
+    },
+    {
+      label: "Usuarios",
+      icon: <Icon type={Icons.Users} />,
+      command: () => {
+        navigate("/admin/usuarios");
+      },
+    },
+    {
+      label: "Panel de usuario",
+      icon: <Icon type={Icons.Identity} />,
+      command: () => {
+        navigate("/panel");
       },
     },
   ];
@@ -163,7 +179,7 @@ export default function MenuButton() {
           mask
           maskClassName="mask"
           className="speeddial-bottom-right"
-          model={context.user.role === Role.Student? [ ...logout, ...studentItems, ...commonItems] : context.user.role === Role.Teacher? [ ...logout, ...teacherItems, ...commonItems] : context.user.role === Role.Admin? [ ...logout, ...adminItems, ...commonItems] : [...publicItems]}
+          model={context.user.role === Role.Student? [ ...logout, ...studentItems, ...commonItems] : context.user.role === Role.Teacher? [ ...logout, ...teacherItems, ...commonItems] : context.user.role === Role.Admin? [ ...logout, ...adminItems] : [...publicItems]}
           radius={280}
           type="quarter-circle"
           direction="down-left"

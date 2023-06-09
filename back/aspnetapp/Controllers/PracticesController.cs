@@ -16,13 +16,15 @@ namespace aspnetapp.Controllers
     {
         private readonly dataContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public PracticeController(
-            dataContext context
-            , UserManager<IdentityUser> userManager)
+            dataContext context, UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -89,7 +91,10 @@ namespace aspnetapp.Controllers
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<ActionResult<Practice>> PostPractice(int ProcedureId, int StepId)
         {
-
+            if (!hasPermission("CreatePractice"))
+            {
+                return Unauthorized();
+            }
 
             var ApiKey = Request.Headers["Api-Key"].ToString();
 
@@ -159,6 +164,10 @@ namespace aspnetapp.Controllers
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<IActionResult> PutPractice(int id, bool IsFinished)
         {
+            if (!hasPermission("UpdatePractice"))
+            {
+                return Unauthorized();
+            }
 
             var oldPractice = await _context.Practices.FindAsync(id);
 
@@ -202,6 +211,10 @@ namespace aspnetapp.Controllers
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<IActionResult> AddObservationToPractice(int id, String observation)
         {
+            if (!hasPermission("CommentPractice"))
+            {
+                return Unauthorized();
+            }
 
             var oldPractice = await _context.Practices.FindAsync(id);
 
@@ -238,7 +251,12 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         public async Task<IActionResult> DeletePractice(int id)
-        {
+        {   
+            if (!hasPermission("DeletePractice"))
+            {
+                return Unauthorized();
+            }
+
             var practice = await _context.Practices.FindAsync(id);
             if (practice == null)
             {
@@ -249,6 +267,15 @@ namespace aspnetapp.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
+
+            return roleClaims.Any(c => c.Value == permission);
         }
 
 

@@ -43,7 +43,7 @@ export default function Panel(props: Iprops) {
         setId(res.user.id);
         setUser(res.user.userName);
         setEmail(res.user.email);
-        setPassword('aA1551-');
+        setPassword(res.user.password ? res.user.password :'aA1551-');
       
     };
 
@@ -153,8 +153,9 @@ export default function Panel(props: Iprops) {
                     <Card className="avatar col-12" title={user.toUpperCase()} >                    
                         <div className="card-avatar">                       
                             <div className="photo card flex justify-content-center">
-                                <Avatar id="photo" icon={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} shape="circle" size="xlarge"/>
-                                
+                                {/* <Avatar id="photo" icon={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} shape="circle" size="xlarge"/> */}
+
+                                <Avatar id="photo" icon={context.user.role === Role.Student ? <Image src={Icons.Student} alt="Estudiante"/> : <Image src={Icons.Teacher} alt="Profesor"/>} shape="circle" size="xlarge"/>
                                 {/* <Image id="photo" src={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} indicatorIcon="pi pi-pencil"  alt="Image" preview /> */}
                     
                             </div>

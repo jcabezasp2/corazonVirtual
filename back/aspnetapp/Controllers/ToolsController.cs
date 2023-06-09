@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace aspnetapp.Controllers
 {
@@ -15,10 +16,15 @@ namespace aspnetapp.Controllers
     public class ToolsController : ControllerBase
     {
                 private readonly dataContext _context;
+                private readonly UserManager<IdentityUser> _userManager;
+                private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ToolsController(dataContext context)
+        public ToolsController(dataContext context, UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         
         
@@ -109,30 +115,54 @@ namespace aspnetapp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTool(int id, Tool tool)
         {
-            if (id != tool.Id)
+            if (!hasPermission("UpdateTool"))
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
-            _context.Entry(tool).State = EntityState.Modified;
+            // if (id != tool.Id)
+            // {
+            //     return BadRequest();
+            // }
 
-            try
+            // _context.Entry(tool).State = EntityState.Modified;
+
+            // try
+            // {
+            //     await _context.SaveChangesAsync();
+            // }
+            // catch (DbUpdateConcurrencyException)
+            // {
+            //     if (!ToolExists(id))
+            //     {
+            //         return NotFound();
+            //     }
+            //     else
+            //     {
+            //         throw;
+            //     }
+            // }
+
+            // return NoContent();
+            if (_context.Tools == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ToolExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+            var oldTool = _context.Tools.Find(id);
+
+            if (oldTool == null)
+            {
+                return NotFound();
+            }
+
+            oldTool.Name = tool.Name;
+            oldTool.Modelo = tool.Modelo;
+            oldTool.Description = tool.Description;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
         }
 
         /// <summary>
@@ -160,6 +190,11 @@ namespace aspnetapp.Controllers
         [HttpPost]
         public async Task<ActionResult<Tool>> PostTool(Tool tool)
         {
+        if (!hasPermission("CreateTool"))
+        {
+              return Unauthorized();
+        }
+
           if (_context.Tools == null)
           {
               return Problem("Entity set 'dataContext.Tools'  is null.");
@@ -189,6 +224,11 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTool(int id)
         {
+            if (!hasPermission("DeleteTool"))
+            {
+              return Unauthorized();
+            }
+
             if (_context.Tools == null)
             {
                 return NotFound();
@@ -210,8 +250,14 @@ namespace aspnetapp.Controllers
             return (_context.Tools?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+         private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
 
-
+            return roleClaims.Any(c => c.Value == permission);
+        }
     }
  
  }

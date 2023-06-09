@@ -6,4 +6,6 @@ export default interface IStep {
     duration: number;
     image: string;
     previousStep: boolean;
+   
+   
 }

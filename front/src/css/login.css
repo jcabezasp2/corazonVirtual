@@ -4,6 +4,7 @@
     right: calc(50% - 10rem);
     top: 10rem;
     background-color: #ffffffd2;
+    gap: 1rem !important;
     
     
 }
@@ -29,4 +30,10 @@
 
 #email{
     padding-right: 2.5rem;
+}
+
+.login > div > div > form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

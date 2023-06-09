@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Identity;
 namespace aspnetapp.Controllers
 {
     [Route("pasos")]
@@ -15,10 +15,17 @@ namespace aspnetapp.Controllers
     public class StepsController : ControllerBase
     {
         private readonly dataContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public StepsController(dataContext context)
+        public StepsController(dataContext context,
+         UserManager<IdentityUser> userManager,
+         RoleManager<IdentityRole> roleManager
+         )
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -39,10 +46,10 @@ namespace aspnetapp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Step>>> GetSteps()
         {
-          if (_context.Steps == null)
-          {
-              return NotFound();
-          }
+            if (_context.Steps == null)
+            {
+                return NotFound();
+            }
 
             var steps = await _context.Steps.ToListAsync();
 
@@ -52,7 +59,7 @@ namespace aspnetapp.Controllers
             }
 
             steps.ForEach(s =>
-                s.Tools = _context.Tools.Where(t => t.Steps.Contains(s)).ToList() 
+                s.Tools = _context.Tools.Where(t => t.Steps.Contains(s)).ToList()
              );
 
             return steps;
@@ -77,10 +84,10 @@ namespace aspnetapp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Step>> GetStep(int id)
         {
-          if (_context.Steps == null)
-          {
-              return NotFound();
-          }
+            if (_context.Steps == null)
+            {
+                return NotFound();
+            }
             var step = await _context.Steps.FindAsync(id);
 
             if (step == null)
@@ -116,9 +123,14 @@ namespace aspnetapp.Controllers
         /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStep(int id, Step step)
+        public async Task<IActionResult> PutStep(int id, StepRequest steprequest)
         {
-            if(_context.Steps == null)
+            if (!hasPermission("UpdateStep"))
+            {
+                return Unauthorized();
+            }
+
+            if (_context.Steps == null)
             {
                 return NotFound();
             }
@@ -130,12 +142,23 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
-            oldStep.Name = step.Name;
-            oldStep.Description = step.Description;
-            oldStep.Image = step.Image;
-            oldStep.duration = step.duration;
+            oldStep.Name = steprequest.name;
+            oldStep.Description = steprequest.description;
+            oldStep.Image = steprequest.image;
+            oldStep.duration = steprequest.duration;
 
             await _context.SaveChangesAsync();
+
+            var tool = _context.Tools.Find(steprequest.tool);
+
+            if (tool == null)
+            {
+                return NotFound();
+            }
+
+            var sql = @"UPDATE ""StepTool"" SET ""ToolsID"" = "" + steprequest.tool + "" WHERE ""StepsId"" = " + id + "";
+
+            _context.Database.ExecuteSqlRaw(sql);
 
             return Ok();
         }
@@ -152,6 +175,7 @@ namespace aspnetapp.Controllers
         ///        "description": "Description of step 1",
         ///        "image": file,
         ///        "duration": "10"
+        ///        "previousStep": true
         ///     }
         /// 
         /// </remarks>
@@ -163,14 +187,44 @@ namespace aspnetapp.Controllers
         /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
-        public async Task<ActionResult<Step>> PostStep(Step step)
+        public async Task<ActionResult<Step>> PostStep(StepRequest steprequest)
         {
-          if (_context.Steps == null)
-          {
-              return Problem("Entity set 'dataContext.Steps'  is null.");
-          }
+            if (!hasPermission("CreateStep"))
+            {
+                return Unauthorized();
+            }
+
+            if (_context.Steps == null)
+            {
+                return Problem("Entity set 'dataContext.Steps'  is null.");
+            }
+
+            var step = new Step
+            {
+                Name = steprequest.name,
+                Description = steprequest.description,
+                Image = steprequest.image,
+                duration = steprequest.duration,
+                PreviousStep = steprequest.previousStep
+            };
+
             _context.Steps.Add(step);
+
             await _context.SaveChangesAsync();
+
+
+            var tool = _context.Tools.Find(steprequest.tool);
+
+            if (tool == null)
+            {
+                return NotFound();
+            }
+
+            var sql = @"INSERT INTO ""StepTool"" (""StepsId"", ""ToolsId"") VALUES (" + step.Id + ", " + steprequest.tool + ")";
+
+            _context.Database.ExecuteSqlRaw(sql);
+
+
 
             return CreatedAtAction("GetStep", new { id = step.Id }, step);
         }
@@ -194,6 +248,11 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStep(int id)
         {
+            if (!hasPermission("DeleteStep"))
+            {
+                return Unauthorized();
+            }
+
             if (_context.Steps == null)
             {
                 return NotFound();
@@ -226,7 +285,7 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
-            var tools = await _context.Tools.Where(s=> s.Steps.Contains(step)).ToListAsync();
+            var tools = await _context.Tools.Where(s => s.Steps.Contains(step)).ToListAsync();
 
             if (tools == null)
             {
@@ -247,13 +306,12 @@ namespace aspnetapp.Controllers
         ///
         ///     POST /pasos/1/herramientas
         ///     [
-        ///        0,
-        ///        1
+        ///       1
         ///     ]
         ///
         /// </remarks>
         /// <param name="id"></param>
-        /// <param name="tools"></param>
+        /// <param name="toolId"></param>      
         /// <returns>Nothing</returns>
         /// <response code="200">Ok</response>
         /// <response code="400">If the id is not equal to the step id</response>
@@ -263,16 +321,22 @@ namespace aspnetapp.Controllers
 
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost("{id}/herramientas")]
-        public async Task<IActionResult> AddToolToStep(int id, Tool tool)
+        public async Task<IActionResult> AddToolToStep(int id, int toolId)
         {
+            if (!hasPermission("CreateStep"))
+            {
+                return Unauthorized();
+            }
+
             var step = await _context.Steps.FindAsync(id);
+
 
             if (step == null)
             {
                 return NotFound();
             }
 
-            var toolToAdd = await _context.Tools.FindAsync(tool.Id);
+            var toolToAdd = await _context.Tools.FirstOrDefaultAsync(t => t.Id == toolId);
 
             if (toolToAdd == null)
             {
@@ -284,6 +348,15 @@ namespace aspnetapp.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        private bool hasPermission(string permission)
+        {
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var role = _userManager.GetRolesAsync(user).Result;
+            var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
+
+            return roleClaims.Any(c => c.Value == permission);
         }
 
     }

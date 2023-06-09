@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PickList } from 'primereact/picklist';
-import PickSteps from '../../interfaces/PickSteps';
+import PickSteps from '../../interfaces/Picklist';
 
 
 
@@ -36,7 +36,7 @@ export default function PickListt(props : Iprops) {
             <PickList 
             source={props.source} 
             target={props.target} 
-            onChange={(e: any) => props.onChange} 
+            onChange={(e: any) => props.onChange(e)} 
             itemTemplate={itemTemplate} 
             breakpoint="1400px" 
             style={{display:'flex', flexDirection:'row'}}
