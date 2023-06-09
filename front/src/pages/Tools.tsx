@@ -32,7 +32,7 @@ export default function Claims(props: Iprops) {
   const [tools, setTools] = React.useState([]);
   const [selectedTool, setSelectedTool] = React.useState<any>();
   const [modalVisible, setModalVisible] = useState(false);
-  const toast = useRef(null);
+  const toast = useRef<any>(null);
   const [status, setStatus] = React.useState<Status>(Status.error);
   const [toolID, setToolID] = React.useState<number>(0)
 
@@ -48,12 +48,12 @@ export default function Claims(props: Iprops) {
 
         const res = await context.apiCalls.deleteTool(id);
       console.log("dentro de ondelete")
-      if (res != null) {
+      if (res.ok) {
           setStatus(Status.success);
           toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
           setTimeout(function(){
             window.location.reload();
-         }, 5000); 
+         }, 1000); 
       } else {
           setStatus(Status.error);
           toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
@@ -173,6 +173,7 @@ export default function Claims(props: Iprops) {
           rows={3}
         />
       </div>
+      <Toast ref={toast} />
     </div>
   );
 }

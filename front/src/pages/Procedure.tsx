@@ -6,23 +6,22 @@ import { ProgressBar } from "primereact/progressbar";
 import { appContext } from "../App";
 import "./../css/procedure.css";
 import { useState } from "react";
-import { Card } from 'primereact/card';
+import { Card } from "primereact/card";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls, Sky } from "@react-three/drei";
 import { Suspense } from "react";
 import Model from "../components/Model";
-import { TabView, TabPanel } from 'primereact/tabview';
-import { ScrollPanel } from 'primereact/scrollpanel';
-
+import { TabView, TabPanel } from "primereact/tabview";
+import { ScrollPanel } from "primereact/scrollpanel";
 
 interface IStep {
-    id: number;
-    name: string;
-    description: string;
-    image: string;
-    duration: number;
-    previousStep: boolean;
-    tools: any[];
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  duration: number;
+  previousStep: boolean;
+  tools: any[];
 }
 
 export default function Procedure() {
@@ -40,9 +39,18 @@ export default function Procedure() {
   React.useEffect(() => {
     if (steps) {
       setCurrentStep(steps[currentStepIndex]);
-      setProgress(Math.round((currentStepIndex / steps.length) * 100));
+      const progress = Math.round(((currentStepIndex + 1) / steps.length) * 100);
+      setProgress(progress <= 100 ? progress : 100);
     }
   }, [currentStepIndex]);
+
+  const valueTemplate = (value :any) => {
+    return (
+        <React.Fragment>
+            Paso {currentStepIndex < steps.length ? currentStepIndex + 1 : currentStepIndex} de <b>{steps.length}</b>
+        </React.Fragment>
+    );
+};
 
   const initialize = async () => {
     const res = await context.apiCalls.getStepByProcedureId(id);
@@ -60,6 +68,7 @@ export default function Procedure() {
     });
     setSteps(steps);
     setCurrentStep(res[0]);
+    setProgress(Math.round(((currentStepIndex + 1) / steps.length) * 100));
     setIsLoading(false);
   };
 
@@ -69,51 +78,86 @@ export default function Procedure() {
 
   return (
     <div id="procedureView">
-    {isLoading? <ProgressBar className="loading" mode="indeterminate" />
-    :
-     <>
-        <Timeline value={steps} selected={currentStepIndex}></Timeline>
-        <div className="selectedStep">
-            <Card  >
-                {(currentStepIndex < steps.length)?
+      {isLoading ? (
+        <ProgressBar className="loading" mode="indeterminate" />
+      ) : (
+        <>
+          <Timeline value={steps} selected={currentStepIndex}></Timeline>
+          <div className="selectedStep">
+            <Card>
+              {currentStepIndex < steps.length ? (
                 <ScrollPanel className="custombar1">
-                <p>
-                {currentStep?.description}
-                </p>
-            </ScrollPanel>
-                :
-                <p>Procedimiento finalizado</p>}
-                <TabView>
-                  {
-                   currentStep?.tools.map((tool: any) => {
-                    return (
-                      <TabPanel header={tool.name}>
-                        <p>{tool.description}</p>
-                        <Canvas camera={{ position: [0, 0, 3] }}>
-                          <Suspense fallback={null}>
-                            <Model path={`${tool.modelo}`} scale={tool.optimalScale} />
-                          </Suspense>
-                          <OrbitControls />
-                          <ambientLight intensity={0.3} />
-                          <directionalLight intensity={0.4} position={[0, 1, 1]} />
-                          <Sky sunPosition={[0, 1, 1]} turbidity={40} />
-                        </Canvas>
-                      </TabPanel>
-                    );
-                  })}
-                </TabView>
+                  <p>{currentStep?.description}</p>
+                </ScrollPanel>
+              ) : (
+                <p>Procedimiento finalizado</p>
+              )}
+              <TabView>
+                {currentStep?.tools.map((tool: any) => {
+                  return (
+                    <TabPanel header={tool.name}>
+                      <p>{tool.description}</p>
+                      <Canvas camera={{ position: [0, 0, 3] }}>
+                        <Suspense fallback={null}>
+                          <Model
+                            path={`${tool.modelo}`}
+                            scale={tool.optimalScale}
+                          />
+                        </Suspense>
+                        <OrbitControls />
+                        <ambientLight intensity={0.3} />
+                        <directionalLight
+                          intensity={0.4}
+                          position={[0, 1, 1]}
+                        />
+                        <Sky sunPosition={[0, 1, 1]} turbidity={40} />
+                      </Canvas>
+                    </TabPanel>
+                  );
+                })}
+              </TabView>
             </Card>
-            {(currentStepIndex < steps.length) ? <Button label="Avanzar" className="" onClick={() => {     
-                    setCurrentStepIndex(currentStepIndex + 1);   
-            }}></Button>
-          : <Button label="Volver a inicio" className="" onClick={() => {
-            navigate("/");
-          }}></Button>
-          }
-            
-        </div>
-        <ProgressBar className="progress" value={progress}></ProgressBar>
-      </>}
+            <div  className="buttons">
+              {currentStepIndex > 0 ? (
+                <Button
+                  label="Retroceder"
+                  className="button retreat enabled"
+                  onClick={() => {
+                    setCurrentStepIndex(currentStepIndex - 1);
+                  }}
+                ></Button>
+              ) : (
+                <Button
+                  disabled
+                  label="Retroceder"
+                  className="button retreat disabled"
+                  onClick={() => {
+                    setCurrentStepIndex(currentStepIndex - 1);
+                  }}
+                ></Button>
+              )}
+              {currentStepIndex < steps.length ? (
+                <Button
+                  label="Avanzar"
+                  className="button advance"
+                  onClick={() => {
+                    setCurrentStepIndex(currentStepIndex + 1);
+                  }}
+                ></Button>
+              ) : (
+                <Button
+                  label="Volver a inicio"
+                  className="button finish"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                ></Button>
+              )}
+            </div>
+          </div>
+          <ProgressBar className="progress" value={progress} displayValueTemplate={valueTemplate}></ProgressBar>
+        </>
+      )}
     </div>
   );
 }

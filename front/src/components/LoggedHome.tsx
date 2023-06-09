@@ -12,7 +12,18 @@ interface MenuItem {
   destiny: string;
 }
 
-const commonItems: MenuItem[] = [];
+const commonItems: MenuItem[] = [
+  {
+    title: "Utensilios",
+    icon: Icons.Tools,
+    destiny: "/herramientas",
+  },
+  {
+    title: "Practicas",
+    icon: Icons.ListCheck,
+    destiny: "/practicas",
+  },
+];
 
 const studentItems: MenuItem[] = [
   {
@@ -43,7 +54,7 @@ const teacherItems: MenuItem[] = [
 const adminItems: MenuItem[] = [
   {
     title: "Usuarios",
-    icon: Icons.Identity,
+    icon: Icons.Users,
     destiny: "/admin/usuarios",
   },
   {
@@ -60,7 +71,13 @@ const adminItems: MenuItem[] = [
 
 export default function LoggedHome() {
   const context = React.useContext(appContext);
-  const [items, setItems] = React.useState<any[]>([]);
+  const [items, setItems] = React.useState<any[]>(
+    context.user.role == Role.Student
+      ? [...commonItems, ...studentItems]
+      : context.user.role == Role.Teacher
+      ? [...commonItems, ...teacherItems]
+      : [...adminItems]
+  );
 
   React.useEffect(() => {
     if (context.user.role == Role.Student) {
@@ -74,8 +91,7 @@ export default function LoggedHome() {
 
   return (
     <div className="loggedHome">
-      <div>
-      </div>
+      <div></div>
       <div className="scalein animation-duration-1000">
         <HomeCard
           title={"Panel de usuario"}
@@ -83,32 +99,38 @@ export default function LoggedHome() {
           destiny={"/panel"}
         />
       </div>
-      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
-       <HomeCard
-          title={"Utensilios"}
-          icon={Icons.Tools}
-          destiny={"/herramientas"}
-        />
-      </div>: <div></div>}
-      <div className="no"/>
-      {context.user.role != Role.Admin ?<div className="scalein animation-duration-1000">
-        <HomeCard
-          title={"Practicas"}
-          icon={Icons.ListCheck}
-          destiny={"/practicas"}
-        />
-      </div>: <div></div>}
+      {
+        <div className="scalein animation-duration-1000">
+          <HomeCard
+            title={items[0].title}
+            icon={items[0].icon}
+            destiny={items[0].destiny}
+          />
+        </div>
+      }
+       <div></div>
+       {
+        <div className="scalein animation-duration-1000">
+          <HomeCard
+            title={items[1].title}
+            icon={items[1].icon}
+            destiny={items[1].destiny}
+          />
+        </div>
+      }
       <div className="row">
-        {items.map((item, index) => (
+      {items.map((item, index) => (
+        index > 1 && (
           <div className="scalein animation-duration-1000">
             <HomeCard
               title={item.title}
               icon={item.icon}
               destiny={item.destiny}
             />
-          </div>
+          </div>)
         ))}
       </div>
     </div>
   );
+
 }

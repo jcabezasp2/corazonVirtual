@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PickList } from 'primereact/picklist';
-import PickSteps from '../../interfaces/PickSteps';
+import PickSteps from '../../interfaces/Picklist';
 
 
 

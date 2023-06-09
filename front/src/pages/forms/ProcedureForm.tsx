@@ -4,13 +4,17 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { FileUpload } from "primereact/fileupload";
 import InputTxt from "../../components/form/InputTxt";
 import PickListt from "../../components/form/Picklist";
-import PickSteps from "../../interfaces/PickSteps";
+import Picklist from "../../interfaces/Picklist";
 import { useParams } from "react-router-dom";
 import "../../css/picklist.css";
 import "./../../css/procedureform.css";
 import { appContext } from "../../App";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
+import { Image } from 'primereact/image';
+import { Button } from "primereact/button";
+import { FileUploadHeaderTemplateOptions, FileUploadSelectEvent, FileUploadUploadEvent, ItemTemplateOptions, } from 'primereact/fileupload';
+
 
 interface Iprops {}
 
@@ -34,24 +38,62 @@ export default function ToolForm(props: Iprops) {
 
   //Parte de la imagen del procedimiento
   const [imageDirection, setImageDirection] = useState<string>("");
+  const [src, setSrc] = useState<string>('');
 
-  const onUpload = async ({ files }: any) => {
-    const [file] = files;
+  
+
+  const onUpload = async ({ files }: any) => {  
+        const [file] = files;    
+    console.log("file", files, "antes del delete")
+
+   if(imageDirection === ""){
     const reader = new FileReader();
     reader.onload = async (e: any) => {
       let result = await context.apiCalls.uploadImageBase64(e.target.result);
+      console.log("result",result)
       setImageDirection(result);
+      console.log("image direction",imageDirection)
+      setSrc(result)
+    };
+    reader.readAsDataURL(file);   
+   
+  }else{
+    let img = imageDirection.split("images/")
+    console.log("imageDirection", imageDirection)
+    let deleteImg = img[1]
+     let res = await context.apiCalls.deleteImage(deleteImg);
+     if(res.ok){
+    console.log("delete",deleteImg)
+     }else{
+      console.log("no borra")
+     }
+  console.log("file", files, "despues de borrar, antes de resubir")
+   
+    const reader = new FileReader();
+    reader.onload = async (e: any) => {
+      let result = await context.apiCalls.uploadImageBase64(e.target.result);
+      console.log("result",result)
+      setImageDirection(result);
+      console.log("image direction",imageDirection)
+      setSrc(result)
     };
     reader.readAsDataURL(file);
-  };
+  }
+}
+    
+ 
+
+
+
+
 
   //Parte de los pasos del procedimiento
-  const [source, setSource] = React.useState<PickSteps[]>([]);
+  const [source, setSource] = React.useState<Picklist[]>([]);
   const [stepIds, setStepIds] = React.useState<any>([]);
-  const [target, setTarget] = React.useState<PickSteps[]>([]);
+  const [target, setTarget] = React.useState<Picklist[]>([]);
   const [idAsociados, setIdAsociados] = React.useState<any>([]);
 
-  const onChange = (event: { source: PickSteps[]; target: PickSteps[] }) => {
+  const onChange = (event: { source: Picklist[]; target: Picklist[] }) => {
     setSource(event.source);
     setTarget(event.target);
     const ids = event.target.map((item) => item.code);
@@ -70,7 +112,8 @@ const [status, setStatus] = React.useState<Status>(Status.error);
         const res = await context.apiCalls.getProcedure(id);
         const data = await res.json();
         setName(data.name);
-        setImageDirection(data.image);       
+        setImageDirection(data.image);
+        setSrc(data.image);       
         setIdAsociados(data.steps);
         setTarget(data.steps);
       };
@@ -80,7 +123,7 @@ const [status, setStatus] = React.useState<Status>(Status.error);
 
   const allSteps = async () => {
     const res = await context.apiCalls.getSteps();
-    const steps = res.map((step: PickSteps) => {
+    const steps = res.map((step: Picklist) => {
       return {
         id: step.id,
         code: step.id,
@@ -113,7 +156,7 @@ const navigate = useNavigate();
 
 const handleProcedure = async () => {
     if(id){
-        if(name === '' || imageDirection === '' || stepIds === ''){
+        if(ctx.name === '' || ctx.imageDirection === '' || ctx.stepIds === ''){
             setStatus(Status.empty);
             toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
              
@@ -126,7 +169,7 @@ const handleProcedure = async () => {
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
             console.log('funciona edit procedure')
             console.log(resEdit)
-            console.log(resEdit2)
+         
             setTimeout(function(){
                navigate('/procedimientos')
              }, 1000);
@@ -139,7 +182,7 @@ const handleProcedure = async () => {
         }
     }else{ 
       
-        if(name === '' || imageDirection === '' || stepIds === ''){
+        if(ctx.name === '' || ctx.imageDirection === '' || ctx.stepIds === ''){
             setStatus(Status.empty);
             toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             
@@ -169,24 +212,28 @@ const handleProcedure = async () => {
     <div  className='p-3 col-12 flex flex-column justify-content-center align-items-center'>
       <div id="procedureform" className='p-6 col-12 '>
       <div id="inputsform-procedureform" className="flex row py-0 col-12">
-             <div id="inputtxt-procedureform" className="col-8 ">  
+        <div id="inputtxt-procedureform" className="col-12 ">  
         <InputTxt
           name={name}
           handleName={handleName}
           labelname={"Nombre del procedimiento"}
         />
       </div>
-      <div className=" col-4 file-tool">
+      <div id="file-procedure" className=" col-4 file-procedure">
         <FileUpload
-          name="image"
-          customUpload={true}
-          uploadHandler={onUpload}
+          name="image"         
+          onSelect={onUpload}       
           mode="basic"
           accept="image/*"
           auto={true}
         />
+      
         <label htmlFor="file"></label>
-      </div>
+        </div>
+     
+      <div className='col-4 flex justify-content-center align-content-center' id="img-procedureform" >
+         <Image src={src} />
+       </div>
       </div>
       <div id="picklist" className="p-field col-10"> 
         <PickListt source={source} onChange={onChange} target={target} />

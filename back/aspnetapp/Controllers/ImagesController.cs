@@ -181,5 +181,62 @@ namespace aspnetapp.Controllers
                 // return Ok($"{Request.Scheme}://{Request.Host}/images3d/{imageName}");
                 return Ok($"{imageName}");
         }
+
+
+        /// <summary>
+        /// DELETE a image
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /images/{id}
+        ///
+        ///
+        /// </remarks>
+        /// <returns>Route of uploaded image</returns>
+        /// <response code="200">Returns the image route</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is a connection failure with the database </response>
+
+            [HttpDelete("{id}")]
+            [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+            public async Task<ActionResult<string>> DeleteImage(string id)
+            {
+                var image = null as Stream;
+
+                if(id.Split('.').Last() == "fbx"){
+                    var folder = "images3d";
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, id);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                else{
+                    var folder = "images";
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, id);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+               
+            }
+
+
     }
 }
+
+
+
+

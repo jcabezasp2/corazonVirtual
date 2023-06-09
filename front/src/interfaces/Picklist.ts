@@ -1,5 +1,5 @@
 
-export default interface PickSteps {
+export default interface Picklist{
   
 id: string;
 code: string;

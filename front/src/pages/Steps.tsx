@@ -20,7 +20,7 @@ export default function Steps(props: Iprops) {
 
     const context = React.useContext(appContext);
     const [steps, setSteps] = React.useState([]);
-    const toast = useRef(null);
+    const toast = useRef<any>(null);
     const [status, setStatus] = React.useState<Status>(Status.error);
     const navigate = useNavigate();
 
@@ -34,6 +34,7 @@ export default function Steps(props: Iprops) {
                 Duracion: step.duration,
                 Imagen: <Image className="td-image" src={step.image != "default"? step.image : defaultImage} alt="Image" width="250" />,
                 Previo: step.previousStep? 'Si' : 'No',
+               
             }
         })
 

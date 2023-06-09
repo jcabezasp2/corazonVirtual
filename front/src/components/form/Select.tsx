@@ -4,7 +4,7 @@ import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
 interface Iprops {
    
-    idAsociados: any;
+    tools: any;
     handleSelect: Function;
     placeholder: string;
     options: List[];
@@ -17,7 +17,7 @@ interface List {
 
 export default function Select1(props : Iprops) {
 
-    const [selected, setSelected] = useState<number | null>(null);
+    const [selected, setSelected] = useState<any[]>([]);
     
       const options : List[] = props.options.map((item: any) => ({
         name: item.name,
@@ -26,11 +26,11 @@ export default function Select1(props : Iprops) {
 
 
       React.useEffect(() => {
-        setSelected(props.idAsociados)
+        setSelected(props.tools)
       }, []);
 
       
-      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.idAsociados)
+      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.tools)
       
 
 
@@ -45,7 +45,7 @@ export default function Select1(props : Iprops) {
               setSelected(e.value);
             }} 
             options={options}
-            placeholder={props.placeholder}            
+            // placeholder={props.placeholder}            
             optionLabel="name"            
             className="w-full md:w-22rem" 
             style={{color: 'var(--surface-800)' }}            

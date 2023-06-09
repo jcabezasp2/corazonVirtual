@@ -24,7 +24,7 @@ export default function Procedures(props: Iprops) {
   const context = React.useContext(appContext);
 
   const [procedures, setProcedures] = React.useState([]);
-  const toast = useRef(null);
+  const toast = useRef<any>(null);
   const [status, setStatus] = React.useState<Status>(Status.error);
   
 
@@ -55,8 +55,7 @@ export default function Procedures(props: Iprops) {
         <ProcedureCard
           id={procedure.id}
           title={procedure.name}
-          destiny={`/procedimientos/${procedure.id}`}//Esta es la ruta que se sigue cuando se hace click en el boton de ir al procedimiento
-          //Si la cambias para que vaya a la ruta de editar, deja de poderse entrar al procedimiento
+          destiny={`/procedimientos/${procedure.id}`}
           image={procedure.image ? procedure.image : defaultImage}
           numberOfSteps={procedure.numberOfSteps}
           onEdit={`formulario/${procedure.id}`}
