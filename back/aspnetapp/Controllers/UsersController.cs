@@ -530,5 +530,99 @@ namespace aspnetapp.Controllers
 
             return roleClaims.Any(c => c.Value == permission);
         }
+
+
+        
+        /// <summary>
+        /// Get user by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET usuarios/3
+        ///
+        /// </remarks>
+        /// <returns>OK(user)</returns>
+        /// <response code="200">Returns the students</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        public async Task<ActionResult<User>> GetUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.PasswordHash = "The password is hidden";
+
+            return Ok(user);
+        }
+        
+       
+        /// <summary>
+        /// Update data to user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /usuarios/updateDataUsuario
+        ///     {
+        ///        "id":    "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+        ///        "name": "name",
+        ///        "surname": "surname",
+        ///        "photo": "photo"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns nothing</response>
+        /// <response code="404">If the procedure or the steps are null</response>
+        /// <response code="401">If the user is not authenticated</response>
+        /// <response code="500">If there is a connection failure with the database </response>
+    
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<User>> UpdateDataUser(string id, ApplicationUser userId)
+        {
+            var userApplication = await _context.ApplicationUsers.FindAsync(id);
+            if (userApplication == null)
+            {
+                return NotFound();
+            }
+            
+            if (userId.Name != userApplication.Name)
+            {
+                userApplication.Name = userId.Name;
+            }
+            
+            if (userId.Surname != userApplication.Surname)
+            {
+                userApplication.Surname = userId.Surname;
+            }
+            
+            if (userId.Photo != userApplication.Photo)
+            {
+                userApplication.Photo = userId.Photo;
+            }
+             _context.Entry(userApplication).State = EntityState.Modified;
+            _context.Entry(userApplication).State = EntityState.Modified;
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error updating user data.");
+            }
+        }
     }
 }
