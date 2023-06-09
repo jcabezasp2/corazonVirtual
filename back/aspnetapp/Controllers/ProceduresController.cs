@@ -120,6 +120,7 @@ namespace aspnetapp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProcedure(int id, Procedure procedure)
         {
+
             if (!hasPermission("UpdateProcedure"))
             {
                 return Unauthorized();
@@ -231,15 +232,17 @@ namespace aspnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProcedure(int id)
         {
-            if (!hasPermission("DeleteProcedure"))
-            {
-                return Unauthorized();
-            }
+           // if (!hasPermission("DeleteProcedure", userName))
+           // {
+           //     return Unauthorized();
+           // }
 
             if (_context.Procedures == null)
             {
                 return NotFound();
             }
+
+
             var procedure = await _context.Procedures.FindAsync(id);
             if (procedure == null)
             {

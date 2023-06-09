@@ -13,9 +13,4 @@ public class Practice
     public string? UserId { get; set; } = null!;
     public bool IsFinished { get; set; } = false;
 
-    // public virtual Procedure? Procedure { get; set; }
-    // public virtual Step? Step { get; set; }
-    public virtual ApplicationUser? User { get; set; }
-
-
 }

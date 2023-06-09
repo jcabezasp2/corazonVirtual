@@ -46,10 +46,10 @@ namespace aspnetapp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Step>>> GetSteps()
         {
-          if (_context.Steps == null)
-          {
-              return NotFound();
-          }
+            if (_context.Steps == null)
+            {
+                return NotFound();
+            }
 
             var steps = await _context.Steps.ToListAsync();
 
@@ -59,7 +59,7 @@ namespace aspnetapp.Controllers
             }
 
             steps.ForEach(s =>
-                s.Tools = _context.Tools.Where(t => t.Steps.Contains(s)).ToList() 
+                s.Tools = _context.Tools.Where(t => t.Steps.Contains(s)).ToList()
              );
 
             return steps;
@@ -84,10 +84,10 @@ namespace aspnetapp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Step>> GetStep(int id)
         {
-          if (_context.Steps == null)
-          {
-              return NotFound();
-          }
+            if (_context.Steps == null)
+            {
+                return NotFound();
+            }
             var step = await _context.Steps.FindAsync(id);
 
             if (step == null)
@@ -123,14 +123,14 @@ namespace aspnetapp.Controllers
         /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStep(int id, Step step)
+        public async Task<IActionResult> PutStep(int id, StepRequest steprequest)
         {
             if (!hasPermission("UpdateStep"))
             {
                 return Unauthorized();
             }
 
-            if(_context.Steps == null)
+            if (_context.Steps == null)
             {
                 return NotFound();
             }
@@ -142,12 +142,23 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
-            oldStep.Name = step.Name;
-            oldStep.Description = step.Description;
-            oldStep.Image = step.Image;
-            oldStep.duration = step.duration;
+            oldStep.Name = steprequest.name;
+            oldStep.Description = steprequest.description;
+            oldStep.Image = steprequest.image;
+            oldStep.duration = steprequest.duration;
 
             await _context.SaveChangesAsync();
+
+            var tool = _context.Tools.Find(steprequest.tool);
+
+            if (tool == null)
+            {
+                return NotFound();
+            }
+
+            var sql = @"UPDATE ""StepTool"" SET ""ToolsID"" = "" + steprequest.tool + "" WHERE ""StepsId"" = " + id + "";
+
+            _context.Database.ExecuteSqlRaw(sql);
 
             return Ok();
         }
@@ -183,38 +194,39 @@ namespace aspnetapp.Controllers
                 return Unauthorized();
             }
 
-          if (_context.Steps == null)
-          {
-              return Problem("Entity set 'dataContext.Steps'  is null.");
-          }
-                
-                var step = new Step
-                {
-                    Name = steprequest.name,
-                    Description = steprequest.description,
-                    Image = steprequest.image,
-                    duration = steprequest.duration,
-                    PreviousStep = steprequest.previousStep
-                };
-    
-                _context.Steps.Add(step);
+            if (_context.Steps == null)
+            {
+                return Problem("Entity set 'dataContext.Steps'  is null.");
+            }
 
-                await _context.SaveChangesAsync();
+            var step = new Step
+            {
+                Name = steprequest.name,
+                Description = steprequest.description,
+                Image = steprequest.image,
+                duration = steprequest.duration,
+                PreviousStep = steprequest.previousStep
+            };
 
-                foreach (var toolId in steprequest.tools)
-                {
-                    var tool = _context.Tools.Find(toolId);
-                    if (tool == null)
-                    {
-                        return NotFound();
-                    }
-                    var sql = @"INSERT INTO ""StepTool"" (""StepsId"", ""ToolsId"") VALUES (" + step.Id + ", " + toolId + ")";
+            _context.Steps.Add(step);
 
-                    _context.Database.ExecuteSqlRaw(sql);
-                     
-                }
-    
-                return CreatedAtAction("GetStep", new { id = step.Id }, step);
+            await _context.SaveChangesAsync();
+
+
+            var tool = _context.Tools.Find(steprequest.tool);
+
+            if (tool == null)
+            {
+                return NotFound();
+            }
+
+            var sql = @"INSERT INTO ""StepTool"" (""StepsId"", ""ToolsId"") VALUES (" + step.Id + ", " + steprequest.tool + ")";
+
+            _context.Database.ExecuteSqlRaw(sql);
+
+
+
+            return CreatedAtAction("GetStep", new { id = step.Id }, step);
         }
 
         /// <summary>
@@ -273,7 +285,7 @@ namespace aspnetapp.Controllers
                 return NotFound();
             }
 
-            var tools = await _context.Tools.Where(s=> s.Steps.Contains(step)).ToListAsync();
+            var tools = await _context.Tools.Where(s => s.Steps.Contains(step)).ToListAsync();
 
             if (tools == null)
             {
@@ -318,27 +330,27 @@ namespace aspnetapp.Controllers
 
             var step = await _context.Steps.FindAsync(id);
 
-             
-                if (step == null)
-                {
-                    return NotFound();
-                }
-                
+
+            if (step == null)
+            {
+                return NotFound();
+            }
+
             var toolToAdd = await _context.Tools.FirstOrDefaultAsync(t => t.Id == toolId);
 
-                if (toolToAdd == null)
-                {
-                    return NotFound();
-                }
+            if (toolToAdd == null)
+            {
+                return NotFound();
+            }
 
-                step.Tools.Add(toolToAdd);
+            step.Tools.Add(toolToAdd);
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
 
-         private bool hasPermission(string permission)
+        private bool hasPermission(string permission)
         {
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
             var role = _userManager.GetRolesAsync(user).Result;

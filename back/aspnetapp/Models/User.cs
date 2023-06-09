@@ -14,9 +14,5 @@ namespace aspnetapp.Models
 
         public string? Id { get; internal set; }
 
-
-         public virtual ICollection<ApplicationUser>? Users { get; set; }
-
-         
     }
 }

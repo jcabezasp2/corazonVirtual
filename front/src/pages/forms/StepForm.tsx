@@ -53,7 +53,7 @@ export default function StepForm(props: Iprops) {
     const handleNum = (e: number) => {
         setNum(e);
         // setDuration(String(num))
-        console.log(num,"num", typeof num, "type")
+
         // console.log(duration, "duration", typeof duration, "type")
                 
     }
@@ -71,25 +71,22 @@ export default function StepForm(props: Iprops) {
         let select = e;
         setTools(select.code);
         
-        console.log("dentro de handleSelect stepform",tools)
     }
 
    
     async function allTools() {
         const allTools = await context.apiCalls.getTools();
         if(allTools != null){
-            console.log('funciona allTools')
-            console.log(allTools)
             const options = allTools.map((tool: any) => ({
                 name: tool.name,
                 code: tool.id,
               }));
             setoptions(options)
-            console.log(options,"options")
+
           
        
         }else{
-            console.log('no funciona allTools')
+
         }
 
     }
@@ -113,7 +110,7 @@ export default function StepForm(props: Iprops) {
         context.apiCalls.getToolByStepId(id).then((tool: any)=>{
             let utensiliosId = tool.map((tool: any) => tool.id);
             setTools(utensiliosId);
-            console.log("id asociados de params id", tools)
+
         }
         )
         }
@@ -130,46 +127,43 @@ export default function StepForm(props: Iprops) {
         description : description ? description : '',
         duration : num ? num : 0,
         previousStep : previousStep ? previousStep : false,
-        tools : tools ? tools : [],        
+        tools : tools ? tools : [],  
     };
     setCtx(currentCtx);
+    console.log(currentCtx, "currentCtx")
+    console.log(ctx, "ctx")
 }, [name, image, description, num, previousStep, tools]);
 
    
 
 const onUpload = async ({ files }: any) => {  
     const [file] = files;    
-console.log("file", files, "antes del delete")
 
 if(image === ""){
 const reader = new FileReader();
 reader.onload = async (e: any) => {
   let result = await context.apiCalls.uploadImageBase64(e.target.result);
-  console.log("result",result)
   setImage(result);
-  console.log("image ",image)
+
   setSrc(result)
 };
 reader.readAsDataURL(file);   
 
 }else{
 let img = image.split("images/")
-console.log("image", image)
 let deleteImg = img[1]
  let res = await context.apiCalls.deleteImage(deleteImg);
  if(res.ok){
-console.log("delete",deleteImg)
  }else{
-  console.log("no borra")
  }
 
 
 const reader = new FileReader();
 reader.onload = async (e: any) => {
   let result = await context.apiCalls.uploadImageBase64(e.target.result);
-  console.log("result",result)
+
   setImage(result);
-  console.log("image direction",image)
+
   setSrc(result)
 };
 reader.readAsDataURL(file);
@@ -185,15 +179,14 @@ const handleStep = async () => {
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-                console.log("edit",ctx)
                 const resEdit = await context.apiCalls.editStep(id,name, description, image, duration, previousStep, tools);
                 if (resEdit.ok) {
                     setStatus(Status.success);
                     toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                    console.log('funciona edit teps')
-                    console.log(resEdit)
+
+
                     // const res2 = await context.apiCalls.addStepTool(id, tools);
-                    // console.log(res2)
+
                     setTimeout(function(){
                         navigate('/pasos')
                      }, 2000);
@@ -201,8 +194,7 @@ const handleStep = async () => {
                     } else {
                     setStatus(Status.error);
                     toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                    console.log('no funciona edit teps')
-                    console.log(resEdit)
+
                 }
             }
         }else{  
@@ -210,19 +202,18 @@ const handleStep = async () => {
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-        console.log(ctx)
+
             const res = await context.apiCalls.createStep(name, description, image, duration, previousStep, tools);
-            console.log("res",res)
+
             if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                console.log('funciona createsteps')
-                console.log(res)
+
                 
             } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                console.log('no funciona createsteps')
+
             }
         }
         }
@@ -297,7 +288,7 @@ const handleStep = async () => {
             <div className='pt-8 flex justify-content-center'>
                 <div className='col-4'>
                 <SubmitButton
-                    onclik={handleStep}
+                    onclik={context.apiCalls.createStep}
                     ctx={ctx}
                     isLogin={false}
                 />

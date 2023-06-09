@@ -7,6 +7,6 @@ namespace aspnetapp.Models
         public string image { get; set; }
         public string duration { get; set; }
         public Boolean previousStep { get; set; }
-        public int[] tools { get; set; }
+        public int tool { get; set; }
     }
 }

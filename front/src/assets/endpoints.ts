@@ -301,6 +301,7 @@ export const editStep = async (id: number,ctx: any) => {
 }
 
 export const createStep = async (ctx : any) => {
+    console.log('ctx', ctx)
     const apiKey = sessionStorage.getItem('apiKey');
     const { name, description, image, duration, previousStep, tools } = ctx;
     let opciones: any = {
@@ -311,9 +312,9 @@ export const createStep = async (ctx : any) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": duration, "previousStep": previousStep, "tools": tools })
+        body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": String(duration), "previousStep": previousStep, "tool": tools })
     };
-
+    console.log('opciones', opciones)
     const res = await fetch(`${constants.API_URL}pasos`, opciones);
     return res
    
