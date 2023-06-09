@@ -92,7 +92,9 @@ namespace aspnetapp.Controllers
                 RoleClaims = roleClaims,
             };
 
-            return Ok(retorn);
+            return new ObjectResult(retorn) { StatusCode = 201 };
+
+            //return Ok(retorn);
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ import { Column } from 'primereact/column';
 import Table from '../components/Table';
 import { Button } from 'primereact/button';
 import { appContext } from '../App';
+import { FileUpload } from 'primereact/fileupload';
 
 export default function NewStudents() {
 
@@ -19,9 +20,10 @@ export default function NewStudents() {
 
     const ctx = React.useContext(appContext);
 
-    const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files == null) return;
-        setFile(e.target.files[0]);
+    const handleUpload = (e: any) => {
+        console.log(e)
+        if (e.files == null) return;
+        setFile(e.files[0]);
     }
 
     const leerArchivo = () => {
@@ -45,28 +47,48 @@ export default function NewStudents() {
 
     const añadirUsuarios = () => {
         const apikey = sessionStorage.getItem('apiKey');
-        console.log(apikey)
+        let resultado = 'Nombre;Email;Password\n';
         students.forEach(async (student) => {
 
             let res = await ctx.apiCalls.register(student[0], student[1], student[2]);
 
+            if (res.status == 201) {
+                resultado += `${student[0]};${student[1]};${student[2]}\n`;
+            }
+
         });
-        setFile(undefined);
+        const blob = new Blob([resultado], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'estudiantes_registrados.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+       setFile(undefined);
     }
+
+
+    const handleDelete = (e: Array<string>) => {
+        setStudents(students.filter((student) => student[1] !== e[1]));
+    }
+
 
     useEffect(() => {
         leerArchivo();
     }, [file])
 
-    // useEffect(() => {
-    //     console.log(students)
-    // }, [students])
 
 
     return (
         <div id='newStudents'>
             <div className='flex justify-content-between align-items-center'>
-                <input type="file" onChange={(e) => handleUpload(e)} />
+                <FileUpload mode="basic" auto name="demo[]"
+                  customUpload uploadHandler={(e) => handleUpload(e)}
+                  chooseOptions={{ icon: 'pi pi-upload' }}
+                />
                 <Button icon="pi pi-save" label='Añadir' onClick={añadirUsuarios} />
             </div>
             <div>
@@ -79,7 +101,7 @@ export default function NewStudents() {
                 <Button icon="pi pi-plus" onClick={() => setStudents(students => [...students, [name, email, password]])} />
             </div>
             <div>
-                <Table dataElements={students} onDelete={() => { }} onEdit='' />
+                <Table dataElements={students} showDelete={true} onDelete={handleDelete} onEdit='' />
             </div>
 
         </div>

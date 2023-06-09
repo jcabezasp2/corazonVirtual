@@ -5,11 +5,13 @@ import OptionsButton from './OptionsButton';
 import { appContext } from "../App";
 import "./../css/table.css"
 import { Button } from 'primereact/button';
+import { DomHandler } from 'primereact/utils';
 
 class Iprops {
 
     dataElements!: any[];
     showOptions?: boolean;
+    showDelete?: boolean = false;
     onEdit!: string;
     onDelete!: Function;
 }
@@ -32,6 +34,9 @@ export default function Table(props: Iprops) {
                 currentPageReportTemplate="{first} al {last} de {totalRecords}" paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
                 {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string, i) => { return DataColumn(i, key, key, { width: '10rem' }) })}
                 {props.showOptions && <Column header="Opciones" body={(rowData: any) => <OptionsButton id={rowData.Id} onDelete={props.onDelete(rowData.Id)} onEdit={`${props.onEdit}/${rowData.Id}`} />} style={{ width: '10%' }} />}
+                {props.showDelete && <Column header="Borrar" body={(rowData: any) => <Button id={rowData.Id} icon="pi pi-trash"
+                onClick={() => props.onDelete(rowData)} />} style={{ width: '10%' }} />
+                }
             </DataTable>
         </div>
     );
