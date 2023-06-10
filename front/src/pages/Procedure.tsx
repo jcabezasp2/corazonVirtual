@@ -83,7 +83,7 @@ export default function Procedure() {
       ) : (
         <>
           <Timeline value={steps} selected={currentStepIndex}></Timeline>
-          <div className="selectedStep">
+          <div className={`selectedStep ${context.maskVisible ? 'not_visible' : ''}`} >
             <Card>
               {currentStepIndex < steps.length ? (
                 <ScrollPanel className="custombar1">
