@@ -25,7 +25,6 @@ export default function Students(props: Iprops) {
 
     const initialize = async () => {
         const res = await context.apiCalls.getAllStudents();
-        console.log('res', res);
         const students = res.filter((student: any) => {
             return student.role != Role.Student; //TODO cambiar en back para que devuelva el rol
         }).map((student: any) => {
@@ -37,7 +36,6 @@ export default function Students(props: Iprops) {
             };
         });
         setStudents(students);
-        console.log('students', students);
     };
 
     React.useEffect(() => {

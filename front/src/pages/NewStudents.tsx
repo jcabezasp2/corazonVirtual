@@ -1,19 +1,21 @@
-import React from 'react'
+import React, { createRef, useRef } from 'react'
 import '../css/newStudents.css'
 import { useState, useEffect } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import Table from '../components/Table';
 import { Button } from 'primereact/button';
 import { appContext } from '../App';
 import { FileUpload } from 'primereact/fileupload';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
 
 export default function NewStudents() {
 
     const [file, setFile] = useState<File>();
     const [students, setStudents] = useState<any[]>([]);
-    const [headers, setHeaders] = useState<string[]>([]);
 
+    const fileUpload = useRef(null);
+
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -42,7 +44,10 @@ export default function NewStudents() {
                 setStudents(students => [...students, usuario]);
             });
         }
-
+        if (fileUpload.current) {
+            // @ts-ignore
+            fileUpload.current.clear();
+        }
     }
 
     const añadirUsuarios = () => {
@@ -66,13 +71,24 @@ export default function NewStudents() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-
-       setFile(undefined);
     }
 
 
     const handleDelete = (e: Array<string>) => {
         setStudents(students.filter((student) => student[1] !== e[1]));
+    }
+
+    const downloadPlantilla = () => {
+        const plantilla = 'Nombre;Email;Password\n';
+        const blob = new Blob([plantilla], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'plantilla.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
 
@@ -83,27 +99,42 @@ export default function NewStudents() {
 
 
     return (
-        <div id='newStudents'>
-            <div className='flex justify-content-between align-items-center'>
-                <FileUpload mode="basic" auto name="demo[]"
-                  customUpload uploadHandler={(e) => handleUpload(e)}
-                  chooseOptions={{ icon: 'pi pi-upload' }}
-                />
-                <Button icon="pi pi-save" label='Añadir' onClick={añadirUsuarios} />
-            </div>
+        <div id='newStudents' className='flex flex-column justify-content-center'>
             <div>
-                <label htmlFor="nombre">Nombre</label>
-                <input type="text" name='nombre' onChange={(e) => setName(e.target.value)} />
-                <label htmlFor="email">Email</label>
-                <input type="text" name='email' onChange={(e) => setEmail(e.target.value)} />
-                <label htmlFor="password">Password</label>
-                <input type="text" name='password' onChange={(e) => setPassword(e.target.value)} />
-                <Button icon="pi pi-plus" onClick={() => setStudents(students => [...students, [name, email, password]])} />
-            </div>
-            <div>
-                <Table dataElements={students} showDelete={true} onDelete={handleDelete} onEdit='' />
-            </div>
+                <div className='flex flex-wrap gap-2 justify-content-between align-items-center'>
+                        <FileUpload mode="basic" auto name="demo[]"
+                            ref={fileUpload}
+                            customUpload uploadHandler={(e) => handleUpload(e)}
+                            chooseOptions={{
+                                icon: 'pi pi-upload',
+                                label: 'Seleccionar archivo'
+                            }}
+                        />
 
+                        <Button icon="pi pi-download" label='Plantilla' onClick={() => downloadPlantilla()} />
+                        <Button icon="pi pi-user-plus" label='Nuevo usuario' onClick={() => setModalVisible(true)} />
+
+                        <Button icon="pi pi-save" label='Añadir' onClick={añadirUsuarios} />
+                </div>
+                <Dialog header="Nuevo usuario" visible={modalVisible} style={{ width: '50vw' }} onHide={() => setModalVisible(false)}>
+                    <div className='flex flex-row align-content-center'>
+                        <div className='col-8 flex flex-column justify-content-center gap-2'>
+                            <InputText placeholder='Nombre' onChange={(e) => setName(e.target.value)} />
+                            <InputText placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+                            <InputText placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                        <div className='col-4 flex justify-content-center align-items-center'>
+                            <Button icon="pi pi-plus" onClick={() => {
+                                setStudents(students => [...students, [name, email, password]])
+                                setModalVisible(false);
+                            }} />
+                        </div>
+                    </div>
+                </Dialog>
+                <div className='pt-4'>
+                    <Table dataElements={students} showDelete={true} onDelete={handleDelete} onEdit='' />
+                </div>
+            </div>
         </div>
     )
 }
