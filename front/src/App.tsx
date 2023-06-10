@@ -28,6 +28,8 @@ interface context {
   user : User;
   changeUSer: (user: User) => void;
   logout: () => void;
+  maskVisible: boolean;
+  toggleMask: () => void;
 }
 
 export const appContext = createContext({} as context);
@@ -35,6 +37,11 @@ export const appContext = createContext({} as context);
 function App() {
 
   const [user, setUser] = useState<User>(new User());
+  const [maskVisible, setMaskVisible] = useState<boolean>(false);
+
+  const toggleMask = () => {
+    setMaskVisible(!maskVisible);
+  }
 
   const changeUSer = (user: User) => {
     setUser(user);
@@ -61,7 +68,9 @@ function App() {
       apiCalls: endpoints,
       user: user,
       changeUSer: changeUSer,
-      logout: logout
+      logout: logout,
+      maskVisible: maskVisible,
+      toggleMask: toggleMask
     }}>
 
 

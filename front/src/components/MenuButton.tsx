@@ -186,6 +186,8 @@ export default function MenuButton() {
           transitionDelay={180}
           showIcon= {<Icon type={Icons.Menu} />}
           hideIcon= {<Icon type={Icons.Close} />}
+          onShow={() => {context.toggleMask()}}
+          onHide={() => {context.toggleMask()}}
         />
       </div>
   );

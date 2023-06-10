@@ -9,6 +9,10 @@
   grid-template-rows: 90% 10%;
 }
 
+.not_visible {
+  display: none !important;
+}
+
 #procedureView .buttons {
   display: flex;
   justify-content: space-between;

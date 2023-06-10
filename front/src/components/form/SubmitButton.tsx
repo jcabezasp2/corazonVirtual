@@ -58,6 +58,7 @@ export default function SubmitButton(props : Iprops) {
           setLoading(false);
           return null;
       }, 3000);
+      console.log('submit', props.ctx)
       let response = await props.onclik(props.ctx);
       let res = await response.json();
       setMessage(await res)

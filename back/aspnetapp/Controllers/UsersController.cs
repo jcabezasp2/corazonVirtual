@@ -530,5 +530,7 @@ namespace aspnetapp.Controllers
 
             return roleClaims.Any(c => c.Value == permission);
         }
+        
+       
     }
 }

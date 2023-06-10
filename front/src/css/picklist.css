@@ -4,12 +4,12 @@
 
 .picklist-items > .p-picklist > .p-picklist-transfer-buttons{
     display: flex !important;
-    flex-direction: column !important;
-    rotate: 90deg !important;
+    flex-direction: column-reverse !important;
+    rotate: -90deg !important;
     flex-wrap: wrap !important;
-    width: 6rem !important;
-    height: 7rem !important;
-    margin-top: 4rem !important;
+    width: 5rem !important;
+    height: 6rem !important;
+    transform: translateX(-16rem);
     gap: 1rem !important;
 }
 
