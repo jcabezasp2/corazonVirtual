@@ -67,6 +67,13 @@ export default function MenuButton() {
       },
     },
     {
+      label: "Modo interactivo",
+      icon: <Icon type={Icons.Unity} text="Practicas"/>,
+      command: () => {
+        navigate("/interactivo");
+      },
+    },    
+    {
       label: "Procedimientos",
       icon: <Icon type={Icons.Procedure} text="Procedimientos"/>,
       command: () => {

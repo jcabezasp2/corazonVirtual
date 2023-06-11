@@ -98,7 +98,7 @@ function App() {
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
           <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />
           <Route path="/informacion" element={<Information />} />
-          <Route path="/interactivo" element={user.role == Role.Teacher? <Interactive />: <Home />} />
+          <Route path="/interactivo" element={user.role == Role.Student? <Interactive />: <Home />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>

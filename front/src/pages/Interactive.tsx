@@ -13,7 +13,7 @@ import { Suspense } from "react";
 import Model from "../components/Model";
 import { TabView, TabPanel } from "primereact/tabview";
 import { ScrollPanel } from "primereact/scrollpanel";
-
+import * as constants from "../assets/constants";
 interface IStep {
   id: number;
   name: string;
@@ -36,7 +36,7 @@ export default function Procedure() {
 
   React.useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:8000/interactive', {
+        .withUrl(`${constants.API_URL}interactive`, {
           skipNegotiation: true,
           transport: signalR.HttpTransportType.WebSockets})
         .withAutomaticReconnect()
