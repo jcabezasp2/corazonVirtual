@@ -51,13 +51,19 @@ React.useEffect(() => {
           .then(result => {
               console.log('Connected!');
 
-              connection.on('ReceiveMessage', message => {
+              connection.on('ReceiveMessage',(username: string, message: string)  => {
                   console.log('Message received: ', message);
+
+                  // TODO establecer el procedimiento actual
+                  // TODO establecer el paso actual
               });
           })
           .catch(e => console.log('Connection failed: ', e));
-  }
+        }
+    
 }, [connection]);
+
+
 
 
 
