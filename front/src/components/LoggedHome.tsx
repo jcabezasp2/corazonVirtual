@@ -6,6 +6,7 @@ import Icon from "./Icons";
 import "../css/loggedHome.css";
 import "../css/logohome.css";
 
+
 interface MenuItem {
   title: string;
   icon: Icons;
@@ -30,6 +31,11 @@ const studentItems: MenuItem[] = [
     title: "Procedimientos",
     icon: Icons.Procedure,
     destiny: "/procedimientos",
+  },
+  {
+    title: "Modo interactivo",
+    icon: Icons.Unity,
+    destiny: "/interactivo",
   },
 ];
 

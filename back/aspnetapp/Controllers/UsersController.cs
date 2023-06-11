@@ -165,7 +165,7 @@ namespace aspnetapp.Controllers
             var claims = await _userManager.GetClaimsAsync(user);
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
             var isLocked = await _userManager.IsLockedOutAsync(user);
-
+            var token = _apiKeyService.CreateApiKey(user);
             if (user == null)
             {
                 return BadRequest("User not found");
@@ -179,6 +179,7 @@ namespace aspnetapp.Controllers
                 Role = role[0],
                 RoleClaims = roleClaims,
                 isLocked = isLocked,
+                UserApiKey = token,
             };
 
             return Ok(result);

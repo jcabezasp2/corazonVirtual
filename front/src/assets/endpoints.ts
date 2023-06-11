@@ -434,8 +434,8 @@ export const getTools = async () => {
         }
     };
 
-    const res = await fetch(`${constants.API_URL}Herramientas`, opciones);
-    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const res = await fetch(`${constants.API_URL}herramientas`, opciones);
+    if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
 }

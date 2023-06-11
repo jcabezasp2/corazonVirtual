@@ -71,6 +71,9 @@ export default function LogoHome() {
       case "/admin/roles":
         setSubtittle("Roles");
         break;
+      case "/interactivo":
+        setSubtittle("Modo interactivo");
+        break;
       
       default: 
         setSubtittle("");

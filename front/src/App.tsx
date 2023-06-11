@@ -20,6 +20,7 @@ import Claims from './pages/Claims';
 import Tools from './pages/Tools';
 import Information from './pages/Information';
 import NewStudents from './pages/NewStudents';
+import Interactive from './pages/Interactive';
 import { Role } from './assets/constants';
 import './css/app.css';
 
@@ -58,7 +59,15 @@ function App() {
         if(res == null){
           logout();
         }
-        setUser(res);
+        const newUser = new User(
+          res.user.id,
+          res.user.userName,
+          res.user.email,
+          res.userApiKey.value,
+          res.role,
+          res.roleClaims
+        );
+        setUser(newUser);
       })
     }
   }, []);
@@ -97,6 +106,7 @@ function App() {
           <Route path="/admin/roles" element={user.role == Role.Admin? <Roles /> : <Home />} />
           <Route path="/admin/permisos" element={user.role == Role.Admin? <Claims /> : <Home />} />
           <Route path="/informacion" element={<Information />} />
+          <Route path="/interactivo" element={user.role == Role.Student? <Interactive />: <Home />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
