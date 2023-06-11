@@ -59,7 +59,15 @@ function App() {
         if(res == null){
           logout();
         }
-        setUser(res);
+        const newUser = new User(
+          res.user.id,
+          res.user.userName,
+          res.user.email,
+          res.userApiKey.value,
+          res.role,
+          res.roleClaims
+        );
+        setUser(newUser);
       })
     }
   }, []);
