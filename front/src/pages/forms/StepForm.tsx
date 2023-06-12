@@ -183,10 +183,6 @@ const handleStep = async () => {
                 if (resEdit.ok) {
                     setStatus(Status.success);
                     toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-
-
-                    // const res2 = await context.apiCalls.addStepTool(id, tools);
-
                     setTimeout(function(){
                         navigate('/pasos')
                      }, 2000);
@@ -203,12 +199,14 @@ const handleStep = async () => {
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
 
-            const res = await context.apiCalls.createStep(name, description, image, duration, previousStep, tools);
+            const res = await context.apiCalls.createStep(ctx);
 
             if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-
+                setTimeout(function(){
+                    navigate('/pasos')
+                }, 2000);
                 
             } else {
                 setStatus(Status.error);
@@ -286,9 +284,10 @@ const handleStep = async () => {
 
 
             <div className='pt-8 flex justify-content-center'>
-                <div className='col-4'>
+                <div className='col-2'>
                 <SubmitButton
-                    onclik={context.apiCalls.createStep}
+                    // onclik={context.apiCalls.createStep}
+                    onclik={handleStep}
                     ctx={ctx}
                     isLogin={false}
                 />

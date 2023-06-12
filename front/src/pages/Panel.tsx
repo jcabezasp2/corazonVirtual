@@ -4,14 +4,14 @@ import IStep from "../interfaces/Step";
 import Table from "../components/Table";
 import { Link } from "react-router-dom";
 import SubmitButton from "../components/form/SubmitButton";
-import { Avatar } from 'primereact/avatar';
+import { Avatar   } from 'primereact/avatar';
+import {FileUpload} from 'primereact/fileupload';
 import { Badge } from 'primereact/badge';
 import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 import InputTxt from "../components/form/InputTxt";
 import File from "../components/form/File";
 import '../css/panel.css';
-import * as endpoints from '../assets/endpoints';
 import InputPassword from "../components/form/InputPassword";
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
@@ -71,6 +71,12 @@ export default function Panel(props: Iprops) {
         console.log(response);
     }
 
+
+    const handleEditImageuser = async () => {
+        // const response = await context.apiCalls.updateImageUser(avatar);
+        // console.log(response);
+        console.log("handle edit image user")
+    }
   
     const footer = (
         <div className="button-footer-datos">
@@ -149,15 +155,19 @@ export default function Panel(props: Iprops) {
             <div className="panel col-12">
 
                 
-                <div  className="panel col-2">
-                    <Card className="avatar col-12" title={user.toUpperCase()} >                    
-                        <div className="card-avatar">                       
-                            <div className="photo card flex justify-content-center">
+                <div  className=" col-2">
+                    <Card className="avatar col-10" title={user.toUpperCase()} >                    
+                        <div className="card-avatar col-12">                       
+                            <div className="photo card flex justify-content-center ">
                                 {/* <Avatar id="photo" icon={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} shape="circle" size="xlarge"/> */}
 
-                                <Avatar id="photo" icon={context.user.role === Role.Student ? <Image src={Icons.Student} alt="Estudiante"/> : <Image src={Icons.Teacher} alt="Profesor"/>} shape="circle" size="xlarge"/>
-                                {/* <Image id="photo" src={context.user.role === Role.Student ? <Icon type={Icons.Student} text="Estudiante"/> : <Icon type={Icons.Teacher} text="Profesor"/>} indicatorIcon="pi pi-pencil"  alt="Image" preview /> */}
-                    
+                                {/* <Avatar id="photo" icon={context.user.role === Role.Student ? <Image src={Icons.Student} alt="Estudiante"/> : <Image src={Icons.Teacher} alt="Profesor"/>} shape="circle" size="xlarge"/> */}
+
+                                <Image id="photo" src={context.user.role === Role.Student ? "./src/img/graduation-cap-solid.svg"  : "./src/img/teacher.svg"} indicatorIcon="pi pi-pencil" alt={context.user.role === Role.Student ? "Estudiante" : "Profesor"}/>                  
+                                <FileUpload name="image" 
+                                // onSelect={onUpload}
+                                mode="basic" accept="image/*" auto={true} />
+                                <label htmlFor="file"></label>
                             </div>
                         </div>
                     </Card> 
@@ -190,7 +200,8 @@ export default function Panel(props: Iprops) {
                     <Chart height="250%" type="line" data={chartData} options={chartOptions} />
                 </Card>
                 </div>
-            </div>
+            </div>          
+            
         
     );
 }
