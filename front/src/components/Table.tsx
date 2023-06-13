@@ -6,6 +6,7 @@ import { appContext } from "../App";
 import "./../css/table.css"
 import { Button } from 'primereact/button';
 import { DomHandler } from 'primereact/utils';
+import { InputText } from 'primereact/inputtext';
 
 class Iprops {
 
@@ -14,6 +15,7 @@ class Iprops {
     showDelete?: boolean = false;
     onEdit!: string;
     onDelete!: Function;
+    filter?: boolean;
 }
 
 function DataColumn(key: number, field: string, header: string, style: any) {
@@ -25,7 +27,6 @@ export default function Table(props: Iprops) {
     const context = React.useContext(appContext);
     const paginatorLeft = <Button type="button" icon="pi pi-refresh" text />;
     const paginatorRight = <Button type="button" icon="pi pi-download" text />;
-
 
     return (
         <div>

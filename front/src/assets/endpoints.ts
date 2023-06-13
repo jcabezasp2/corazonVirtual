@@ -2,6 +2,7 @@ import React from 'react';
 import * as constants from './constants';
 import { appContext } from "../App";
 import User from '../models/User';
+import { Role } from './constants';
 
 // Calls to the user API endpoints
 export const login = async (ctx: { email: string, password: string }) => {
@@ -398,6 +399,23 @@ export const getRoles = async () => {
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
+}
+
+export const setUserRole = async (userEmail: string, roleName: Role) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones: any = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "userEmail": userEmail.toString(), "roleName": roleName })
+    };
+
+    const res = await fetch(`${constants.API_URL}roles/changeuserrole`, opciones);
+
+    return res
 }
 
 export const getPermissions = async () => {
