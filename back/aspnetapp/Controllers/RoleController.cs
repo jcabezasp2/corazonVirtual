@@ -138,7 +138,7 @@ namespace aspnetapp.Controllers
         /// <response code="500">If there is an internal server error</response>
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPost]
-        [Route("adduser")]
+        [Route("changeUserRole")]
         public async Task<ActionResult<Role>> AddUserToRole(UserRole userRole)
         {
             if (!hasPermission("CreateUser"))
@@ -156,6 +156,20 @@ namespace aspnetapp.Controllers
             if (user == null)
             {
                 return BadRequest("User not found");
+            }
+
+            var existingRoles = await _userManager.GetRolesAsync(user);
+
+            if (existingRoles.Contains(userRole.RoleName))
+            {
+                return BadRequest("User already has this role");
+            }
+
+            var resultRemove = await _userManager.RemoveFromRolesAsync(user, existingRoles);
+
+            if (!resultRemove.Succeeded)
+            {
+                return BadRequest(resultRemove.Errors);
             }
 
             var result = await _userManager.AddToRoleAsync(
