@@ -62,7 +62,7 @@ export default function SubmitButton(props : Iprops) {
       let response = await props.onclik(props.ctx);
       let res = await response.json();
       setMessage(await res)
-    
+    console.log("res", res)
       if (props.isLogin === true && response.status === 200) {
         const newUser = new User(
           res.user.id,
@@ -70,7 +70,8 @@ export default function SubmitButton(props : Iprops) {
           res.user.email,
           res.userApiKey.value,
           res.role,
-          res.roleClaims
+          res.roleClaims,
+          
         );
         const apiKey = res.userApiKey.value;
         sessionStorage.setItem('apiKey', apiKey);
