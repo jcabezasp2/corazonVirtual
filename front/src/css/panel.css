@@ -24,47 +24,67 @@
 }
 .avatar > div > div{
     color: var(--surface-900) !important;
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem !important;
 }
 
 
-#photo > img{
-    /* width: 5rem;
-    height: 5rem; */
-    /*transform: translateY(0.3rem);*/
-    /* transform: translateX(-0.5rem); */
-    border-radius: 50% !important;
-    /* padding:0.5rem; */
-    width: 100%;
-    height: 100%;
-}
 
-#photo > img :hover{
-   background-color: #263238c0 !important; 
-    border-radius: 50% !important;
-    /* width: 5rem;
-    height: 5rem; */
-}
-
-#photo
-
-#photo {
-    width: 6rem;
-    height: 6rem;
+#photo > img {
+    width: 8rem;
+    height: 8rem;
     padding: 0.8rem;
     border-radius: 50% !important;
+    position: absolute;
    
 }
 
-#photo:hover{
-    background-color: #263238c0 !important;
-    color: var(--primary-color-text) !important;
-    border-radius: 50%;
+/* #photo > img:hover{
+    background-color: #263238c0 !important; 
+     border-radius: 50% !important;
+     width: 8rem;
+     height: 8rem;
+ } */
+
+
+#avatar-content > div > span{
+    position: relative;
+    transform: translate(0.7rem,0.5rem);
+    width: 7rem !important;
+    height: 7rem !important;
+    padding: 0.8rem !important;   
+    opacity: 0;   
+    color:  #454f55e0 !important; 
+    border: none !important;
+    /* background-color:  #263238c0 !important;  */
+    background-color: transparent; 
+    display: flex;
+    align-items: center;
+}
+
+#avatar-content > div > span:hover {
+    display: block;
+    width: 7rem !important;
+    height: 7rem !important; 
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    border: none !important;
    
 }
 
+#avatar-content > div > span:focus {
+    outline: none !important;
+    outline-offset: none !important;
+    outline-width: 0rem !important;
+    box-shadow: none !important;
+     
+}
 
 .card-form{
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 input{
@@ -89,18 +109,18 @@ input{
 }
 
 .datos{
-    width: auto;
+    width: auto;   
     /* background-color: #b8b6b64b !important; */
 }
-/*
-.chart{
-    background-color: #ffffff67 !important;
-} */
 
-#button-datos>div>button{
-    pointer-events: none;
-    
-}
+/* .chart{
+    background-color: #ffffff67 !important;
+    border-radius: 1.5rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 1rem !important;
+} */
 
 .button-footer-datos{
     display: flex;
@@ -109,3 +129,4 @@ input{
     width: 100%;
    
 }
+
