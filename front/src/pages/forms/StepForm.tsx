@@ -154,8 +154,10 @@ let img = image.split("images/")
 let deleteImg = img[1]
  let res = await context.apiCalls.deleteImage(deleteImg);
  if(res.ok){
- }else{
- }
+    console.log("delete",deleteImg)
+     }else{
+      console.log("no borra")
+     }
 
 
 const reader = new FileReader();
