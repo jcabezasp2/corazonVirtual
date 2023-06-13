@@ -195,9 +195,7 @@ export const createProcedure = async (ctx: any) => {
         },
         body: JSON.stringify({ "name": name, "image": imageDirection, "steps": stepIds })
     };
-    console.log('opciones', opciones)
     const res = await fetch(`${constants.API_URL}procedimientos`, opciones);
-    console.log(res)
     return res
 }
 
@@ -302,7 +300,6 @@ export const editStep = async (id: number,ctx: any) => {
 }
 
 export const createStep = async (ctx : any) => {
-    console.log('ctx', ctx)
     const apiKey = sessionStorage.getItem('apiKey');
     const { name, description, image, duration, previousStep, tools } = ctx;
     let opciones: any = {
@@ -315,7 +312,6 @@ export const createStep = async (ctx : any) => {
         },
         body: JSON.stringify({ "name": name, "description": description, "image": image, "duration": String(duration), "previousStep": previousStep, "tool": tools })
     };
-    console.log('opciones', opciones)
     const res = await fetch(`${constants.API_URL}pasos`, opciones);
     return res
    
@@ -434,7 +430,6 @@ export const getPermissions = async () => {
     const res = await fetch(`${constants.API_URL}roles/getAllClaims`, opciones);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
-    console.log(data);
     return data
 }
 
@@ -631,7 +626,6 @@ export const getImageFbx = async (path :string) => {
 
 // function to upload an image to the server
 export const uploadImage = async (file: any) => {
-    console.log('entrando a uploadImage')
     const apiKey = sessionStorage.getItem('apiKey');
     let formData = new FormData();
     formData.append('image', file);
@@ -648,7 +642,6 @@ export const uploadImage = async (file: any) => {
     const res = await fetch(`${constants.API_URL}images`, opciones);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
-    console.log(data);
     return data
 
 
@@ -670,7 +663,6 @@ export const uploadImageBase64 = async (file: any) => {
     };
 
     const res = await fetch(`${constants.API_URL}images/base64`, opciones);
-    console.log(res);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     return res.text();
 
@@ -693,7 +685,6 @@ export const uploadImageBase64Fbx = async (file :any) => {
     };
 
     const res = await fetch(`${constants.API_URL}images/base64fbx`, opciones);
-    console.log(res);
     if(res.status !== 200) return null; //TODO : Mostrar mensaje de error
     return res.text();
 
