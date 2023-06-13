@@ -116,8 +116,9 @@ export const getUser = async (id: number) => {
 }
 
 //Edit User by id
-export const editUser = async (id: number, user: string, email: string, password: string) => {
+export const editUser = async (ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
+    const { userId, user,email, password } = ctx;
     let opciones: any = {
         method: 'PUT',
         headers: {
@@ -127,7 +128,7 @@ export const editUser = async (id: number, user: string, email: string, password
         },
         body: JSON.stringify({ "name": user, "email": email, "password": password })
     };
-    const res = await fetch(`${constants.API_URL}usuarios/${id}`, opciones);
+    const res = await fetch(`${constants.API_URL}usuarios/${userId}`, opciones);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data

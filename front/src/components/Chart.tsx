@@ -35,19 +35,11 @@ export default function ChartLine(props : Iprops) {
         const textColorSecondary = documentStyle.getPropertyValue('--surface-800');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-900');
      
-        console.log("props.data", props.data);
-
+ 
 
             console.log("Object", Object.values(props.data));
             
-            Object.values(props.data).map((value) => 
-            {
-            let date = value.labels.split('T'); 
-            let date1 = [date[0]];
-            setLabels(date1)
-            console.log("date", date[0])
-            })
-               
+         
           console.log("labels", labels);
           console.log("label", label);
           console.log("data", data);
@@ -56,14 +48,26 @@ export default function ChartLine(props : Iprops) {
          
           
           setChartData({
+
+            // `${Object.values(props.data).map((value) =>} 
+            // `labels:`${value.label} ,
+           
+            // datasets: 
+            //   label: ${value.labels.split('T').shift())},
+            //   data: ${value.data},
+            //   fill: false,
+            //   borderColor: documentStyle.getPropertyValue('--surface-900'),
+            //   backgroundColor: documentStyle.getPropertyValue('--surface-500'),
+            //   tension: 0.4
             labels: Object.values(props.data).map((value) => 
             value.label ),
            
             datasets: Object.values(props.data).map((value) => ({
-              label: (value.labels.split('T').shift()),
+              label: value.labels.split('T').shift(),
               data: [value.data],
               fill: false,
-              borderColor: documentStyle.getPropertyValue('--surface-700'),
+              borderColor: documentStyle.getPropertyValue('--surface-900'),
+              backgroundColor: documentStyle.getPropertyValue('--surface-500'),
               tension: 0.4
             }))
           });
@@ -75,7 +79,7 @@ export default function ChartLine(props : Iprops) {
         
         const options = {
             maintainAspectRatio: false,
-            aspectRatio: 0.6,
+            aspectRatio: 1.1,
             plugins: {
                 legend: {
                     labels: {

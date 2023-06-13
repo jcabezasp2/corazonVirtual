@@ -85,10 +85,10 @@
     gap: 1.5rem;
 }
 
-input{
+/* input{
     width: 15rem !important;
     
-}
+} */
 .p-card{
     /* Por favor tened cuidado al cambiar los estilos de esta clase, ya que afecta a todos los componentes que sean de tipo card */
     /* box-shadow: inset 1rem var(--surface-900) !important; */
@@ -108,6 +108,7 @@ input{
 
 .datos{
     width: auto;   
+    height: fit-content !important;
     /* background-color: #b8b6b64b !important; */
 }
 
