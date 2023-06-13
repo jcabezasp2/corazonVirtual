@@ -5,8 +5,8 @@ export default interface IPractice {
     duration: number;
     isFinished: boolean;
     observations: string;
-    procedure: number;
-    step: number;
+    procedureId: number;
+    stepId: number;
     userId: string;  
    
 }

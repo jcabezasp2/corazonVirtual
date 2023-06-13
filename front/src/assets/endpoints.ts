@@ -115,7 +115,7 @@ export const getUser = async (id: number) => {
 }
 
 //Edit User by id
-export const editUser = async (id: number, name: string, email: string, password: string) => {
+export const editUser = async (id: number, user: string, email: string, password: string) => {
     const apiKey = sessionStorage.getItem('apiKey');
     let opciones: any = {
         method: 'PUT',
@@ -124,9 +124,27 @@ export const editUser = async (id: number, name: string, email: string, password
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "email": email, "password": password })
+        body: JSON.stringify({ "name": user, "email": email, "password": password })
     };
-    const res = await fetch(`${constants.API_URL}usuarios/updateUsuario/${id}`, opciones);
+    const res = await fetch(`${constants.API_URL}usuarios/${id}`, opciones);
+    if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
+    const data = await res.json();
+    return data
+}
+
+//Update ApplicationUser
+export const updateApplicationUser = async (id: number, name: string, surname: string, avatar: string) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    let opciones: any = {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Api-Key': apiKey
+        },
+        body: JSON.stringify({ "name": name, "surname": name, "photo": avatar })
+    };
+    const res = await fetch(`${constants.API_URL}usuarios/applicationUser/${id}`, opciones);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data
