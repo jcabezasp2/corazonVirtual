@@ -424,24 +424,41 @@ namespace aspnetapp.Controllers
         /// <response code="400">If the user is null or the password is invalid</response>
         /// <response code="401">If the user is not authenticated</response>
         
-        // [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        // [HttpPut("usuarios/applicationUser/{id}")]
-        // public async Task<ActionResult<User>> UpdateUser(string id, User user)
-        // {
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpPut("usuarios/applicationUser/{id}")]
+        public async Task<ActionResult<User>> UpdateApplicationUser(string id, ApplicationUser applicationUser)
+        {
 
-            // if (!ModelState.IsValid)
-            // {
-            //     return BadRequest(ModelState);
-            // }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             // var userToUpdate = await _userManager.FindByIdAsync(id);
             // if (userToUpdate == null)
             // {
             //     return BadRequest("User not found");
             // }
-            // userToUpdate.UserName = user.Name;           
-            // userToUpdate.Email = user.Email;
-            // userToUpdate.PasswordHash = user.Password;
+            // var userToUpdate = await _context.ApplicationUsers.FindAsync(id);
+            var userToUpdate = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserId == id);           
+
+
+            userToUpdate.Name = applicationUser.Name;           
+            userToUpdate.Surname = applicationUser.Surname;
+            userToUpdate.Photo = applicationUser.Photo;
+            try
+            {
+                _context.Entry(userToUpdate).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                         
+                return BadRequest();
+            }
+
+
 
         
 
@@ -457,18 +474,18 @@ namespace aspnetapp.Controllers
             //     return BadRequest(result.Errors);
             // }
 
-            // // var result2 = await _context.SaveChangesAsync();
+            // var result2 = await _context.SaveChangesAsync();
 
-            // // if (result2 == 0)
-            // // {
-            // //     return BadRequest("Error al actualizar application user");
-            // // }
+            // if (result2 == 0)
+            // {
+            //     return BadRequest("Error al actualizar application user");
+            // }
             
-            // return Ok(userToUpdate);
+            return Ok(userToUpdate);
 
 
 
-        //}
+        }
 
         /// <summary>
         /// Get a practices by student id

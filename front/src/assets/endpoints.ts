@@ -135,8 +135,9 @@ export const editUser = async (ctx: any) => {
 }
 
 //Update ApplicationUser
-export const updateApplicationUser = async (id: number, name: string, surname: string, avatar: string) => {
-    const apiKey = sessionStorage.getItem('apiKey');
+export const updateApplicationUser = async (ctx: any) => {
+        const apiKey = sessionStorage.getItem('apiKey');
+        const { userId, user, avatar } = ctx;
     let opciones: any = {
         method: 'PUT',
         headers: {
@@ -144,9 +145,9 @@ export const updateApplicationUser = async (id: number, name: string, surname: s
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": name, "surname": name, "photo": avatar })
+        body: JSON.stringify({ "name": user, "surname": user, "photo": avatar })
     };
-    const res = await fetch(`${constants.API_URL}usuarios/applicationUser/${id}`, opciones);
+    const res = await fetch(`${constants.API_URL}usuarios/applicationUser/${userId}`, opciones);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error
     const data = await res.json();
     return data

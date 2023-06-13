@@ -42,12 +42,13 @@ export default function Panel(props: Iprops) {
  
 
     const [ctx, setCtx] = useState<any>(null);
+    const [ctx2, setCtx2] = useState<any>(null);
 
     React.useEffect(() => {
       let currentCtx  = {     
           user: user ,
           email: email ,
-          password : password,
+          password : password ? password : "aA1551-",
           userId : userId ,
           
       };
@@ -56,6 +57,18 @@ export default function Panel(props: Iprops) {
       console.log(ctx, "ctx")
   }, [user, email, password, userId, avatar]);
 
+  React.useEffect(() => {
+    let currentCtx  = {     
+        name: user ,
+        surname: user ,
+        avatar : avatar,
+        userId : userId ,
+        
+    };
+    setCtx2(currentCtx);
+    console.log(currentCtx, "currentCtx")
+    console.log(ctx, "ctx")
+}, [user, email, password, userId, avatar]);
 
 
     const initialize = async () => {       
@@ -70,15 +83,8 @@ export default function Panel(props: Iprops) {
         // setAvatar(res.user.photo);
         console.log("avatar",avatar)
         console.log("user Id ", userId,)
-        // let currentCtx  = {     
-        //     user: user ,
-        //     email: email ,
-        //     password : password ? password : 'aA1551-',
-        //     userId : userId ,
-            
-        // };
-        // setCtx(currentCtx);
-        // console.log(currentCtx, "currentCtx")
+       
+       
 
         let responsePractice = await context.apiCalls.getPracticeByUserId(res.user.id);
     console.log("responsePractice",responsePractice);
@@ -205,9 +211,9 @@ export default function Panel(props: Iprops) {
         <span id="button-datos" className=" col-6">
            <SubmitButton
                    
-                    onclik={context.apiCalls.editUser}
+                    onclik={context.apiCalls.updateApplicationUser}
                     // ctx={{id : userId, user : user, email: email, password: password , avatar: avatar}}
-                    ctx={ctx}
+                    ctx={ctx2}
                     isLogin={true}
                     
                 />
