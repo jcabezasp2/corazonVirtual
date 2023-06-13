@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.FileProviders;
+using aspnetapp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +30,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Linea para que funcione el docker
-builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=postgres:5432; Database=corazon_virtual; Username=root; Password=root"));
+// builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=postgres:5432; Database=corazon_virtual; Username=root; Password=root"));
 
 // Linea para que funcionen las migraciones
-// builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
+builder.Services.AddDbContext<dataContext>(options => options.UseNpgsql("Host=localhost:5432; Database=corazon_virtual; Username=root; Password=root"));
 
 
 
@@ -103,6 +104,9 @@ builder.Services.AddSwaggerGen(
 builder.Services.AddScoped<aspnetapp.Services.JwtService>();
 builder.Services.AddScoped<aspnetapp.Services.ApiKeyService>();
 
+//Agrega el servicio de websocket
+builder.Services.AddSignalR();
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.User.AllowedUserNameCharacters = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789-._@+/ ";
     options.User.RequireUniqueEmail = true;
@@ -161,7 +165,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/wwwroot"
 });
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -171,5 +174,9 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+//Asignacion de la ruta del websocket
+app.MapHub<SignalIR>("/interactive");
+
 
 app.Run("http://*:8000");

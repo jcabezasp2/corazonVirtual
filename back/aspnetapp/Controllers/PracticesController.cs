@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using aspnetapp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using signal.Models;
+using signal.Hubs.Clients;
+using aspnetapp.Hubs;
 namespace aspnetapp.Controllers
 {
     [Route("practicas")]
@@ -17,14 +21,18 @@ namespace aspnetapp.Controllers
         private readonly dataContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IHubContext<SignalIR, IsignalClient> _hubContext;
 
         public PracticeController(
-            dataContext context, UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+            dataContext context,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IHubContext<SignalIR, IsignalClient> hubContext)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _hubContext = hubContext;
         }
 
         /// <summary>
@@ -135,6 +143,13 @@ namespace aspnetapp.Controllers
             _context.Practices.Add(practice);
 
             await _context.SaveChangesAsync();
+
+            await _hubContext.Clients.All.ReceiveMessage(new Message
+            {
+                UserName = user.UserName,
+                ProcedureId = ProcedureId,
+                StepId = StepId,
+            });
 
             return Ok(practice);
         }

@@ -1,0 +1,9 @@
+@use "sass:color";
+@use "sass:list";
+@import "variables.scss";
+@import "rejilla.scss";
+
+*{
+    font-family: $tipografia;
+
+}

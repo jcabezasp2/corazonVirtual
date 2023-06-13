@@ -10,18 +10,10 @@ class Iprops {
 const viewBox = (type : Icons) => {
 
   switch (type) {
-    case Icons.Tools:
-      return "-100 0 750 512";
-    case Icons.Identity:
-      return "-100 0 750 512";
-    case Icons.Logout:
-      return "-100 0 750 512";
-    case Icons.Menu:
-      return "-100 0 750 512";
-    case Icons.Close:
-      return "-100 0 750 512";
     case Icons.Info:
       return "-300 0 750 512";
+    case Icons.Unity:
+      return "-200 0 750 512";
     default:
       return "-100 0 750 512";
   }

@@ -16,7 +16,11 @@ export default function InputTxt(props : Iprops) {
     return (
         <div className="card flex justify-content-center">
             <span className="p-float-label">
-                <InputText id="name" value={props.name} onChange={(e : any) => props.handleName(e.target.value)} />               
+                <InputText id="name" value={props.name} onChange={(e : any) => props.handleName(e.target.value)} onKeyDown={(e : React.KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === "Enter" || e.key === "Tab") {
+                    props.handleName(e.currentTarget.value);                  
+                    }
+                 }}/>               
                 <label htmlFor="name">{props.labelname}</label>
             </span>
         </div>
@@ -24,4 +28,3 @@ export default function InputTxt(props : Iprops) {
 }
 
 
-// onChange={(e) => props.handleName(e.htmlValue)}
