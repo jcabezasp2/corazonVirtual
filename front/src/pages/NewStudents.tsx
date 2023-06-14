@@ -7,8 +7,11 @@ import { appContext } from '../App';
 import { FileUpload } from 'primereact/fileupload';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function NewStudents() {
+
+    const navigate = useNavigate();
 
     const [file, setFile] = useState<File>();
     const [students, setStudents] = useState<any[]>([]);
@@ -89,6 +92,8 @@ export default function NewStudents() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+
+        navigate('/newStudents');
     }
 
 
