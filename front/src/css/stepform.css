@@ -55,14 +55,16 @@
     justify-content: center;
 }
 
-#img-stepform > span > img{
-   
-    width: 40%;   
-   
+#img-stepform > span > img{   
+    width: 40%;      
 }
 
 #file-stepform{
     display: flex;
     justify-content: center;
     gap: 3rem;  
+}
+
+#file-stepform > div > span > svg{
+    width: 2rem !important;
 }

@@ -12,8 +12,6 @@ import { appContext } from "../../App";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { Image } from 'primereact/image';
-import { Button } from "primereact/button";
-import { FileUploadHeaderTemplateOptions, FileUploadSelectEvent, FileUploadUploadEvent, ItemTemplateOptions, } from 'primereact/fileupload';
 
 
 interface Iprops {}
@@ -166,7 +164,7 @@ const handleProcedure = async () => {
       
         if (resEdit.ok ) {
             setStatus(Status.success);
-            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Procedimiento actualizado correctamente', life: 3000 });
             console.log('funciona edit procedure')
             console.log(resEdit)
          
@@ -176,7 +174,7 @@ const handleProcedure = async () => {
 
         } else {
             setStatus(Status.error);
-            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'El procedimiento no ha podido actualizarse', life: 3000 });
              console.log('no funciona edit teps')
         }
         }
@@ -192,13 +190,13 @@ const handleProcedure = async () => {
             console.log("res",res)                
             if (res.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });                
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Procedimiento creado correctamente', life: 3000 });                
                 setTimeout(function(){
-                    window.location.reload();
+                  navigate('/procedimientos')
                 }, 1000);
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear el procedimiento', life: 3000 });
             }
         }
    
@@ -222,7 +220,8 @@ const handleProcedure = async () => {
       <div id="file-procedure" className=" col-4 file-procedure">
         <FileUpload
           name="image"         
-          onSelect={onUpload}       
+          onSelect={onUpload}  
+          chooseLabel="Cargar imagenes"
           mode="basic"
           accept="image/*"
           auto={true}
