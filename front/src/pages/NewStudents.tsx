@@ -74,6 +74,8 @@ export default function NewStudents() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+
+        navigate('/estudiantes');
     }
 
 
@@ -92,8 +94,6 @@ export default function NewStudents() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-
-        navigate('/newStudents');
     }
 
 
