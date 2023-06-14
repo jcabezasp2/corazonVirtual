@@ -58,24 +58,9 @@ export default function ToolForm(props: Iprops) {
 
   }, [id])
 
-//   const onUpload = async ({files} : any) => {
-//     console.log('files', files)
-//     const [file] = files;
-//     setSrc(file.name)
-//     const reader = new FileReader();
-//     reader.onload = async (e: any) => {
-       
-//         let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
-//         console.log('result', result)
-//         setImage(result);
-        
-//     };
-//     reader.readAsDataURL(file);
-//     console.log(reader)
-// };
+
 const onUpload = async ({ files }: any) => {  
-    const [file] = files;    
-    console.log("file", files, "antes del delete")
+    const [file] = files;       
 
     if(image === ""){
     const reader = new FileReader();
@@ -83,30 +68,21 @@ const onUpload = async ({ files }: any) => {
     let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
     console.log("result",result)
     setImage(result);
-    console.log("image en image vacio",image)
+
     setSrc(file.name)
     };
     reader.readAsDataURL(file);   
 
     }else{
-        console.log("image en image no vacio", image)
-    let img = image.split("images/")
-    
+        
+    let img = image.split("images/")    
     let deleteImg = img[1]
     let res = await context.apiCalls.deleteImage(deleteImg);
-    if(res.ok){
-    console.log("delete",deleteImg)
-    }else{
-    console.log("no borra")
-    }
-    console.log("file", files, "despues de borrar, antes de resubir")
-
+   
     const reader = new FileReader();
     reader.onload = async (e: any) => {
-    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
-    console.log("result",result)
-    setImage(result);
-    console.log("image direction",image)
+    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);    
+    setImage(result);    
     setSrc(file.name)
     };
     reader.readAsDataURL(file);
@@ -122,21 +98,20 @@ const handleTool = async () => {
                 setStatus(Status.empty);
                  toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
             }else{
-                console.log("dentro update", id, name, description, image, num)
+               
                 const resUpdate = await context.apiCalls.updateTool(id,name, description, image, num);
-                console.log("resUpdate",resUpdate)
+                
                 if (resUpdate.ok) {
                     setStatus(Status.success);
-                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                    console.log('funciona update tools')
+                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta actualizada correctamente', life: 3000 });                    
                     console.log(resUpdate)
                     setTimeout(function(){
                         navigate('/herramientas')
                     }, 2000);
                 } else {
                     setStatus(Status.error);
-                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                    console.log('no funciona update tools')
+                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'La herramienta no ha podido actualizarse', life: 3000 });
+                   
                 }
                 }
         }else{  
@@ -147,16 +122,16 @@ const handleTool = async () => {
             const res = await context.apiCalls.createTool(name, description, image, num);
                 if (res.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-                console.log('funciona tool')
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta creada correctamente', life: 3000 });
+               
                 console.log(res)
                 setTimeout(function(){
-                        window.location.reload();
+                    navigate('/herramientas')
                     }, 2000);
                 } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-                console.log('no funciona tool')
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear la herramienta', life: 3000 });
+                
                 console.log("res",res)
                 }     
                 }
@@ -180,15 +155,15 @@ const handleTool = async () => {
                         </div>
                         </div>
                         <div className="col-12 fila2">
-                        <div id="file-tool" className="col-5 file-tool">
+                        <div id="file-tool" className="col-4 file-tool">
                      
                             <FileUpload name="image" 
                             onSelect={onUpload}
-                            mode="basic" accept="image/*" auto={true} />
+                            mode="basic" accept="image/*" chooseLabel="Cargar imagen" auto={true} />
                             <label htmlFor="file"></label>
                         
                            </div>
-                           <div className='col-5 flex justify-content-center align-content-center' id="img-toolform" >
+                           <div className='col-4 flex justify-content-end align-content-center' id="img-toolform" >
                            <InputText disabled placeholder={src} />
                         </div>
                         </div>

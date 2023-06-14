@@ -12,7 +12,6 @@ import Select1 from '../../components/form/Select';
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
 import { Image } from 'primereact/image';
-import { Button } from 'primereact/button';
 class Iprops {
 
 }
@@ -184,14 +183,14 @@ const handleStep = async () => {
                 const resEdit = await context.apiCalls.editStep(id,name, description, image, duration, previousStep, tools);
                 if (resEdit.ok) {
                     setStatus(Status.success);
-                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Paso actualizado correctamente', life: 3000 });
                     setTimeout(function(){
                         navigate('/pasos')
                      }, 2000);
                   
                     } else {
                     setStatus(Status.error);
-                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'El paso no ha podido actualizarse', life: 3000 });
 
                 }
             }
@@ -205,14 +204,14 @@ const handleStep = async () => {
 
             if (res.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Paso creado correctamente', life: 3000 });
                 setTimeout(function(){
                     navigate('/pasos')
                 }, 2000);
                 
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear el paso', life: 3000 });
 
             }
         }
@@ -267,7 +266,8 @@ const handleStep = async () => {
                 onSelect={onUpload}
                  mode="basic" 
                  accept="image/*" 
-                 auto={true} />
+                 auto={true}
+                 chooseLabel='Cargar imagen' />
 
                 </div>
                 <div className='col-4 flex justify-content-center align-content-center' id="img-stepform" >

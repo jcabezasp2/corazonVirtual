@@ -80,14 +80,9 @@ namespace aspnetapp.Controllers
 
             var token = _apiKeyService.CreateApiKey(createdUser);
 
-            var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync("student"));           
+            var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync("student"));
 
             createdUser.PasswordHash = "The password is hidden";
-
-            
-            var sql = @"INSERT INTO ""ApplicationUsers"" ("" Name"", ""Surname"", ""Photo"" , ""UserId"") VALUES (" + createdUser.UserName + "," + createdUser.UserName + "," + "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" + "," + createdUser.Id + ")";
-
-            _context.Database.ExecuteSqlRaw(sql);
 
             var retorn = new UserData()  // retorn es un objeto de tipo UserData
             {
@@ -95,10 +90,7 @@ namespace aspnetapp.Controllers
                 UserApiKey = token,
                 Role = "user",
                 RoleClaims = roleClaims,
-               
             };
-
-           
 
             return new ObjectResult(retorn) { StatusCode = 201 };
 
@@ -135,7 +127,6 @@ namespace aspnetapp.Controllers
                 user.PasswordHash = "The password is hidden";
                 var role = await _userManager.GetRolesAsync(user);
                 var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
-                var applicationUser = await _context.ApplicationUsers.FindAsync(user.Id);
 
                 var appUser = new UserData()
                 {
@@ -143,8 +134,6 @@ namespace aspnetapp.Controllers
                     Role = role[0],
                     RoleClaims = roleClaims,
                     isLocked = await _userManager.IsLockedOutAsync(user),
-                    ApplicationUser = applicationUser,
-                   
                 };
 
                 appUsers.Add(appUser);
@@ -176,8 +165,7 @@ namespace aspnetapp.Controllers
             var claims = await _userManager.GetClaimsAsync(user);
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
             var isLocked = await _userManager.IsLockedOutAsync(user);
-            // var applicationUser = await _context.ApplicationUsers.FindAsync(user.Id);
-
+            var token = _apiKeyService.CreateApiKey(user);
             if (user == null)
             {
                 return BadRequest("User not found");
@@ -191,7 +179,7 @@ namespace aspnetapp.Controllers
                 Role = role[0],
                 RoleClaims = roleClaims,
                 isLocked = isLocked,
-                // ApplicationUser = applicationUser,
+                UserApiKey = token,
             };
 
             return Ok(result);
@@ -347,28 +335,31 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
+        
+
         /// <summary>
         /// uptade the user data
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     PUT /usuarios/updateUsuario
+      ///     PUT /usuarios/1
         ///     {
         ///        "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
         ///        "name": "name",
         ///        "email": "email",
         ///        "password": "password",
-        ///        "surname": "surname",
-        ///        "photo": "photo",
         ///     }
         ///</remarks>
+       /// <param name="id"></param>
+        /// <param name="user"></param>
         /// <returns>Ok</returns>
         /// <response code="200">Returns Ok</response>
         /// <response code="400">If the user is null or the password is invalid</response>
         /// <response code="401">If the user is not authenticated</response>
+
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public async Task<ActionResult<User>> UpdateUser(string id, User user)
         {
 
@@ -386,21 +377,12 @@ namespace aspnetapp.Controllers
             userToUpdate.Email = user.Email;
             userToUpdate.PasswordHash = user.Password;
 
-        //   var applicationUserToUpdate = await _context.ApplicationUsers.FindAsync(id);
+        
 
-            var sql = @"UPDATE ""ApplicationUsers"" SET ""Name"" = "" + applicationUserToUpdate.name + ""Surname"" = "" + applicationUserToUpdate.surname + ""Photo"" = "" + applicationUserToUpdate.photo +  WHERE ""UserId"" = " + id + "";
+            // var sql = @"UPDATE ""ApplicationUsers"" SET ""Name"" = "" + applicationUserToUpdate.name + ""Surname"" = "" + applicationUserToUpdate.surname + ""Photo"" = "" + applicationUserToUpdate.photo +  WHERE ""UserId"" = " + id + "";
 
-            _context.Database.ExecuteSqlRaw(sql);  
-      
-        //   if (applicationUserToUpdate == null)
-        //     {
-        //         return BadRequest("User not found");
-        //     }
-
-        //     applicationUserToUpdate.Name = applicationUser.Name;
-        //     applicationUserToUpdate.Surname = applicationUser.Surname;
-        //     applicationUserToUpdate.Photo = applicationUser.Photo;
-           
+            // _context.Database.ExecuteSqlRaw(sql);  
+          
          
             var result = await _userManager.UpdateAsync(userToUpdate);
 
@@ -409,52 +391,99 @@ namespace aspnetapp.Controllers
                 return BadRequest(result.Errors);
             }
 
-            var result2 = await _context.SaveChangesAsync();
+            // var result2 = await _context.SaveChangesAsync();
 
-            if (result2 == 0)
-            {
-                return BadRequest("Error al actualizar application user");
-            }
+            // if (result2 == 0)
+            // {
+            //     return BadRequest("Error al actualizar application user");
+            // }
             
             return Ok(userToUpdate);
 
 
-            // if (!ModelState.IsValid)
-            // {
-            //     return BadRequest(ModelState);
-            // }
+        }
+
+        /// <summary>
+        /// uptade the user data
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT usuarios/applicationUser/1
+        ///     {
+        ///        "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+        ///        "name": "name",
+        ///         "surname": "surname",
+        ///        "photo": "photo",
+        ///     }
+        ///</remarks>
+       /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the user is null or the password is invalid</response>
+        /// <response code="401">If the user is not authenticated</response>
+        
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpPut("usuarios/applicationUser/{id}")]
+        public async Task<ActionResult<User>> UpdateApplicationUser(string id, ApplicationUser applicationUser)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             // var userToUpdate = await _userManager.FindByIdAsync(id);
-
             // if (userToUpdate == null)
             // {
-            //     return BadRequest("Usuario no encontrado");
+            //     return BadRequest("User not found");
             // }
+            // var userToUpdate = await _context.ApplicationUsers.FindAsync(id);
+            var userToUpdate = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserId == id);           
 
-            // if (user.Name != userToUpdate.UserName)
+
+            userToUpdate.Name = applicationUser.Name;           
+            userToUpdate.Surname = applicationUser.Surname;
+            userToUpdate.Photo = applicationUser.Photo;
+            try
+            {
+                _context.Entry(userToUpdate).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                         
+                return BadRequest();
+            }
+
+
+
+        
+
+            // var sql = @"UPDATE ""ApplicationUsers"" SET ""Name"" = "" + applicationUserToUpdate.name + ""Surname"" = "" + applicationUserToUpdate.surname + ""Photo"" = "" + applicationUserToUpdate.photo +  WHERE ""UserId"" = " + id + "";
+
+            // _context.Database.ExecuteSqlRaw(sql);  
+          
+         
+            // var result = await _userManager.UpdateAsync(userToUpdate);
+
+            // if (!result.Succeeded)
             // {
-            //     _userManager.SetUserNameAsync(userToUpdate, user.Name);
+            //     return BadRequest(result.Errors);
             // }
 
-            // if (user.Email != userToUpdate.Email)
+            // var result2 = await _context.SaveChangesAsync();
+
+            // if (result2 == 0)
             // {
-            //     _userManager.SetEmailAsync(userToUpdate, user.Email);
+            //     return BadRequest("Error al actualizar application user");
             // }
+            
+            return Ok(userToUpdate);
 
-            // if (user.Password != null)
-            // {
-            //     _userManager.RemovePasswordAsync(userToUpdate);
-            //     _userManager.AddPasswordAsync(userToUpdate, user.Password);
-            // }
 
-            // var result = _userManager.UpdateAsync(userToUpdate);
-
-            // if (result.IsCompletedSuccessfully)
-            // {
-            //     return Ok();
-            // }
-
-            // return BadRequest("Error al actualizar el usuario");
 
         }
 
