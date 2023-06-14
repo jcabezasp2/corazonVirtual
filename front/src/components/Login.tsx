@@ -19,7 +19,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
 
   return (
-    <Card className="login ">
+    <Card className="login col-3">
       <form>
       <h3 className="h3 text-4xl font-bold text-center ">Iniciar sesión</h3>
 

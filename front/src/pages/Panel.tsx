@@ -45,7 +45,7 @@ export default function Panel(props: Iprops) {
       let currentCtx  = {     
           user: user ,
           email: email ,
-          password : password ? password : "aA1551-",
+          password : password === undefined ?  "aA1551-" : password,
           userId : userId ,
           
       };
@@ -128,7 +128,7 @@ export default function Panel(props: Iprops) {
     const handleUpdateUser = async () => {
        
         console.log("user", user, "email", email,"avatar",avatar, "password", password)
-        const response = await context.apiCalls.editUser(userId, user, email, password);
+        const response = await context.apiCalls.editUser(ctx);
         console.log("respone edit user",response);
         if (response.ok) {
             alert("Usuario actualizado correctamente");
