@@ -7,7 +7,6 @@ import { Card } from 'primereact/card';
 
 class Iprops{
     data!: any[];
-    // options?: any[];
     title!: string;
     label!: any[];
        
@@ -19,15 +18,8 @@ class Iprops{
 export default function ChartLine(props : Iprops) {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});   
-    const [labels, setLabels] = React.useState<any[]>([]);
-    const [label, setLabel] = React.useState<[]>([]);
-    const [data, setData] = React.useState<[]>([]);
+  
    
-        console.log("data props", props.data, "title", props.title,)
-    
-
-
-
 
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
@@ -37,34 +29,18 @@ export default function ChartLine(props : Iprops) {
      
  
 
-            console.log("Object", Object.values(props.data));
-            
-         
-          console.log("labels", labels);
-          console.log("label", label);
-          console.log("data", data);
-          console.log("props.label", props.label)
-
-         
+        
+        console.log("Object", Object.values(props.data));
+                     
           
           setChartData({
 
-            // `${Object.values(props.data).map((value) =>} 
-            // `labels:`${value.label} ,
-           
-            // datasets: 
-            //   label: ${value.labels.split('T').shift())},
-            //   data: ${value.data},
-            //   fill: false,
-            //   borderColor: documentStyle.getPropertyValue('--surface-900'),
-            //   backgroundColor: documentStyle.getPropertyValue('--surface-500'),
-            //   tension: 0.4
             labels: Object.values(props.data).map((value) => 
             value.label ),
            
             datasets: Object.values(props.data).map((value) => ({
               label: value.labels.split('T').shift(),
-              data: [value.data],
+              data: ['Pasos' + value.data],
               fill: false,
               borderColor: documentStyle.getPropertyValue('--surface-900'),
               backgroundColor: documentStyle.getPropertyValue('--surface-500'),
@@ -72,7 +48,7 @@ export default function ChartLine(props : Iprops) {
             }))
           });
 
-        console.log("chartData",chartData, "labels", labels, "label", label, "data", data)
+        console.log("chartData",chartData)
 
             
          
