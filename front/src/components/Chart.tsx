@@ -35,17 +35,17 @@ export default function ChartLine(props : Iprops) {
           
           setChartData({
 
-            labels: Object.values(props.data).map((value) => 
-            value.label ),
+            labels: Object.values(props.data).map((value) => 'Paso '+value.label),
            
             datasets: Object.values(props.data).map((value) => ({
-              label: value.labels.split('T').shift(),
-              data: ['Pasos' + value.data],
+              label: 'Día '+ value.labels.split('T').shift(),
+              data: [value.data],
               fill: false,
               borderColor: documentStyle.getPropertyValue('--surface-900'),
               backgroundColor: documentStyle.getPropertyValue('--surface-500'),
               tension: 0.4
             }))
+            
           });
 
         console.log("chartData",chartData)
@@ -58,8 +58,8 @@ export default function ChartLine(props : Iprops) {
             aspectRatio: 1.1,
             plugins: {
                 legend: {
-                    labels: {
-                        color: textColor
+                    labels: 
+                    {                                   color: textColor
                     }
                 }
             },
@@ -88,8 +88,9 @@ export default function ChartLine(props : Iprops) {
     }, [props.data]);
 
     return (
-        <Card className="col-5 card-panel chart" title={props.title}>
-            <Chart  type="bar" data={chartData} options={chartOptions} />
+        <Card className="col-5 card-panel chart" title={props.title} >
+            <Chart id="chart" type="bar" data={chartData} options={chartOptions}>            
+            </Chart>
         </Card>
     )
 }
