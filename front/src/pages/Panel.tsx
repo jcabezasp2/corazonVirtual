@@ -30,19 +30,16 @@ export default function Panel(props: Iprops) {
     const [avatar, setAvatar] = React.useState<string>('');
     const [email, setEmail] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
-    const [chartData, setChartData] = useState({});
-    const [chartDataEX, setChartDataEx] = useState({});
-    
-    const [chartOptions, setChartOptions] = useState({});
     const [titleGraph, settitleGraph] = React.useState<string>('');
     const [practiceData, setpracticeData] = React.useState<any>([]);  
     const [stepsData, setstepsData] = React.useState<any>([]);
     const [procedureData, setprocedureData] = React.useState([]);
-    const [durationData, setdurationData] = React.useState<any>([]);
  
 
     const [ctx, setCtx] = useState<any>(null);
     const [ctx2, setCtx2] = useState<any>(null);
+
+    
 
     React.useEffect(() => {
       let currentCtx  = {     
@@ -80,7 +77,7 @@ export default function Panel(props: Iprops) {
         setUser(res.user.userName);
         setEmail(res.user.email);
         setPassword(res.user.password);
-        // setAvatar(res.user.photo);
+       
         console.log("avatar",avatar)
         console.log("user Id ", userId,)
        
@@ -88,37 +85,20 @@ export default function Panel(props: Iprops) {
 
         let responsePractice = await context.apiCalls.getPracticeByUserId(res.user.id);
     console.log("responsePractice",responsePractice);
-    const practices = responsePractice.map((practice: IPractice) => {
-        return {
-          Id: practice.id,
-          Date: practice.date,
-          Duration: practice.duration,
-          IsFinished: practice.isFinished,
-          Observations: practice.observations,
-          ProcedureId: practice.procedureId,
-          StepId: practice.stepId,
-          UserId: practice.userId,
-          
-        };
-        
-      });
-    
+   
+
       const practices2 = responsePractice.map((practice: any) => {
         return {
-          labels: practice.date,
-          label: practice.stepId,
+          label: practice.date,
+          labels: practice.stepId,
           data: practice.duration,       
           
-        };
-    
+        };   
         
       });
-    console.log("")
-
 
       setpracticeData(practices2)
       console.log("practicesss", practices2)
-      setdurationData(practices.duration)
      
       let responseProcedure = await context.apiCalls.getProcedure(1); 
       const procedures = await responseProcedure.json();
@@ -127,7 +107,6 @@ export default function Panel(props: Iprops) {
       const title = procedures.name;
       settitleGraph(title);
 
-      console.log("title", title,"setTitle", titleGraph)
       const pasos = procedures.steps;
       setstepsData(pasos)
       console.log("pasos",pasos, "stepsadata", stepsData)
@@ -164,6 +143,10 @@ export default function Panel(props: Iprops) {
         // }else{
         //     alert("Error al actualizar el usuario");
         // }
+
+
+
+
         
     }
 
@@ -211,9 +194,9 @@ export default function Panel(props: Iprops) {
         <span id="button-datos" className=" col-6">
            <SubmitButton
                    
-                    onclik={context.apiCalls.updateApplicationUser}
+                    onclik={handleUpdateUser}
                     // ctx={{id : userId, user : user, email: email, password: password , avatar: avatar}}
-                    ctx={ctx2}
+                    ctx={ctx}
                     isLogin={true}
                     
                 />
@@ -318,7 +301,7 @@ export default function Panel(props: Iprops) {
                         </div>
                      </Card>                   
                                   
-               <ChartLine
+               <ChartLine  
                title={titleGraph}
                data={practiceData}
                label={stepsData}

@@ -359,7 +359,7 @@ namespace aspnetapp.Controllers
         /// <response code="401">If the user is not authenticated</response>
 
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public async Task<ActionResult<User>> UpdateUser(string id, User user)
         {
 
