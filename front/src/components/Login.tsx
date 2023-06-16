@@ -17,6 +17,15 @@ export default function Login() {
   // type datos = React.FormEvent<HTMLFormElement>;
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [valid , setValid] = useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (email.length > 0 && password.length > 0) {
+      setValid(false);
+    } else {
+      setValid(true);
+    }
+  }, [email, password]);
 
   return (
     <Card className="login col-3">
@@ -66,12 +75,11 @@ export default function Login() {
       </span>
       <div className="button-demo ">
         <div className="template button signin p-p-0">
-          {/*                 <Button label='Sign in' className="button signin p-p-0" onClick={handleSubmit}>  
-                </Button> */}
           <SubmitButton                   
             onclik={context.apiCalls.login}
             ctx={{ email: email, password: password }}
             isLogin={true}
+            disabled={valid}
           />
         </div>
       </div>

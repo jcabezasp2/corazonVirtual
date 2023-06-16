@@ -288,15 +288,16 @@ namespace aspnetapp.Controllers
             // var applicationUser = await _context.ApplicationUsers.Where(a => a.UserId == user.Id).ToListAsync();
                        
            
+
             var retorn = new UserData()
             {
                 user = user,
                 UserApiKey = token,
                 Role = role.ToArray()[0],
-                RoleClaims = roleClaims,
                 UserExtraData = userExtraData,
                 // ApplicationUser = applicationUser,
                
+                RoleClaims = roleClaims,
             };
 
             return Ok(retorn);
@@ -369,7 +370,7 @@ namespace aspnetapp.Controllers
         /// <response code="400">If the user is null or the password is invalid</response>
         /// <response code="401">If the user is not authenticated</response>
 
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpPatch("{id}")]
         [HttpPost("{id}")]
         public async Task<ActionResult<User>> UpdateUser(string id, User user)
         {
@@ -383,25 +384,81 @@ namespace aspnetapp.Controllers
             if (userToUpdate == null)
             {
                 return BadRequest("User not found");
+
             }
             userToUpdate.UserName = user.Name;           
             userToUpdate.Email = user.Email;
-            userToUpdate.PasswordHash = user.Password;        
-          
+            userToUpdate.SecurityStamp = Guid.NewGuid().ToString();
+
+
          
             var result = await _userManager.UpdateAsync(userToUpdate);
 
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
-            }
-
-           
+            // }
             
-            return Ok(userToUpdate);
-
 
         }
+
+
+        /// <summary>
+        /// uptade the user data
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT usuarios/applicationUser/1
+        ///     {
+        ///        "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
+        ///        "name": "name",
+        ///         "surname": "surname",
+        ///        "photo": "photo",
+        ///     }
+        ///</remarks>
+       /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns>Ok</returns>
+        /// <response code="200">Returns Ok</response>
+        /// <response code="400">If the user is null or the password is invalid</response>
+        /// <response code="401">If the user is not authenticated</response>
+        
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
+        [HttpPut("usuarios/applicationUser/{id}")]
+        public async Task<ActionResult<User>> UpdateApplicationUser(string id, ApplicationUser applicationUser)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // var userToUpdate = await _userManager.FindByIdAsync(id);
+            // if (userToUpdate == null)
+            // {
+            //     return BadRequest("User not found");
+            // }
+            // var userToUpdate = await _context.ApplicationUsers.FindAsync(id);
+            var userToUpdate = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserId == id);           
+
+
+            userToUpdate.Name = applicationUser.Name;           
+            userToUpdate.Surname = applicationUser.Surname;
+            userToUpdate.Photo = applicationUser.Photo;
+            try
+            {
+                _context.Entry(userToUpdate).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                         
+                return BadRequest();
+            }
+
+
 
         
 
@@ -539,7 +596,6 @@ namespace aspnetapp.Controllers
             var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
 
             return roleClaims.Any(c => c.Value == permission);
-        }
 
 
         
@@ -738,6 +794,7 @@ namespace aspnetapp.Controllers
 
 
 
+        
         
        
     }

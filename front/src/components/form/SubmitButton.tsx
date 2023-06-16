@@ -13,6 +13,7 @@ class Iprops{
     onclik! : Function;
     ctx! : Object;
     isLogin! : boolean;
+    disabled?: boolean
 }
 
 export default function SubmitButton(props : Iprops) {
@@ -52,17 +53,13 @@ export default function SubmitButton(props : Iprops) {
     const load = async () => {
       setLoading(true);
       setStatus(null);
-      setTimeout(() => {
-          setStatus(Status.error);
-          setMessage('Error de conexion');
-          setLoading(false);
-          return null;
-      }, 3000);
-
-      let response = await props.onclik(props.ctx);
+      let response = await props.onclik(props.ctx).catch((err: { message: React.SetStateAction<string>; }) => {
+        setStatus(Status.error);
+        setMessage("Error de conexion");
+        setLoading(false);
+      });
       let res = await response.json();
       setMessage(await res)
-    console.log("res", res)
       if (props.isLogin === true && response.status === 200) {
         const newUser = new User(
           res.user.id,
@@ -95,7 +92,12 @@ export default function SubmitButton(props : Iprops) {
     return (
         <div>
             <Toast ref={toast} />
+            {props.disabled ?
+            <Button disabled className="button allbutton" label="Enviar" icon="pi pi-check" loading={loading} onClick={load} loadingIcon="pi pi-spin pi-cog" />
+            :
             <Button className="button allbutton" label="Enviar" icon="pi pi-check" loading={loading} onClick={load} loadingIcon="pi pi-spin pi-cog" />
+          }
+            
         </div>
     )
 }
