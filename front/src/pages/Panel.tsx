@@ -34,12 +34,20 @@ export default function Panel(props: Iprops) {
     const [practiceData, setpracticeData] = React.useState<any>([]);  
     const [stepsData, setstepsData] = React.useState<any>([]);
     const [procedureData, setprocedureData] = React.useState([]);
- 
+    const [valid , setValid] = useState<boolean>(false);
+    const regex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$');
+    const isEmailValid = regex.test(email);
 
     const [ctx, setCtx] = useState<any>(null);
     const [ctx2, setCtx2] = useState<any>(null);
 
     
+ 
+   
+    
+
+
+    console.log("email1",isEmailValid);
 
     React.useEffect(() => {
       let currentCtx  = {     
@@ -67,6 +75,14 @@ export default function Panel(props: Iprops) {
     console.log(ctx, "ctx")
 }, [user, email, password, userId, avatar]);
 
+React.useEffect(() => { 
+    
+    if(user === '' || email === '' ){ 
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [email, user]);
 
     const initialize = async () => {       
         const res = await context.apiCalls.getMyUser();   
@@ -128,7 +144,7 @@ export default function Panel(props: Iprops) {
     const handleUpdateUser = async () => {
        
         console.log("user", user, "email", email,"avatar",avatar, "password", password)
-        const response = await context.apiCalls.editUser(ctx);
+        const response = await context.apiCalls.updateUser(ctx);
         console.log("respone edit user",response);
         if (response.ok) {
             alert("Usuario actualizado correctamente");
@@ -195,10 +211,9 @@ export default function Panel(props: Iprops) {
            <SubmitButton
                    
                     onclik={handleUpdateUser}
-                    // ctx={{id : userId, user : user, email: email, password: password , avatar: avatar}}
                     ctx={ctx}
                     isLogin={true}
-                    
+                    disabled={valid}                    
                 />
         </span>
         </div>
@@ -233,7 +248,7 @@ export default function Panel(props: Iprops) {
                     </Card> 
                 </div>
                 <div className="panelcontent col-12">
-                    <Card className="col-3 card-panel datos" title="Datos"   footer={footer} >
+                    <Card className="col-4 card-panel datos" title="Datos"   footer={footer} >
                         <div className="flex card-form col-12">
                                 <span className="p-inputgroup">
                         <span className="p-inputgroup-addon">
