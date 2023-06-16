@@ -359,7 +359,7 @@ namespace aspnetapp.Controllers
         /// <response code="401">If the user is not authenticated</response>
 
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        [HttpPost("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult<User>> UpdateUser(string id, User user)
         {
 
@@ -373,35 +373,23 @@ namespace aspnetapp.Controllers
             {
                 return BadRequest("User not found");
             }
+
             userToUpdate.UserName = user.Name;           
             userToUpdate.Email = user.Email;
             userToUpdate.PasswordHash = user.Password;
+            userToUpdate.SecurityStamp = Guid.NewGuid().ToString();
 
-        
 
-            // var sql = @"UPDATE ""ApplicationUsers"" SET ""Name"" = "" + applicationUserToUpdate.name + ""Surname"" = "" + applicationUserToUpdate.surname + ""Photo"" = "" + applicationUserToUpdate.photo +  WHERE ""UserId"" = " + id + "";
-
-            // _context.Database.ExecuteSqlRaw(sql);  
-          
-         
             var result = await _userManager.UpdateAsync(userToUpdate);
 
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
             }
-
-            // var result2 = await _context.SaveChangesAsync();
-
-            // if (result2 == 0)
-            // {
-            //     return BadRequest("Error al actualizar application user");
-            // }
             
             return Ok(userToUpdate);
-
-
         }
+
 
         /// <summary>
         /// uptade the user data
