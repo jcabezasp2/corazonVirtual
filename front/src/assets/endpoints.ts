@@ -115,12 +115,12 @@ export const getUser = async (id: number) => {
     return data
 }
 
-//Edit User by id
-export const editUser = async (ctx: any) => {
+//Update User by id
+export const updateUser = async (ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
     const { userId, user,email, password } = ctx;
     let opciones: any = {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',

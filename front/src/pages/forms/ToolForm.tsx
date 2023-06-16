@@ -22,7 +22,6 @@ export default function ToolForm(props: Iprops) {
 
     const [name, setName] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
-    // const [image, setImage] = React.useState<any>();
     const [image, setImage] = useState<string>("");
     const [status, setStatus] = React.useState<Status>(Status.error);
     const [labelname, setLabelname] = React.useState<string>('Nombre de la herramienta');
@@ -33,7 +32,11 @@ export default function ToolForm(props: Iprops) {
     const toast = useRef<any>(null);
     const navigate = useNavigate();
     const [src, setSrc] = useState<string>('');
+    const [valid , setValid] = useState<boolean>(false);
+    
 
+
+    
 
     const handleName = (e: string) => {
         setName(e);
@@ -58,47 +61,70 @@ export default function ToolForm(props: Iprops) {
 
   }, [id])
 
+  React.useEffect(() => { 
+    
+    if(name === '' || description === '' || image === ''){ 
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [name, description, image]);
+
+
+
+
 
 const onUpload = async ({ files }: any) => {  
-    const [file] = files;       
 
-    if(image === ""){
-    const reader = new FileReader();
-    reader.onload = async (e: any) => {
-    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
-    console.log("result",result)
-    setImage(result);
+    const [file] = files; 
+    console.log("file", file)
+    
+            const nameFile = file.name;
+            console.log("name file", nameFile)
+            console.log("check nameFile", nameFile.endsWith('.fbx'))
+         if( nameFile.endsWith('.fbx') === true){
+     
+            if(image === ""){
+            const reader = new FileReader();
+            reader.onload = async (e: any) => {
 
-    setSrc(file.name)
-    };
-    reader.readAsDataURL(file);   
+            let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
+            console.log("result",result)
+            setImage(result);
 
-    }else{
+            setSrc(file.name)
+            };
+            reader.readAsDataURL(file);   
+            
+            }else{
+                
+            let img = image.split("images/")    
+            let deleteImg = img[1]
+            let res = await context.apiCalls.deleteImage(deleteImg);
         
-    let img = image.split("images/")    
-    let deleteImg = img[1]
-    let res = await context.apiCalls.deleteImage(deleteImg);
-   
-    const reader = new FileReader();
-    reader.onload = async (e: any) => {
-    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);    
-    setImage(result);    
-    setSrc(file.name)
-    };
-    reader.readAsDataURL(file);
-    }
-}
+            const reader = new FileReader();
+            reader.onload = async (e: any) => {
+            let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);    
+            setImage(result);    
+            setSrc(file.name)
+            };
+            reader.readAsDataURL(file);
+            }       
+
+        }else{
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Tienes que elegir un formato de imagen válido(.fbx)', life: 3000 });
+        }
+
+    } 
+
 
     
 const handleTool = async () => {
         
         
         if(id){
-            if(name === '' || description === '' || image === ''){
-                setStatus(Status.empty);
-                 toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
-            }else{
-               
+                         
                 const resUpdate = await context.apiCalls.updateTool(id,name, description, image, num);
                 
                 if (resUpdate.ok) {
@@ -113,11 +139,8 @@ const handleTool = async () => {
                     toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'La herramienta no ha podido actualizarse', life: 3000 });
                    
                 }
-                }
-        }else{  
-            if(name === '' || description === '' || image === ''){
-                setStatus(Status.empty);
-                 toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
+                
+   
             }else{
             const res = await context.apiCalls.createTool(name, description, image, num);
                 if (res.ok) {
@@ -134,7 +157,7 @@ const handleTool = async () => {
                 
                 console.log("res",res)
                 }     
-                }
+                
             }
          
         }
@@ -159,7 +182,7 @@ const handleTool = async () => {
                      
                             <FileUpload name="image" 
                             onSelect={onUpload}
-                            mode="basic" accept="image/*" chooseLabel="Cargar imagen" auto={true} />
+                            mode="basic" accept=".fbx" chooseLabel="Cargar imagen" auto={true} />
                             <label htmlFor="file"></label>
                         
                            </div>
@@ -178,6 +201,7 @@ const handleTool = async () => {
                                 onclik={handleTool}
                                 ctx= {{name: name, description : description, modelo : image}}
                                 isLogin={true}
+                                disabled={valid} 
                               />
                                <Toast ref={toast} />
                         </div>

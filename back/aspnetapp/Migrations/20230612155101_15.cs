@@ -10,13 +10,22 @@ namespace aspnetapp.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // migrationBuilder.AlterColumn<string>(
-            //     name: "UserId",
-            //     table: "ApplicationUsers",
-            //     type: "text",
-            //     nullable: true,
-            //     oldClrType: typeof(int),
-            //     oldType: "integer");
+            migrationBuilder.AlterColumn<string>(
+                name: "UserId",
+                table: "ApplicationUsers",
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "integer");
+
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Id",
+                table: "ApplicationUsers",
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "integer");
 
                 migrationBuilder.InsertData(
                 table: "AspNetUsers",

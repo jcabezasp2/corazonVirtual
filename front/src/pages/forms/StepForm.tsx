@@ -43,7 +43,7 @@ export default function StepForm(props: Iprops) {
     const [tools, setTools] = React.useState<any[]>([]);
     const toast = useRef<any>(null);
     const [src, setSrc] = React.useState<string>('');
-   
+    const [valid , setValid] = useState<boolean>(false);
 
     const handleName = (e: string) => {
         setName(e);
@@ -72,6 +72,16 @@ export default function StepForm(props: Iprops) {
         
     }
 
+    React.useEffect(() => { 
+    console.log("tools.length", tools.length, "description", description, "tools", tools)
+
+        if(name === '' || num === 0 || description === '' || tools.length === 0){ 
+          setValid(true);
+        } else {
+          setValid(false);
+        }
+      }, [name, num, description, tools]);
+      
    
     async function allTools() {
         const allTools = await context.apiCalls.getTools();
@@ -80,12 +90,10 @@ export default function StepForm(props: Iprops) {
                 name: tool.name,
                 code: tool.id,
               }));
-            setoptions(options)
-
-          
+            setoptions(options)         
        
         }else{
-
+            console.log("no hay herramientas")
         }
 
     }
@@ -292,6 +300,7 @@ const handleStep = async () => {
                     onclik={handleStep}
                     ctx={ctx}
                     isLogin={false}
+                    disabled={valid}  
                 />
                  <Toast ref={toast} />
                 </div>

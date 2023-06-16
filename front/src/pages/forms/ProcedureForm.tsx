@@ -26,6 +26,7 @@ interface Iprocedure {
 export default function ToolForm(props: Iprops) {
   const { id } = useParams();
   const context = React.useContext(appContext);
+  const [valid , setValid] = useState<boolean>(false);
 
   //Parte del nombre del procedimiento
   const [name, setName] = useState<string>("");
@@ -148,6 +149,17 @@ const [status, setStatus] = React.useState<Status>(Status.error);
 }, [name, imageDirection, stepIds]);
 
 
+React.useEffect(() => { 
+    
+  if(name === '' || stepIds.length === 0 ){ 
+    console.log("stepsIds.length",stepIds.length)
+    setValid(true);
+  } else {
+    setValid(false);
+  }
+}, [name, stepIds]);
+
+
 
 //Funcionalidad de creación y edición de herramientas
 const navigate = useNavigate();
@@ -240,6 +252,7 @@ const handleProcedure = async () => {
       <div  id="button-procedureform" className="col-2">
         <SubmitButton
           isLogin={false}
+          disabled={valid}   
           onclik={handleProcedure}
           ctx={ctx}
         />
