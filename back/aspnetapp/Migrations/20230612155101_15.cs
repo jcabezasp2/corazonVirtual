@@ -10,13 +10,13 @@ namespace aspnetapp.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "UserId",
-                table: "ApplicationUsers",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "integer");
+            // migrationBuilder.AlterColumn<string>(
+            //     name: "UserId",
+            //     table: "ApplicationUsers",
+            //     type: "text",
+            //     nullable: true,
+            //     oldClrType: typeof(int),
+            //     oldType: "integer");
 
                 migrationBuilder.InsertData(
                 table: "AspNetUsers",
@@ -37,6 +37,20 @@ namespace aspnetapp.Migrations
                 }
             );
 
+             migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[,]
+                {
+                    { "4", "3" },
+                    { "5", "3" },
+                    { "6", "3" },
+                    { "7", "3" },
+                    { "8", "3" },
+                    { "9", "3" }
+                  
+                }
+            );
                         
              
             migrationBuilder.InsertData(

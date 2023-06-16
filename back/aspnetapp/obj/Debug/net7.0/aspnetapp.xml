@@ -823,6 +823,47 @@
              <response code="401">Unauthorized</response>
              <response code="500">Internal server error</response>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:aspnetapp.Controllers.UsersController.AddExtraData(aspnetapp.Models.AddClaimToUSer)" -->
+        <member name="M:aspnetapp.Controllers.UsersController.PostApplicationUser(System.String,System.String,System.String,System.String)">
+             <summary>
+             Post data user in applicationUser
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST usuarios/applicationUser
+                 {
+                    "name": "string",
+                    "surname": "string",
+                    "photo": "string",
+                 }
+            
+             </remarks>
+             <param name="user"></param>
+             <param name="applicationUser"></param>
+             <returns>Ok</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the user is null</response>
+             <response code="401">Unauthorized</response>
+             <response code="500">Internal server error</response>
+        </member>
+        <member name="M:aspnetapp.Controllers.UsersController.GetApplicationUser(System.String)">
+             <summary>
+             Get data user in applicationUser
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET usuarios/applicationUser
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>A applicationUser</returns>
+             <response code="200">Returns Ok</response>
+             <response code="400">If the user is null</response>
+             <response code="401">Unauthorized</response>
+             <response code="500">Internal server error</response>
+        </member>
         <member name="T:aspnetapp.Migrations._1">
             <inheritdoc />
         </member>
