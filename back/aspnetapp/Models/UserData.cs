@@ -10,10 +10,14 @@ namespace aspnetapp.Models
         public string Role { get; set; }
         public ICollection<System.Security.Claims.Claim> RoleClaims { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+             // public ICollection<ApplicationUser> ApplicationUser { get; set; }
+         public virtual ICollection<ApplicationUser>? ApplicationUser { get; set;} = new List<ApplicationUser>();
 
         public aspnetapp.Models.UserApiKey UserApiKey { get; set; }
 
         public Boolean isLocked { get; set; }
+
+
+        public ICollection<System.Security.Claims.Claim> UserExtraData { get; set; }
     }
 }
