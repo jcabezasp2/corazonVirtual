@@ -84,15 +84,12 @@ namespace aspnetapp.Controllers
 
             createdUser.PasswordHash = "The password is hidden";
 
-            
-
             var retorn = new UserData()  // retorn es un objeto de tipo UserData
             {
                 user = createdUser,
                 UserApiKey = token,
                 Role = "user",
                 RoleClaims = roleClaims,
-               
             };
 
             return new ObjectResult(retorn) { StatusCode = 201 };
@@ -281,22 +278,13 @@ namespace aspnetapp.Controllers
 
             var roleClaims = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role[0]));
 
-            
 
-            var userExtraData = await _userManager.GetClaimsAsync(user);
-
-            // var applicationUser = await _context.ApplicationUsers.Where(a => a.UserId == user.Id).ToListAsync();
-                       
-           
 
             var retorn = new UserData()
             {
                 user = user,
                 UserApiKey = token,
                 Role = role.ToArray()[0],
-                UserExtraData = userExtraData,
-                // ApplicationUser = applicationUser,
-               
                 RoleClaims = roleClaims,
             };
 
@@ -370,8 +358,8 @@ namespace aspnetapp.Controllers
         /// <response code="400">If the user is null or the password is invalid</response>
         /// <response code="401">If the user is not authenticated</response>
 
+        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPatch("{id}")]
-        [HttpPost("{id}")]
         public async Task<ActionResult<User>> UpdateUser(string id, User user)
         {
 
@@ -384,22 +372,22 @@ namespace aspnetapp.Controllers
             if (userToUpdate == null)
             {
                 return BadRequest("User not found");
-
             }
+
             userToUpdate.UserName = user.Name;           
             userToUpdate.Email = user.Email;
+            userToUpdate.PasswordHash = user.Password;
             userToUpdate.SecurityStamp = Guid.NewGuid().ToString();
 
 
-         
             var result = await _userManager.UpdateAsync(userToUpdate);
 
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
-            // }
+            }
             
-
+            return Ok(userToUpdate);
         }
 
 
@@ -461,6 +449,31 @@ namespace aspnetapp.Controllers
 
 
         
+
+            // var sql = @"UPDATE ""ApplicationUsers"" SET ""Name"" = "" + applicationUserToUpdate.name + ""Surname"" = "" + applicationUserToUpdate.surname + ""Photo"" = "" + applicationUserToUpdate.photo +  WHERE ""UserId"" = " + id + "";
+
+            // _context.Database.ExecuteSqlRaw(sql);  
+          
+         
+            // var result = await _userManager.UpdateAsync(userToUpdate);
+
+            // if (!result.Succeeded)
+            // {
+            //     return BadRequest(result.Errors);
+            // }
+
+            // var result2 = await _context.SaveChangesAsync();
+
+            // if (result2 == 0)
+            // {
+            //     return BadRequest("Error al actualizar application user");
+            // }
+            
+            return Ok(userToUpdate);
+
+
+
+        }
 
         /// <summary>
         /// Get a practices by student id
@@ -596,205 +609,7 @@ namespace aspnetapp.Controllers
             var roleClaims = _roleManager.GetClaimsAsync(_roleManager.FindByNameAsync(role[0]).Result).Result;
 
             return roleClaims.Any(c => c.Value == permission);
-
-
-        
-
-        /// <summary>
-        /// Add extra data to user
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-
-        ///     POST usuarios/extraData
-        ///     {
-        ///        "type": "string",
-        ///        "value": "string"
-        ///     }
-
-        /// </remarks> 
-        /// <param name="id"></param>
-        /// <param name="UserExtraData"></param>
-        /// <returns>Ok</returns>
-        /// <response code="200">Returns Ok</response>
-        /// <response code="400">If the user is null</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="500">Internal server error</response>
-
-        [HttpPost("extraData")]
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        public async Task<ActionResult<AddClaimToUSer>> AddExtraData(AddClaimToUSer addClaim)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _userManager.FindByIdAsync(addClaim.UserId);
-
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-
-            var newaddClaim = new AddClaimToUSer()
-            {
-                UserId = user.Id,
-                Type = addClaim.Type,
-                Value = addClaim.Value
-            };
-
-            
-            var claim = new System.Security.Claims.Claim(newaddClaim.Type, newaddClaim.Value);
-
-            var result = await _userManager.AddClaimAsync(user, claim);
-            if(!result.Succeeded){
-                return BadRequest("Error al añadir los datos extra");
-            }
-            return CreatedAtAction("Get",new{id=user.Id});
-
-
-
-            //  var createExtraDatos = new UserExtraData()
-            // {   
-            //     UserId = user.Id,
-            //     Name = user.UserName,
-            //     Surname = user.Surname,
-            //     Photo = user.Photo,                   
-            // };
-
-
-
-
-            // var claim = new System.Security.Claims.Claim(addClaim.Type, addClaim.Value);
-
-            // var result = await _userManager.AddClaimAsync(user, claim);
-
-            // if (result.Succeeded)
-            // {
-            //     return Ok("Datos extra añadidos");
-            // }
-            // else
-            // {
-            //     return BadRequest("Error al añadir los datos extra");
-            // }
         }
-
-
-        /// <summary>
-        /// Post data user in applicationUser
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST usuarios/applicationUser
-        ///     {
-        ///        "name": "string",
-        ///        "surname": "string",
-        ///        "photo": "string",
-        ///        "userId": "string"
-        ///     }
-        ///
-        /// </remarks>        
-        /// <param name="applicationUser"></param>
-        /// <returns>Ok</returns>
-        /// <response code="200">Returns Ok</response>
-        /// <response code="400">If the user is null</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="500">Internal server error</response>
-
-        [HttpPost("applicationUser")]
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        public async Task<ActionResult<ApplicationUser>> PostApplicationUser( ApplicationUser applicationUser)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _userManager.FindByIdAsync(applicationUser.UserId);
-
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-
-            var createExtraDatos = new UserExtraData()
-            {   
-                UserId = user.Id,
-                Name = applicationUser.Name,
-                Surname = applicationUser.Surname,
-                Photo = applicationUser.Photo,                   
-            };
-
-            _context.ApplicationUsers.Add(applicationUser);
-            await _context.SaveChangesAsync();
-
-            return Ok("Datos extra añadidos");
-
-                    
-
-            
-           
-         
-        }
-
-
-        /// <summary>
-        /// Get data user in applicationUser
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     GET usuarios/applicationUser
-        ///
-        /// </remarks>
-        /// <param name="id"></param>
-        /// <returns>A applicationUser</returns>
-        /// <response code="200">Returns Ok</response>
-        /// <response code="400">If the user is null</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="500">Internal server error</response>
-
-        
-        [HttpGet("applicationUser")]
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>>GetApplicationUser(string id)
-        {
-            // var user = await _userManager.FindByIdAsync(id);
-
-            // if (user == null)
-            // {
-            //     return BadRequest("User not found");
-            // }
-
-            // var userExist = await _context.ApplicationUsers.Where(a => a.UserId == id).ToListAsync();
-
-            var userExist = await _userManager.FindByIdAsync(id);
-
-            if (userExist == null)
-            {
-                return NotFound();
-            }
-       
-                     
-
-            return await _context.ApplicationUsers.Where(x => x.UserId == userExist.Id).ToListAsync(); 
-        }
-
-
-
-        
-
-
-        
-
-
-
-
-
-        
         
        
     }
