@@ -390,9 +390,6 @@ namespace aspnetapp.Controllers
             return Ok(userToUpdate);
         }
 
-
-        
-
         /// <summary>
         /// Get a practices by student id
         /// </summary>
@@ -529,77 +526,6 @@ namespace aspnetapp.Controllers
             return roleClaims.Any(c => c.Value == permission);
         }
         
-       /// <summary>
-        /// uptade the application user data
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST usuarios/applicationUser/1
-        ///     {
-        ///        "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
-        ///        "name": "name",
-        ///        "surname": "surname",
-        ///        "photo": "photo",
-        ///     }
-        ///</remarks>
-       /// <param name="id"></param>
-        /// <param name="applicationUser"></param>
-        /// <returns>Ok</returns>
-        /// <response code="200">Returns Ok</response>
-        /// <response code="400">If the user is null or the password is invalid</response>
-        /// <response code="401">If the user is not authenticated</response>
-        
-        [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
-        [HttpPatch("applicationUser/{id}")]
-        public async Task<ActionResult<ApplicationUser>> UpdateApplicationUser(string id, ApplicationUser applicationUser)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-           
-            var userToUpdate = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserId == id);         
-
-            if (userToUpdate == null)
-            {
-                var createApplicationUser = new ApplicationUser();
-                createApplicationUser.Name = applicationUser.Name;
-                createApplicationUser.Surname = applicationUser.Surname;
-                createApplicationUser.Photo = applicationUser.Photo;
-                createApplicationUser.UserId = id;
-
-                _context.ApplicationUsers.Add(createApplicationUser);
-
-                await _context.SaveChangesAsync();
-                return Ok(createApplicationUser);            
-            
-            }else{
-
-            userToUpdate.Name = applicationUser.Name;           
-            userToUpdate.Surname = applicationUser.Surname;
-            userToUpdate.Photo = applicationUser.Photo;  
-            userToUpdate.UserId = id; 
-
-
-            _context.Entry(userToUpdate).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return Ok(userToUpdate);
-            
-           
-
-            }
-
-
-           
-        
-
-
-
-
-        }
+       
     }
 }
