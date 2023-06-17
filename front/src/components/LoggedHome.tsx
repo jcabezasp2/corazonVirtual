@@ -6,7 +6,6 @@ import Icon from "./Icons";
 import "../css/loggedHome.css";
 import "../css/logohome.css";
 
-
 interface MenuItem {
   title: string;
   icon: Icons;
@@ -14,6 +13,11 @@ interface MenuItem {
 }
 
 const commonItems: MenuItem[] = [
+  {
+    title: "Panel de usuario",
+    icon: Icons.Identity,
+    destiny: "/panel",
+  },
   {
     title: "Utensilios",
     icon: Icons.Tools,
@@ -97,46 +101,16 @@ export default function LoggedHome() {
 
   return (
     <div className="loggedHome">
-      <div></div>
-      <div className="scalein animation-duration-1000">
-        <HomeCard
-          title={"Panel de usuario"}
-          icon={Icons.Identity}
-          destiny={"/panel"}
-        />
-      </div>
-      {
-        <div className="scalein animation-duration-1000">
-          <HomeCard
-            title={items[0].title}
-            icon={items[0].icon}
-            destiny={items[0].destiny}
-          />
-        </div>
-      }
-       <div></div>
-       {
-        <div className="scalein animation-duration-1000">
-          <HomeCard
-            title={items[1].title}
-            icon={items[1].icon}
-            destiny={items[1].destiny}
-          />
-        </div>
-      }
-      <div className="row">
+     
       {items.map((item, index) => (
-        index > 1 && (
           <div className="scalein animation-duration-1000">
             <HomeCard
               title={item.title}
               icon={item.icon}
               destiny={item.destiny}
             />
-          </div>)
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
-
 }

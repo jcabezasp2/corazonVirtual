@@ -2,82 +2,16 @@
     width: min-content;
     margin: auto;
     display: grid;
-   
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
 }
 
-.loggedHome :nth-child(2){
-    grid-column: 2 / 3;
+.loggedHome > div{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+
     flex-direction: column;
-}
-
-.loggedHome :nth-child(3){
-    grid-column: 1 / 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.loggedHome :nth-child(4){
-    grid-column: 2 / 3;
-}
-
-.loggedHome :nth-child(5){
-    grid-column: 3 / 4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.row{
-    grid-column: 1/4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    flex-direction: row;
-    padding-top: 5%;
-}
-
-.logoLogged{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.logo2{
-    justify-content: right;
-    align-items: start;
-    font-size: 4rem !important;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 10px #fff;
-    display:flex
-}
-
-
-.logoLogged .icon{
-    width: 40%;
-}
-
-.logoLogged:hover h1{
-    cursor: pointer;
-    color: black;
-    text-shadow: 0 0 0  !important;
-}
-
-.logoLogged:hover svg{
-    cursor: pointer;
-    fill:#fff;
-    text-shadow: 0 0 10px #fff;
 }
 
 
@@ -132,3 +66,9 @@ div .loggedCard {
     height: 200px;
 }
 
+
+@media screen and (max-width: 768px)  {
+     .loggedHome{
+        grid-template-columns: repeat(1, 1fr);
+     }
+}
