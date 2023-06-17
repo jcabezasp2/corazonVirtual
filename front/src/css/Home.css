@@ -110,3 +110,29 @@ svg {
     transform: scale(1);
   }
 }
+
+@media screen and (max-width: 768px)  {
+
+  #pachos{
+    display: none;
+  }
+
+  .login{
+    width: auto;
+    position: sticky;
+    align-self: center;
+  }
+
+}
+
+@media  screen and (min-width: 768px) and (max-width: 1224px)  {
+
+
+
+  .login{
+    width: auto;
+    position: sticky;
+
+  }
+
+}

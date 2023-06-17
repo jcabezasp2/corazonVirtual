@@ -1,14 +1,14 @@
 #informationView{
     padding: 10% 5% 10% 5%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 #informationView > div{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 5%;
+    padding: 0 20% 0 20%;
 }
 
 #informationView > div > h2 {
@@ -53,3 +53,27 @@ img{
     text-align: center;
     margin-bottom: 5%;
 }
+
+@media screen and (max-width: 1044px)  {
+
+    #informationView{
+        grid-template-columns: 1fr;
+    }
+
+    #informationView > div{
+        padding: 10% 20% 10% 20%;
+    }
+  
+  }
+  
+  @media  screen and (min-width: 1044px) and (max-width: 1494px)  {
+  
+    #informationView{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #informationView > div{
+        padding: 10% 20% 10% 20%;
+    }
+  
+  }

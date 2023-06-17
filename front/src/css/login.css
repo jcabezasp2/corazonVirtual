@@ -5,8 +5,7 @@
     top: 10rem;
     background-color: #ffffffd2;
     gap: 1rem !important;
-    
-    
+    width: auto;
 }
 
 .login .p-card-content{
@@ -37,3 +36,7 @@
     flex-direction: column;
     gap: 1rem;
 }
+
+.login > div{
+    width: max-content;
+  }

@@ -28,7 +28,7 @@ export default function Login() {
   }, [email, password]);
 
   return (
-    <Card className="login col-3">
+    <Card className="login">
       <form>
       <h3 className="h3 text-4xl font-bold text-center ">Iniciar sesión</h3>
 

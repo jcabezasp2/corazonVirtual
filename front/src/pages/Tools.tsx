@@ -65,7 +65,7 @@ export default function Claims(props: Iprops) {
 
   const gridItem = (tool: any) => {
     return tool ? (
-      <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+      <div className="col-12 sm:col-12 lg:col-12 xl:col-4 p-2">
         <div className="p-4 border-1 surface-border surface-card border-round">
           <div className="flex flex-column align-items-center gap-3 py-5">
             <Canvas camera={{ position: [0, 0, 3] }}>
@@ -92,7 +92,7 @@ export default function Claims(props: Iprops) {
         </div>
       </div>
     ) : (
-      <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+      <div className="col-12 sm:col-12 lg:col-6 xl:col-4 p-2">
         <div className="p-4 border-1 surface-border surface-card border-round">
           <div className="flex flex-wrap align-items-center justify-content-between gap-2">
             <Skeleton className="w-6rem border-round h-1rem" />
