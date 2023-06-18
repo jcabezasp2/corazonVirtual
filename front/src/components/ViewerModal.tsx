@@ -13,7 +13,10 @@ interface Iprops {
   Modelo: string;
   setVisible: Function;
   description: string;
+  scale: number;
 }
+
+const parser = new DOMParser();
 
 export default function ViewerModal(props: Iprops) {
   return (
@@ -29,14 +32,14 @@ export default function ViewerModal(props: Iprops) {
       >
         <Canvas id="viewCanva" camera={{ position: [0, 0, 3] }}>
           <Suspense fallback={null}>
-            <Model path={`${props.Modelo}`} />
+            <Model path={`${props.Modelo}`} scale={props.scale} />
           </Suspense>
           <OrbitControls />
           <ambientLight intensity={0.3} />
           <directionalLight intensity={0.4} position={[0, 1, 1]} />
           <Sky sunPosition={[0, 1, 1]} turbidity={40} />
         </Canvas>
-        <div>{props.description}</div>
+        <div dangerouslySetInnerHTML={{ __html: new XMLSerializer().serializeToString(parser.parseFromString(props.description, 'text/html')) }} />
       </Dialog>
     </div>
   );

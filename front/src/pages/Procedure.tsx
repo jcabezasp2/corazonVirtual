@@ -24,6 +24,8 @@ interface IStep {
   tools: any[];
 }
 
+const parser = new DOMParser();
+
 export default function Procedure() {
   const { id } = useParams();
 
@@ -87,7 +89,9 @@ export default function Procedure() {
             <Card>
               {currentStepIndex < steps.length ? (
                 <ScrollPanel className="custombar1">
-                  <p>{currentStep?.description}</p>
+                  {currentStep && (
+                    <div dangerouslySetInnerHTML={{ __html: new XMLSerializer().serializeToString(parser.parseFromString(currentStep.description, 'text/html')) }} />
+                  )}
                 </ScrollPanel>
               ) : (
                 <p>Procedimiento finalizado</p>
@@ -96,7 +100,7 @@ export default function Procedure() {
                 {currentStep?.tools.map((tool: any) => {
                   return (
                     <TabPanel header={tool.name}>
-                      <p>{tool.description}</p>
+                      <div dangerouslySetInnerHTML={{ __html: new XMLSerializer().serializeToString(parser.parseFromString(tool.description, 'text/html')) }} />
                       <Canvas camera={{ position: [0, 0, 3] }}>
                         <Suspense fallback={null}>
                           <Model

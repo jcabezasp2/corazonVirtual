@@ -12,8 +12,6 @@ import { Toast } from "primereact/toast";
 import "./../css/steps.css"
 
 
-
-
 class Iprops {}
 
 export default function Steps(props: Iprops) {
