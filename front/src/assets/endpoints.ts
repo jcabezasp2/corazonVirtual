@@ -303,7 +303,7 @@ export const getStep = async (id: number) => {
 export const editStep = async (id: number,ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
     const { name, description, image, duration, previousStep, tools } = ctx;
-
+   
     let opciones: any = {
         method: 'PUT',
         headers: {
@@ -321,6 +321,7 @@ export const editStep = async (id: number,ctx: any) => {
 
 export const createStep = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
+    console.log(ctx)
     const { name, description, image, duration, previousStep, tools } = ctx;
     let opciones: any = {
         method: 'POST',

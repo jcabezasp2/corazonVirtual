@@ -1,17 +1,44 @@
 #stepform{
  margin-top: 7rem !important;
+ display: flex;
+ flex-direction: column;
 }
 
+#inputsform-stepform{
+    display: flex;
+    justify-content: center;
+     
+ } 
+ 
+ #inputsform2-stepform{
+     display: flex;
+     justify-content: center;
+     /* gap: 10rem; */
+ }
+ #inputsform3-stepform{   
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+   
+}
+ 
+
+
 #inputtxt-stepform > div > span > input{
-    width: 26rem !important;
+    width: 24rem !important;
+}
+
+#inputnumb-stepform{
+    align-self: center;
 }
 
 #inputnumb-stepform > div > div > span > input{
-    width: 17rem !important;
+    /* width: 17rem !important; */
+
 }
 
 #inputselect-stepform > div > span > div {
-    width: 26rem !important;
+    width: 23rem !important;
 }
 
 #h1form-stepform{
@@ -19,32 +46,28 @@
     padding-bottom: 2rem;
 }
 
+#toggle-stepform{
+    display: flex;
+    justify-content: end;
+}
+
 #toggle-stepform > div > div{
-    width: 20rem !important;
-}
-
-#inputsform-stepform{
-    gap: 10rem;
+    width: 15rem !important;   
     
-} 
-
-#inputsform2-stepform{
-    gap: 10rem;
 }
+
 
 #editor-stepform > div > div{
     height: 6rem !important;
 }
 
-#inputsform3-stepform{   
-    gap: 3rem;
-   
-}
+
 
 #img-stepform{
     border: 1px solid var(--primary-color); 
     border-radius: 0.3rem;
-    height: 9rem !important; 
+    height: 18rem !important; 
+    margin-left: 2.5rem !important;
    
 }
 
@@ -56,12 +79,13 @@
 }
 
 #img-stepform > span > img{   
-    width: 40%;      
+    width: 85%;      
 }
 
 #file-stepform{
-    display: flex;
-    justify-content: center;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     gap: 3rem;  
 }
 

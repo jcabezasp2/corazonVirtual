@@ -28,23 +28,24 @@
 #img-procedureform {
     border: 1px solid var(--primary-color); 
     border-radius: 0.3rem;
-    height: 10rem !important; 
+    height: 16rem !important; 
 }
 
 #img-procedureform > span {
-    display: flex;
+    display: flex;  
     align-self: center;
     align-items: center;
     justify-content: center;
 }
 
 #img-procedureform > span > img{
-    width: 40%;
+    width: 65%;
 }
 
 #file-procedure{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
     gap: 3rem;  
     
 }

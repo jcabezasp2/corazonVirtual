@@ -27,6 +27,7 @@ export default function Select1(props : Iprops) {
 
       React.useEffect(() => {
         setSelected(props.tools)
+     
       }, []);
 
       
@@ -44,8 +45,7 @@ export default function Select1(props : Iprops) {
               props.handleSelect(e.value);
               setSelected(e.value);
             }} 
-            options={options}
-            // placeholder={props.placeholder}            
+            options={options}                  
             optionLabel="name"            
             className="w-full md:w-22rem" 
             style={{color: 'var(--surface-800)' }}            
