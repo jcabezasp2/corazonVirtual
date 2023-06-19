@@ -15,7 +15,7 @@ import OptionsButton from '../components/OptionsButton';
 import { Toast } from "primereact/toast";
 import { Status } from "../assets/constants";
 
-class Iprops {}
+class Iprops { }
 
 interface ITool {
   id: number;
@@ -23,7 +23,7 @@ interface ITool {
   description: string;
   modelo: string;
   optimalScale: number;
-  
+
 }
 
 export default function Claims(props: Iprops) {
@@ -38,29 +38,26 @@ export default function Claims(props: Iprops) {
 
   const setVisible = () => {
     setModalVisible(!modalVisible);
-    };
+  };
 
 
-    console.log("tools",tools)
+
+  const onDelete = async (id: number) => {
+
+    const res = await context.apiCalls.deleteTool(id);
+    if (res.ok) {
+      setStatus(Status.success);
+      toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
+    } else {
+      setStatus(Status.error);
+      toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+    }
 
 
-    const onDelete = async (id: number) => {
 
-        const res = await context.apiCalls.deleteTool(id);
-      console.log("dentro de ondelete")
-      if (res.ok) {
-          setStatus(Status.success);
-          toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-          setTimeout(function(){
-            window.location.reload();
-         }, 1000); 
-      } else {
-          setStatus(Status.error);
-          toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
-      }
-      
-    
-      
   }
 
   const gridItem = (tool: any) => {
@@ -84,10 +81,10 @@ export default function Claims(props: Iprops) {
             <Button
               icon="pi pi-eye"
               className="p-button"
-              onClick={() => {setModalVisible(true); setSelectedTool(tool);}}
+              onClick={() => { setModalVisible(true); setSelectedTool(tool); }}
             ></Button>
-            {context.user.role == Role.Teacher && <OptionsButton id={tool.id}   onEdit={`formulario/${tool.id}`} onDelete={onDelete}/>}
-            
+            {context.user.role == Role.Teacher && <OptionsButton id={tool.id} onEdit={`formulario/${tool.id}`} onDelete={onDelete} />}
+
           </div>
         </div>
       </div>
@@ -117,7 +114,7 @@ export default function Claims(props: Iprops) {
       return;
     }
 
-     return gridItem(item);
+    return gridItem(item);
   };
 
   const header = () => {
@@ -128,7 +125,7 @@ export default function Claims(props: Iprops) {
             label="Crear utensilio"
             severity="secondary"
             onClick={() => {
-              navigate("/herramientas/formulario") ;
+              navigate("/herramientas/formulario");
             }}
           />
         )}
@@ -139,7 +136,6 @@ export default function Claims(props: Iprops) {
 
   const initialize = async () => {
     const response = await context.apiCalls.getTools();
-    console.log("response",response)
     const tools = response.map((tool: ITool) => {
       return {
         id: tool.id,
@@ -150,18 +146,18 @@ export default function Claims(props: Iprops) {
       };
     });
     setTools(tools);
-   
+
 
   };
 
-  
+
   React.useEffect(() => {
     initialize();
   }, []);
 
   return (
     <div id="toolsView">
-        {selectedTool && <ViewerModal scale={selectedTool.optimalScale} visible={modalVisible} title ={selectedTool!.Nombre} Modelo={selectedTool!.Modelo} setVisible={setVisible} description={selectedTool.Descripcion} /> }
+      {selectedTool && <ViewerModal scale={selectedTool.optimalScale} visible={modalVisible} title={selectedTool!.Nombre} Modelo={selectedTool!.Modelo} setVisible={setVisible} description={selectedTool.Descripcion} />}
       <div className="card">
         <DataView
           className="tools"

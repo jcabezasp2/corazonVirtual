@@ -31,8 +31,6 @@ export default function Select1(props : Iprops) {
       }, []);
 
       
-      console.log( "placeholder", props.placeholder,"options", props.options.map(item => [ item.name,item.code] ), "selected", props.tools)
-      
 
 
     return (

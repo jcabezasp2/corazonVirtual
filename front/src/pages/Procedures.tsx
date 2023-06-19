@@ -31,9 +31,7 @@ export default function Procedures(props: Iprops) {
 
   const onDelete = async (id: number) => {
     
-    console.log("id dentro de ondelete antes de borrar", id)
     const res = await context.apiCalls.deleteProcedure(id);
-    console.log("dentro de ondelete despues de borrar: res", res)
     if (res.ok) {
         setStatus(Status.success);
         toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
@@ -88,7 +86,6 @@ export default function Procedures(props: Iprops) {
     const procedures = await res.json();
     setProcedures(
       procedures.map((procedure: any) => {
-        console.log("en procedures: procedure.id",procedure.id)
         return {
           id: procedure.id,
           name: procedure.name,

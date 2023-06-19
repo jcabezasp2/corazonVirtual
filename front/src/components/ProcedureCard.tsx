@@ -28,7 +28,6 @@ export default function ProcedureCard(props: Iprops) {
     />
   );
 
-   console.log("en procedurecard: id", props.id)
   const footer = (
     <div className="flex flex-wrap justify-content-end gap-2">
       {context.user.role == Role.Teacher && <OptionsButton id={props.id} onEdit={props.onEdit} onDelete={props.onDelete(props.id)} />}

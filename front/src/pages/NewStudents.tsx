@@ -16,6 +16,7 @@ export default function NewStudents() {
 
     const [file, setFile] = useState<File>();
     const [students, setStudents] = useState<any[]>([]);
+    const [dataViewStudents, setDataViewStudents] = useState<any[]>([]);
 
     const fileUpload = useRef(null);
 
@@ -27,7 +28,6 @@ export default function NewStudents() {
     const ctx = React.useContext(appContext);
 
     const handleUpload = (e: any) => {
-        console.log(e)
         if (e.files == null) return;
         setFile(e.files[0]);
     }
@@ -104,7 +104,12 @@ export default function NewStudents() {
         leerArchivo();
     }, [file])
 
+    useEffect(() => {
+        setDataViewStudents(students.map((student) => {
 
+            return [student[0], student[1], student[2].replace(/./g, '*')];
+        }))
+    }, [students])
 
     return (
         <div id='newStudents' className='flex flex-column justify-content-center'>
@@ -140,7 +145,7 @@ export default function NewStudents() {
                     </div>
                 </Dialog>
                 <div className='pt-4'>
-                    <Table dataElements={students} showDelete={true} onDelete={handleDelete} onEdit='' />
+                    <Table dataElements={dataViewStudents} showDelete={true} onDelete={handleDelete} onEdit='' />
                 </div>
             </div>
         </div>

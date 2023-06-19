@@ -54,7 +54,6 @@ export default function StepForm(props: Iprops) {
         setNum(e);
         // setDuration(String(num))
 
-        // console.log(duration, "duration", typeof duration, "type")
                 
     }
 
@@ -70,12 +69,10 @@ export default function StepForm(props: Iprops) {
     const handleSelect = (e: any) => {
         let select = e;
         setTools(select.code);
-        console.log("tools handleselect",tools)
         
     }
 
     React.useEffect(() => { 
-    console.log("description", description, "tools", tools)
 
         if(name === '' || num === 0 || description === '' || tools === 0 ){ 
           setValid(true);
@@ -94,10 +91,7 @@ export default function StepForm(props: Iprops) {
               }));
             setoptions(options)         
        
-        }else{
-            console.log("no hay herramientas")
         }
-
     }
 
     
@@ -113,13 +107,11 @@ export default function StepForm(props: Iprops) {
             setpreviousStep(step.previousStep);
             // setTools(step.tools);
             setSrc(step.image)
-                console.log("step",step)
         })
         
         context.apiCalls.getToolByStepId(id).then((tool: any)=>{
             let utensiliosId = tool.map((tool: any) => tool.id);
             setTools(utensiliosId);
-            console.log("tools en getoolsbystep",tools)
         }
         )
         }
@@ -139,8 +131,6 @@ export default function StepForm(props: Iprops) {
         tools : tools ? tools : [],  
     };
     setCtx(currentCtx);
-    console.log(currentCtx, "currentCtx")
-    console.log(ctx, "ctx")
 }, [name, image, description, num, previousStep, tools]);
 
    
@@ -161,12 +151,7 @@ reader.readAsDataURL(file);
 }else{
 let img = image.split("images/")
 let deleteImg = img[1]
- let res = await context.apiCalls.deleteImage(deleteImg);
- if(res.ok){
-    console.log("delete",deleteImg)
-     }else{
-      console.log("no borra")
-     }
+let res = await context.apiCalls.deleteImage(deleteImg);
 
 
 const reader = new FileReader();
@@ -186,8 +171,6 @@ reader.readAsDataURL(file);
 
 const createUpdateStep =async ( ) => {
 
-   
-    console.log("ctx dentro de create", ctx, "ctx save", ctxSave, "id", id)
 
     // const res = await context.apiCalls.editStep(id,ctx);
     const resDelete = await context.apiCalls.deleteStep(id);
@@ -216,7 +199,6 @@ const handleStep = async () => {
         if(id){
           
             const res = await context.apiCalls.editStep(id, ctx);
-            console.log("res", res)
          if(res.status === 200 || res.status === 201 || res.status === 404){
                     
                 setStatus(Status.success);

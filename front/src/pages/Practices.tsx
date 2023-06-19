@@ -27,7 +27,6 @@ export default function Practices(props: Iprops) {
 
     const initialize = async () => {
        const res = await context.apiCalls.getPractices();
-       console.log('practices', practices);
        if(context.user.role == Role.Teacher){
         setPractices(res.map ((practice: IPractice) => {
             return {

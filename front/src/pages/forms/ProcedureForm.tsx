@@ -43,37 +43,25 @@ export default function ToolForm(props: Iprops) {
 
   const onUpload = async ({ files }: any) => {  
         const [file] = files;    
-    console.log("file", files, "antes del delete")
 
    if(imageDirection === ""){
     const reader = new FileReader();
     reader.onload = async (e: any) => {
       let result = await context.apiCalls.uploadImageBase64(e.target.result);
-      console.log("result",result)
       setImageDirection(result);
-      console.log("image direction",imageDirection)
       setSrc(result)
     };
     reader.readAsDataURL(file);   
    
   }else{
     let img = imageDirection.split("images/")
-    console.log("imageDirection", imageDirection)
     let deleteImg = img[1]
-     let res = await context.apiCalls.deleteImage(deleteImg);
-     if(res.ok){
-    console.log("delete",deleteImg)
-     }else{
-      console.log("no borra")
-     }
-  console.log("file", files, "despues de borrar, antes de resubir")
+    let res = await context.apiCalls.deleteImage(deleteImg);
    
     const reader = new FileReader();
     reader.onload = async (e: any) => {
       let result = await context.apiCalls.uploadImageBase64(e.target.result);
-      console.log("result",result)
       setImageDirection(result);
-      console.log("image direction",imageDirection)
       setSrc(result)
     };
     reader.readAsDataURL(file);
@@ -152,7 +140,6 @@ const [status, setStatus] = React.useState<Status>(Status.error);
 React.useEffect(() => { 
     
   if(name === '' || stepIds.length === 0 ){ 
-    console.log("stepsIds.length",stepIds.length)
     setValid(true);
   } else {
     setValid(false);
@@ -167,14 +154,11 @@ const navigate = useNavigate();
 const handleProcedure = async () => {
       if(id){
        
-            console.log("edit", name, imageDirection, stepIds)
         const resEdit = await context.apiCalls.editProcedure(id,name,imageDirection);
       
         if (resEdit.ok ) {
             setStatus(Status.success);
             toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Procedimiento actualizado correctamente', life: 3000 });
-            console.log('funciona edit procedure')
-            console.log(resEdit)
          
             setTimeout(function(){
                navigate('/procedimientos')
@@ -183,12 +167,10 @@ const handleProcedure = async () => {
         } else {
             setStatus(Status.error);
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'El procedimiento no ha podido actualizarse', life: 3000 });
-             console.log('no funciona edit teps')
         }
         }else{
                  
-            const res = await context.apiCalls.createProcedure(ctx);
-            console.log("res",res)                
+            const res = await context.apiCalls.createProcedure(ctx);    
             if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Procedimiento creado correctamente', life: 3000 });                

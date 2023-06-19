@@ -1,5 +1,5 @@
 import { Toast } from "primereact/toast";
-import React, { useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import { Status } from '../../assets/constants';
 import TxtEditor from "../../components/form/TxtEditor";
 import SubmitButton from "../../components/form/SubmitButton";
@@ -32,185 +32,178 @@ export default function ToolForm(props: Iprops) {
     const toast = useRef<any>(null);
     const navigate = useNavigate();
     const [src, setSrc] = useState<string>('');
-    const [valid , setValid] = useState<boolean>(false);
-    
+    const [valid, setValid] = useState<boolean>(false);
 
 
-    
+
+
 
     const handleName = (e: string) => {
         setName(e);
     }
     const handleDescription = (e: string) => {
         setDescription(e);
-    }    
+    }
     const handleNum = (e: number) => {
         setNum(e);
-    }    
-  
-    React.useEffect(() => {
-      
-        if(id){
-        context.apiCalls.getTool(id).then((tool: any)=>{
-            setName(tool.name);
-            setDescription(tool.description);           
-            setImage(tool.modelo); 
-            setNum(tool.optimalScale) 
-
-        })}      
-
-  }, [id])
-
-  React.useEffect(() => { 
-    
-    if(name === '' || description === '' || image === ''){ 
-      setValid(true);
-    } else {
-      setValid(false);
     }
-  }, [name, description, image]);
+
+    React.useEffect(() => {
+
+        if (id) {
+            context.apiCalls.getTool(id).then((tool: any) => {
+                setName(tool.name);
+                setDescription(tool.description);
+                setImage(tool.modelo);
+                setNum(tool.optimalScale)
+
+            })
+        }
+
+    }, [id])
+
+    React.useEffect(() => {
+
+        if (name === '' || description === '' || image === '') {
+            setValid(true);
+        } else {
+            setValid(false);
+        }
+    }, [name, description, image]);
 
 
 
 
 
-const onUpload = async ({ files }: any) => {  
+    const onUpload = async ({ files }: any) => {
 
-    const [file] = files; 
-    console.log("file", file)
-    
-            const nameFile = file.name;
-            console.log("name file", nameFile)
-            console.log("check nameFile", nameFile.endsWith('.fbx'))
-         if( nameFile.endsWith('.fbx') === true){
-     
-            if(image === ""){
-            const reader = new FileReader();
-            reader.onload = async (e: any) => {
+        const [file] = files;
 
-            let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
-            console.log("result",result)
-            setImage(result);
+        const nameFile = file.name;
+        if (nameFile.endsWith('.fbx') === true) {
 
-            setSrc(file.name)
-            };
-            reader.readAsDataURL(file);   
-            
-            }else{
-                
-            let img = image.split("images/")    
-            let deleteImg = img[1]
-            let res = await context.apiCalls.deleteImage(deleteImg);
-        
-            const reader = new FileReader();
-            reader.onload = async (e: any) => {
-            let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);    
-            setImage(result);    
-            setSrc(file.name)
-            };
-            reader.readAsDataURL(file);
-            }       
+            if (image === "") {
+                const reader = new FileReader();
+                reader.onload = async (e: any) => {
 
-        }else{
+                    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
+                    setImage(result);
+
+                    setSrc(file.name)
+                };
+                reader.readAsDataURL(file);
+
+            } else {
+
+                let img = image.split("images/")
+                let deleteImg = img[1]
+                let res = await context.apiCalls.deleteImage(deleteImg);
+
+                const reader = new FileReader();
+                reader.onload = async (e: any) => {
+                    let result = await context.apiCalls.uploadImageBase64Fbx(e.target.result);
+                    setImage(result);
+                    setSrc(file.name)
+                };
+                reader.readAsDataURL(file);
+            }
+
+        } else {
             setStatus(Status.error);
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Tienes que elegir un formato de imagen válido(.fbx)', life: 3000 });
         }
 
-    } 
+    }
 
 
-    
-const handleTool = async () => {
-        
-        
-        if(id){
-                         
-                const resUpdate = await context.apiCalls.updateTool(id,name, description, image, num);
-                
-                if (resUpdate.ok) {
-                    setStatus(Status.success);
-                    toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta actualizada correctamente', life: 3000 });                    
-                    console.log(resUpdate)
-                    setTimeout(function(){
-                        navigate('/herramientas')
-                    }, 2000);
-                } else {
-                    setStatus(Status.error);
-                    toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'La herramienta no ha podido actualizarse', life: 3000 });
-                   
-                }
-                
-   
-            }else{
+
+    const handleTool = async () => {
+
+
+        if (id) {
+
+            const resUpdate = await context.apiCalls.updateTool(id, name, description, image, num);
+
+            if (resUpdate.ok) {
+                setStatus(Status.success);
+                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta actualizada correctamente', life: 3000 });
+                setTimeout(function () {
+                    navigate('/herramientas')
+                }, 2000);
+            } else {
+                setStatus(Status.error);
+                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'La herramienta no ha podido actualizarse', life: 3000 });
+
+            }
+
+
+        } else {
             const res = await context.apiCalls.createTool(name, description, image, num);
-                if (res.ok) {
+            if (res.ok) {
                 setStatus(Status.success);
                 toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta creada correctamente', life: 3000 });
-               
-                console.log(res)
-                setTimeout(function(){
+
+                setTimeout(function () {
                     navigate('/herramientas')
-                    }, 2000);
-                } else {
+                }, 2000);
+            } else {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear la herramienta', life: 3000 });
-                
-                console.log("res",res)
-                }     
-                
             }
-         
+
         }
-    
 
-   
+    }
 
-    return (      
-        <div className='col-12 tool-form'>           
-          
-                    <div className="col-12 panel-tool">
-                    <div className="col-12 fila1">
-                        <div className="col-5 input-tool-form">                        
-                            <InputTxt name={name} handleName={handleName} labelname={labelname}/>                        
-                        </div>
-                        <div className="col-3 num-tool">                     
-                        <InputNum num={num} handleNum={handleNum} labelnum={labelnum}/>                        
-                        </div>
-                        </div>
-                        <div className="col-12 fila2">
-                        <div id="file-tool" className="col-4 file-tool">
-                     
-                            <FileUpload name="image" 
+
+
+
+    return (
+        <div className='col-12 tool-form'>
+
+            <div className="col-12 panel-tool">
+                <div className="col-12 fila1">
+                    <div className="col-5 input-tool-form">
+                        <InputTxt name={name} handleName={handleName} labelname={labelname} />
+                    </div>
+                    <div className="col-3 num-tool">
+                        <InputNum num={num} handleNum={handleNum} labelnum={labelnum} />
+                    </div>
+                </div>
+                <div className="col-12 fila2">
+                    <div id="file-tool" className="col-4 file-tool">
+
+                        <FileUpload name="image"
                             onSelect={onUpload}
                             mode="basic" accept=".fbx" chooseLabel="Cargar imagen" auto={true} />
-                            <label htmlFor="file"></label>
-                        
-                           </div>
-                           <div className='col-4 flex justify-content-end align-content-center' id="img-toolform" >
-                           <InputText disabled placeholder={src} />
-                        </div>
-                        </div>
-                        </div>                    
-                        <div className="col-8" id="editor-toolform">
-                            <TxtEditor description={description} handleDescription={handleDescription} />
-                        </div>
-                                
-                     
-                        <div className="col-2">
-                            <SubmitButton                                
-                                onclik={handleTool}
-                                ctx= {{name: name, description : description, modelo : image}}
-                                isLogin={true}
-                                disabled={valid} 
-                              />
-                               <Toast ref={toast} />
-                        </div>
-                   
-                
-       
+                        <label htmlFor="file"></label>
+
+                    </div>
+                    <div className='col-4 flex justify-content-end align-content-center' id="img-toolform" >
+                        <InputText disabled placeholder={src} />
+                    </div>
                 </div>
-       
+            </div>
+            <div className="col-8" id="editor-toolform">
+                <TxtEditor description={description} handleDescription={handleDescription} />
+            </div>
+
+
+            <div className="col-2">
+                <SubmitButton
+                    onclik={handleTool}
+                    ctx={{ name: name, description: description, modelo: image }}
+                    isLogin={true}
+                    disabled={valid}
+                />
+                <Toast ref={toast} />
+            </div>
+
+
+
+        </div>
+
     );
 }
 
-                        
+
