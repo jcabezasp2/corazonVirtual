@@ -1015,5 +1015,17 @@
         <member name="M:aspnetapp.Migrations._16.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:aspnetapp.Migrations._17">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._17.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._17.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:aspnetapp.Migrations._17.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
