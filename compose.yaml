@@ -1,6 +1,6 @@
 services:
   backend:
-    build: 
+    build:
       context: ./back
       dockerfile: Dockerfile
     environment:
@@ -20,7 +20,7 @@ services:
       - app
 
   frontend:
-    build: 
+    build:
       context: ./front
       dockerfile: Dockerfile
     restart: always
@@ -28,11 +28,11 @@ services:
       - WDS_SOCKET_HOST=127.0.0.1
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-      
+
     tty: true
 
     ports:
-      - 80:5173
+      - 5173:5173
 
     volumes:
       - ./front:/corazonVirtual/frontend
@@ -73,6 +73,18 @@ services:
     networks:
       - app
 
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+    networks:
+      - app
+
 networks:
-    app:
-      driver: bridge
+  app:
+    driver: bridge
