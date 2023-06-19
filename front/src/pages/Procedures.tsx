@@ -10,6 +10,7 @@ import { DataView } from "primereact/dataview";
 import { Skeleton } from "primereact/skeleton";
 import { Toast } from "primereact/toast";
 import { Status } from "../assets/constants";
+import * as constants from "./../assets/constants";
 interface Iprocedure {
   id: number;
   name: string;
@@ -54,7 +55,7 @@ export default function Procedures(props: Iprops) {
           id={procedure.id}
           title={procedure.name}
           destiny={`/procedimientos/${procedure.id}`}
-          image={procedure.image ? procedure.image : defaultImage}
+          image={procedure.image ? (procedure.image.includes("http")? procedure.image : `${constants.API_URL}images/${procedure.image}` ) : defaultImage}
           numberOfSteps={procedure.numberOfSteps}
           onEdit={`formulario/${procedure.id}`}
           onDelete={(e: any) => onDelete}
