@@ -9,13 +9,9 @@ import "./../css/practices.css"
 class Iprops {}
 
 interface IPractice {
-    date: Date
-    duration: number
-    id: number
-    observations: string
-    procedureId: number
-    stepId: number
-    studentId: number
+    Fecha: Date
+    "Duracion(minutos)": number
+    Observaciones: string
 }
 
 export default function Practices(props: Iprops) {
@@ -28,26 +24,19 @@ export default function Practices(props: Iprops) {
     const initialize = async () => {
        const res = await context.apiCalls.getPractices();
        if(context.user.role == Role.Teacher){
-        setPractices(res.map ((practice: IPractice) => {
+        setPractices(res.map ((practice: any) => {
             return {
-                id: practice.id,
-                date: practice.date,
-                duration: practice.duration,
-                observations: practice.observations,
-                procedureId: practice.procedureId,
-                stepId: practice.stepId,
-                studentId: practice.studentId
+                Fecha: practice.date.split("T")[0],
+                "Duracion(minutos)": practice.duration,
+                Observaciones: practice.observations,
                 };
             }));
        }else if (context.user.role == Role.Student){
-        setPractices(res.map ((practice: IPractice) => {
+        setPractices(res.map ((practice: any) => {
             return {
-                id: practice.id,
-                date: practice.date,
-                duration: practice.duration,
-                observations: practice.observations,
-                procedureId: practice.procedureId,
-                stepId: practice.stepId,
+                Fecha: practice.date,
+                "Duracion(minutos)": practice.duration,
+                Observaciones: practice.observations,
                 };
             }));
        }
