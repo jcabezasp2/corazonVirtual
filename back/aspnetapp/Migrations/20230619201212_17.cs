@@ -71,7 +71,7 @@ namespace aspnetapp.Migrations
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "Observations",
-                value: "Admira a quien lo intenta, aunque fracase" );
+                value: "El tiempo es como un río que formaría los acontecimientos." );
 
             migrationBuilder.UpdateData(
                 table: "Practices",
