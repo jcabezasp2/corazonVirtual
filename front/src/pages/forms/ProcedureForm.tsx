@@ -165,12 +165,8 @@ React.useEffect(() => {
 const navigate = useNavigate();
 
 const handleProcedure = async () => {
-    if(id){
-        if(ctx.name === '' || ctx.imageDirection === '' || ctx.stepIds === ''){
-            setStatus(Status.empty);
-            toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
-             
-        } else{
+      if(id){
+       
             console.log("edit", name, imageDirection, stepIds)
         const resEdit = await context.apiCalls.editProcedure(id,name,imageDirection);
       
@@ -189,15 +185,8 @@ const handleProcedure = async () => {
             toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'El procedimiento no ha podido actualizarse', life: 3000 });
              console.log('no funciona edit teps')
         }
-        }
-    }else{ 
-      
-        if(ctx.name === '' || ctx.imageDirection === '' || ctx.stepIds === ''){
-            setStatus(Status.empty);
-            toast.current?.show({ severity: 'info', summary: 'Error Message', detail: 'Tienes que rellenar todos los campos', life: 3000 });
-            
-        } else{
-           
+        }else{
+                 
             const res = await context.apiCalls.createProcedure(ctx);
             console.log("res",res)                
             if (res.ok) {
@@ -210,11 +199,7 @@ const handleProcedure = async () => {
                 setStatus(Status.error);
                 toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear el procedimiento', life: 3000 });
             }
-        }
-   
-}
-    
-}
+}}
 
 
 
@@ -229,7 +214,7 @@ const handleProcedure = async () => {
           labelname={"Nombre del procedimiento"}
         />
       </div>
-      <div id="file-procedure" className=" col-4 file-procedure">
+      <div id="file-procedure" className=" col-6 file-procedure">
         <FileUpload
           name="image"         
           onSelect={onUpload}  
@@ -242,7 +227,7 @@ const handleProcedure = async () => {
         <label htmlFor="file"></label>
         </div>
      
-      <div className='col-4 flex justify-content-center align-content-center' id="img-procedureform" >
+      <div className='col-3 flex justify-content-center align-content-center' id="img-procedureform" >
          <Image src={src} />
        </div>
       </div>
