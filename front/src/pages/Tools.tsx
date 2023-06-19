@@ -47,13 +47,13 @@ export default function Claims(props: Iprops) {
     const res = await context.apiCalls.deleteTool(id);
     if (res.ok) {
       setStatus(Status.success);
-      toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+      toast.current?.show({ severity: 'success', summary: 'Exito', detail: 'El utensilio se ha borrado', life: 3000 });
       setTimeout(function () {
         window.location.reload();
       }, 1000);
     } else {
       setStatus(Status.error);
-      toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se pudo realizar la operacion', life: 3000 });
     }
 
 

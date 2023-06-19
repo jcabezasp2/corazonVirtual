@@ -30,7 +30,7 @@ export default function Table(props: Iprops) {
 
     return (
         <div>
-            <DataTable stripedRows scrollable paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} scrollHeight="60vh" className='table' value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}
+            <DataTable stripedRows scrollable paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} scrollHeight="60vh" className='table' value={props.dataElements} sortMode="multiple" tableStyle={{ minWidth: '50rem' }}
                 paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                 currentPageReportTemplate="{first} al {last} de {totalRecords}" paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
                 {props.dataElements.length > 0 && Object.keys(props.dataElements[0]).map((key: string, i) => { return DataColumn(i, key, key, { width: '10rem' }) })}

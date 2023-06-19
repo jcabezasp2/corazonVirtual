@@ -1,7 +1,8 @@
 #informationView{
     padding: 10% 5% 10% 5%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    overflow-x: auto;
 }
 
 #informationView > div{
@@ -47,11 +48,20 @@ img{
     width: 100%;
 }
 
-.equipo  .p-card-title{
+.persona  .p-card-title{
     color: rgb(94, 149, 184) !important;
     font-size: 1.5em;
     text-align: center;
     margin-bottom: 5%;
+}
+
+.equipo .p-card-header{
+    width: 100px;
+    padding-top: 25px;
+}
+
+.none{
+    box-shadow: none !important;
 }
 
 @media screen and (max-width: 1044px)  {
@@ -61,19 +71,23 @@ img{
     }
 
     #informationView > div{
-        padding: 10% 20% 10% 20%;
+        padding: 12% 20% 10% 20%;
+    }
+
+    .none{
+        display: none;
     }
   
   }
   
-  @media  screen and (min-width: 1044px) and (max-width: 1494px)  {
+  @media  screen and (min-width: 1044px) and (max-width: 1957px)  {
   
     #informationView{
         grid-template-columns: repeat(2, 1fr);
     }
 
     #informationView > div{
-        padding: 10% 20% 10% 20%;
+        padding: 12% 20% 10% 20%;
     }
   
   }
