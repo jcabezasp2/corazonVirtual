@@ -259,7 +259,7 @@ namespace aspnetapp.Controllers
                 return NotFound("El usuario no existe");
             }
 
-            if(user.LockoutEnabled == true)
+            if (user.LockoutEnabled == true)
             {
                 return Unauthorized("El usuario está bloqueado");
             }
@@ -336,23 +336,20 @@ namespace aspnetapp.Controllers
             return Ok();
         }
 
-        
+
 
         /// <summary>
-        /// uptade the user data
+        /// uptade the user password
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-      ///     PUT /usuarios/1
+        ///     PATCH /usuarios/1
         ///     {
-        ///        "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
-        ///        "name": "name",
-        ///        "email": "email",
         ///        "password": "password",
         ///     }
         ///</remarks>
-       /// <param name="id"></param>
+        /// <param name="id"></param>
         /// <param name="user"></param>
         /// <returns>Ok</returns>
         /// <response code="200">Returns Ok</response>
@@ -361,9 +358,8 @@ namespace aspnetapp.Controllers
 
         [Authorize(AuthenticationSchemes = $"{Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme},ApiKey")]
         [HttpPatch("{id}")]
-        public async Task<ActionResult<User>> UpdateUser(string id, User user)
+        public async Task<ActionResult<User>> UpdatePassword(string id, UserPassword password)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -375,9 +371,8 @@ namespace aspnetapp.Controllers
                 return BadRequest("User not found");
             }
 
-            userToUpdate.UserName = user.Name;           
-            userToUpdate.Email = user.Email;
-            userToUpdate.PasswordHash = _userManager.PasswordHasher.HashPassword(userToUpdate, user.Password);
+            userToUpdate.PasswordHash = _userManager.PasswordHasher.HashPassword(userToUpdate, password.Password);
+
             userToUpdate.SecurityStamp = Guid.NewGuid().ToString();
 
 
@@ -387,9 +382,10 @@ namespace aspnetapp.Controllers
             {
                 return BadRequest(result.Errors);
             }
-            
+
             return Ok(userToUpdate);
         }
+
 
         /// <summary>
         /// Get a practices by student id
@@ -483,7 +479,8 @@ namespace aspnetapp.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             var role = await _userManager.GetRolesAsync(user);
-            if(role[0] == "ADMIN"){
+            if (role[0] == "ADMIN")
+            {
                 return BadRequest("No puedes bloquear a un admin");
             }
 
@@ -499,7 +496,7 @@ namespace aspnetapp.Controllers
                 // Alternatively, you can regenerate the security stamp using:
                 user.SecurityStamp = Guid.NewGuid().ToString();
             }
-            
+
             var responseMsg = "";
 
             if (user.LockoutEnabled)
@@ -526,7 +523,7 @@ namespace aspnetapp.Controllers
 
             return roleClaims.Any(c => c.Value == permission);
         }
-        
-       
+
+
     }
 }
