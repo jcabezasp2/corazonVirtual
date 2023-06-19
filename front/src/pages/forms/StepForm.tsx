@@ -176,14 +176,14 @@ const createUpdateStep =async ( ) => {
     const resDelete = await context.apiCalls.deleteStep(id);
     if (resDelete.ok) {
         setStatus(Status.success);
-        toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Paso creado correctamente', life: 3000 });
+        toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Paso creado correctamente', life: 3000 });
         setTimeout(function(){
             navigate('/pasos')
         }, 2000);
         
     } else {
         setStatus(Status.error);
-        toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear el paso', life: 3000 });
+        toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se ha podido crear el paso', life: 3000 });
     }
  
     
@@ -202,13 +202,13 @@ const handleStep = async () => {
          if(res.status === 200 || res.status === 201 || res.status === 404){
                     
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Paso actualizado correctamente', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Paso actualizado correctamente', life: 3000 });
                 setTimeout(function(){
                     navigate('/pasos')
                 }, 2000);
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'El paso no ha podido actualizarse (delete)', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error', detail: 'El paso no ha podido actualizarse (delete)', life: 3000 });
         
             }
               
@@ -218,14 +218,14 @@ const handleStep = async () => {
         
             if (res.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Paso creado correctamente', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Paso creado correctamente', life: 3000 });
                 setTimeout(function(){
                     navigate('/pasos')
                 }, 2000);
                 
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear el paso', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se ha podido crear el paso', life: 3000 });
         
             }
          

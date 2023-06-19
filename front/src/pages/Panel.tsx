@@ -58,16 +58,14 @@ export default function Panel(props: Iprops) {
 
 
     React.useEffect(() => {
-        let currentCtx = {
-            user: user,
-            email: email,
+        let currentCtx = {          
             password: password,
             userId: userId,
 
         };
         setCtx(currentCtx);
         console.log("password todos", password)
-    }, [user, email, password, userId, avatar]);
+    }, [password, userId, avatar]);
 
     React.useEffect(() => {
         let currentCtx = {
@@ -271,6 +269,7 @@ export default function Panel(props: Iprops) {
                                         setUser(e.currentTarget.value);
                                     }
                                 }}
+                                disabled
                             />
 
                         </span>
@@ -292,6 +291,7 @@ export default function Panel(props: Iprops) {
                                         setEmail(e.currentTarget.value);
                                     }
                                 }}
+                                disabled
                             />
 
                         </span>

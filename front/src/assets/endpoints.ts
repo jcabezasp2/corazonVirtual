@@ -118,7 +118,7 @@ export const getUser = async (id: number) => {
 //Update User by id
 export const updateUser = async (ctx: any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-    const { userId, user,email, password } = ctx;
+    const { password } = ctx;
     let opciones: any = {
         method: 'PATCH',
         headers: {
@@ -126,7 +126,7 @@ export const updateUser = async (ctx: any) => {
             'Accept': 'application/json',
             'Api-Key': apiKey
         },
-        body: JSON.stringify({ "name": user, "email": email, "password": password })
+        body: JSON.stringify({ "password": password })
     };
     const res = await fetch(`${constants.API_URL}usuarios/${userId}`, opciones);
     if (res.status !== 200) return null; //TODO : Mostrar mensaje de error

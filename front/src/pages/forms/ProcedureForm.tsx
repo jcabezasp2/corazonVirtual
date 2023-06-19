@@ -158,7 +158,7 @@ const handleProcedure = async () => {
       
         if (resEdit.ok ) {
             setStatus(Status.success);
-            toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Procedimiento actualizado correctamente', life: 3000 });
+            toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Procedimiento actualizado correctamente', life: 3000 });
          
             setTimeout(function(){
                navigate('/procedimientos')
@@ -166,20 +166,20 @@ const handleProcedure = async () => {
 
         } else {
             setStatus(Status.error);
-            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'El procedimiento no ha podido actualizarse', life: 3000 });
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'El procedimiento no ha podido actualizarse', life: 3000 });
         }
         }else{
                  
             const res = await context.apiCalls.createProcedure(ctx);    
             if (res.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Procedimiento creado correctamente', life: 3000 });                
+                toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Procedimiento creado correctamente', life: 3000 });                
                 setTimeout(function(){
                   navigate('/procedimientos')
                 }, 1000);
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear el procedimiento', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se ha podido crear el procedimiento', life: 3000 });
             }
 }}
 

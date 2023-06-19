@@ -110,7 +110,7 @@ export default function ToolForm(props: Iprops) {
 
         } else {
             setStatus(Status.error);
-            toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'Tienes que elegir un formato de imagen válido(.fbx)', life: 3000 });
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Tienes que elegir un formato de imagen válido(.fbx)', life: 3000 });
         }
 
     }
@@ -126,13 +126,13 @@ export default function ToolForm(props: Iprops) {
 
             if (resUpdate.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta actualizada correctamente', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Herramienta actualizada correctamente', life: 3000 });
                 setTimeout(function () {
                     navigate('/herramientas')
                 }, 2000);
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'La herramienta no ha podido actualizarse', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error', detail: 'La herramienta no ha podido actualizarse', life: 3000 });
 
             }
 
@@ -141,14 +141,14 @@ export default function ToolForm(props: Iprops) {
             const res = await context.apiCalls.createTool(name, description, image, num);
             if (res.ok) {
                 setStatus(Status.success);
-                toast.current?.show({ severity: 'success', summary: 'Success Message', detail: 'Herramienta creada correctamente', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Herramienta creada correctamente', life: 3000 });
 
                 setTimeout(function () {
                     navigate('/herramientas')
                 }, 2000);
             } else {
                 setStatus(Status.error);
-                toast.current?.show({ severity: 'error', summary: 'Error Message', detail: 'No se ha podido crear la herramienta', life: 3000 });
+                toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se ha podido crear la herramienta', life: 3000 });
             }
 
         }
