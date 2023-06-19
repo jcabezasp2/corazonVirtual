@@ -27,7 +27,9 @@ export default function Practices(props: Iprops) {
         setPractices(res.map ((practice: any) => {
             return {
                 Fecha: practice.date.split("T")[0],
-                "Duracion(minutos)": practice.duration,
+                Paso: practice.stepId,
+                Estudiante: practice.studentId,
+                "Duracion(minutos)": (practice.duration / 60),
                 Observaciones: practice.observations,
                 };
             }));
@@ -35,7 +37,8 @@ export default function Practices(props: Iprops) {
         setPractices(res.map ((practice: any) => {
             return {
                 Fecha: practice.date,
-                "Duracion(minutos)": practice.duration,
+                Paso: practice.stepId,
+                "Duracion(minutos)": (practice.duration / 60),
                 Observaciones: practice.observations,
                 };
             }));
