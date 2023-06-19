@@ -161,7 +161,7 @@ export default function Claims(props: Iprops) {
 
   return (
     <div id="toolsView">
-        {selectedTool && <ViewerModal visible={modalVisible} title ={selectedTool!.Nombre} Modelo={selectedTool!.Modelo} setVisible={setVisible} description={selectedTool.Descripcion} /> }
+        {selectedTool && <ViewerModal scale={selectedTool.optimalScale} visible={modalVisible} title ={selectedTool!.Nombre} Modelo={selectedTool!.Modelo} setVisible={setVisible} description={selectedTool.Descripcion} /> }
       <div className="card">
         <DataView
           className="tools"
