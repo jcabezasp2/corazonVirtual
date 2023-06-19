@@ -24,8 +24,8 @@ No es necesario utilizar Postman para probar la api, tenemos una documentacion i
 > <h3>Imagenes</h3>
 > Las imágenes que se quieran tener disponibles desde el inicio de la aplicación deeberán ir alojadas en la carpeta public.
 > Si no existen las correspondientes subcarpetas deberán ser creadas para poder acceder a dichar archivos.
->> **images** : sera la carpeta en la que se deberan alojar los archivos *.png/.jpg/.jpeg*.
 >
+>> **images** : sera la carpeta en la que se deberan alojar los archivos *.png/.jpg/.jpeg*.
 >> **images3d** : sera la carpeta donde se deberán alojar los archvivos de modelos 3d *.fbx*
 
 <h3>Comandos para ejecutar las migraciones de la base de datos</h3>
