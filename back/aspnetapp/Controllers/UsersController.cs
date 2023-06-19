@@ -18,6 +18,7 @@ namespace aspnetapp.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly dataContext _context;
 
+
         public UsersController(
             UserManager<IdentityUser> userManager,
             JwtService jwtService,
@@ -376,7 +377,7 @@ namespace aspnetapp.Controllers
 
             userToUpdate.UserName = user.Name;           
             userToUpdate.Email = user.Email;
-            userToUpdate.PasswordHash = user.Password;
+            userToUpdate.PasswordHash = _userManager.PasswordHasher.HashPassword(userToUpdate, user.Password);
             userToUpdate.SecurityStamp = Guid.NewGuid().ToString();
 
 
