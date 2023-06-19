@@ -19,10 +19,10 @@ export default function ChartLine(props: Iprops) {
 
 
 
-    const length = Object.values(props.data).length;
-    const duration: number[][] = Array.from<number[], number[]>({ length: length }, () => Array.from<number>({ length: length }).fill(0)
+    const lengthData = Object.values(props.data).length;
+    const duration: number[][] = Array.from<number[], number[]>({ length: lengthData }, () => Array.from<number>({ length: lengthData }).fill(0)
     );
-
+ console.log("props.data", props.data)
     Object.values(props.data).forEach((value, i) => {
         duration[0][i] = value.data;
     });
@@ -33,27 +33,39 @@ export default function ChartLine(props: Iprops) {
         data: duration,
     }
 
-
-
+    const colorsArray = ['#66161e', '#195056', '#615322', '#10502c', '#495470', '#2b8d96', '#a43b3c'];
+    console.log("colorsArray", colorsArray);
+      
+    
+    const length = lengthData;
+    const background: string[][] = Array.from<string[], string[]>({ length: lengthData }, () => Array.from<string>({ length: lengthData }));
+    
+    for (let i = 0; i < lengthData; i++) {
+      for (let j = 0; j < lengthData; j++) {
+        background[i][j] = colorsArray[(i + j) % length];
+      }
+    }
+    
+      console.log("background", background);
 
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--surface-600');
-        const textColorSecondary = documentStyle.getPropertyValue('--surface-800');
+        const textColor = documentStyle.getPropertyValue('--surface-800');       
+        const textColorSecondary = documentStyle.getPropertyValue('--surface-800');        
         const surfaceBorder = documentStyle.getPropertyValue('--surface-900');
+        
 
         setChartData({
-
-            labels: dataComplete.labels,
+            labels: dataComplete.labels.map((label, i) => label.split('T').shift()), 
             datasets: dataComplete.label.map((label, i) => ({
-                label: 'Día ' + label.split('T').shift(),
-                data: dataComplete.data[i],
-                fill: false,
-                borderColor: documentStyle.getPropertyValue('--surface-900'),
-                backgroundColor: documentStyle.getPropertyValue('--surface-500'),
-                tension: 0.4,
+              label: 'Día ' + label.split('T').shift(),
+              data: dataComplete.data[i],
+              fill: false,
+              borderColor: colorsArray[i], 
+              backgroundColor: background[i], 
+              tension: 0.4,
             })),
-        });
+          });
 
 
 
@@ -62,6 +74,7 @@ export default function ChartLine(props: Iprops) {
             aspectRatio: 1.1,
             plugins: {
                 legend: {
+                   
                     labels:
                     {
                         color: textColor
@@ -69,7 +82,7 @@ export default function ChartLine(props: Iprops) {
                 }
             },
             scales: {
-                x: {
+                x: {                    
                     ticks: {
                         color: textColorSecondary
                     },
@@ -77,7 +90,7 @@ export default function ChartLine(props: Iprops) {
                         color: surfaceBorder
                     }
                 },
-                y: {
+                y: {                    
                     ticks: {
                         color: textColorSecondary
                     },
@@ -87,15 +100,23 @@ export default function ChartLine(props: Iprops) {
                 }
             }
         };
-
+      
 
         setChartOptions(options);
     }, [props.data]);
 
+    
+    const tagPasos = 'Pasos realizados';
+    const tagDias = 'Prácticas realizadas en los días:'
+    
+
     return (
         <Card className="col-5 card-panel chart" title={props.title} >
-            <Chart id="chart" type="bar" data={chartData} options={chartOptions}>
-            </Chart>
+            <span>{tagDias}</span>
+            <Chart id="chart" type="bar" data={chartData} options={chartOptions}/>
+            <span>{tagPasos}</span>
+          
+           
         </Card>
     )
 }

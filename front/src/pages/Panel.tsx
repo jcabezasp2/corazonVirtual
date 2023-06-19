@@ -2,7 +2,7 @@ import React from "react";
 import { appContext } from "../App";
 import SubmitButton from "../components/form/SubmitButton";
 import { FileUpload } from 'primereact/fileupload';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Chart } from 'primereact/chart';
 import '../css/panel.css';
 import { Card } from 'primereact/card';
@@ -13,7 +13,9 @@ import { useParams } from 'react-router-dom';
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import ChartLine from "../components/Chart";
-
+import { Status } from "../assets/constants";
+import { Toast } from "primereact/toast";
+import { useNavigate } from "react-router-dom";
 
 class Iprops { }
 
@@ -22,22 +24,35 @@ class Iprops { }
 export default function Panel(props: Iprops) {
 
 
-
-
+    //contexto
     const context = React.useContext(appContext);
+    
+    //constantes para guardar los datos
     const [userId, setUserId] = React.useState<any>();
     const [user, setUser] = React.useState<string>('');
     const [avatar, setAvatar] = React.useState<string>('');
     const [email, setEmail] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
+    const [password2, setPassword2] = React.useState<string>('');
     const [titleGraph, settitleGraph] = React.useState<string>('');
     const [practiceData, setpracticeData] = React.useState<any>([]);
     const [stepsData, setstepsData] = React.useState<any>([]);
     const [procedureData, setprocedureData] = React.useState([]);
-    const [valid, setValid] = useState<boolean>(false);
-    const regex = new RegExp('^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$');
-    const isEmailValid = regex.test(email);
 
+    //validaciones
+    const [valid, setValid] = useState<boolean>(false);
+    const regexEmail = new RegExp('^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$');
+    const isEmailValid = regexEmail.test(email);
+    const regexPassword = new RegExp('^(?=.[A-Z])(?=.[a-z])(?=.\d)(?=.[!@#$%^&()])[A-Za-z\d!@#$%^&()]{6,}$');
+    const isPasswordValid = regexPassword.test(password);
+    const toast = useRef<any>(null);
+    const [status, setStatus] = React.useState<Status>(Status.error);
+    const navigate = useNavigate();  
+    // const [displayState, setdisplayState] = React.useState<string>('none');
+    const [display, setDisplay] = useState({ display: 'none' });;
+    
+
+    //objeto con los datos
     const [ctx, setCtx] = useState<any>(null);
     const [ctx2, setCtx2] = useState<any>(null);
 
@@ -46,11 +61,12 @@ export default function Panel(props: Iprops) {
         let currentCtx = {
             user: user,
             email: email,
-            password: password === undefined ? "aA1551-" : password,
+            password: password,
             userId: userId,
 
         };
         setCtx(currentCtx);
+        console.log("password todos", password)
     }, [user, email, password, userId, avatar]);
 
     React.useEffect(() => {
@@ -62,16 +78,29 @@ export default function Panel(props: Iprops) {
 
         };
         setCtx2(currentCtx);
+
     }, [user, email, password, userId, avatar]);
+
+    React.useEffect(()=>{
+        if(password === ''){
+        setDisplay({ display: 'none' });
+        }else{
+            setDisplay({ display: 'block' });
+        }    
+        console.log("password solo", password)
+    },[password]);
+    
 
     React.useEffect(() => {
 
-        if (user === '' || email === '') {
-            setValid(true);
-        } else {
-            setValid(false);
-        }
-    }, [email, user]);
+        if (user === '' || email === '' || password === '' || password2 === '') {           
+        setValid(true); 
+            }else{
+          setValid(false);  
+        
+           }
+       
+    }, [email, user, password, password2]);
 
     const initialize = async () => {
         const res = await context.apiCalls.getMyUser();
@@ -80,7 +109,7 @@ export default function Panel(props: Iprops) {
         setUserId(res.user.id);
         setUser(res.user.userName);
         setEmail(res.user.email);
-        setPassword(res.user.password);
+        // setPassword(res.user.password);
 
 
         let responsePractice = await context.apiCalls.getPracticeByUserId(res.user.id);
@@ -121,25 +150,29 @@ export default function Panel(props: Iprops) {
 
 
     const handleUpdateUser = async () => {
-
+        if(password !== password2 ){              
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Las contraseñas no coinciden', life: 3000 });
+        }else if(isEmailValid === false){
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Formato de email no válido', life: 3000 });
+        }else if(isPasswordValid === false){
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Formato de contraseña no válido', life: 3000 });
+        }else{
+           
         const response = await context.apiCalls.updateUser(ctx);
         if (response.ok) {
-            alert("Usuario actualizado correctamente");
+            setStatus(Status.success);
+            toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Usuario actualizado correctamente', life: 3000 });                
+            setTimeout(function(){
+              navigate('/')
+            }, 1000);
         } else {
-            alert("Error al actualizar el usuario");
-        }
-
-        // const respone2 = await context.apiCalls.updateApplicationUser(userId, user, user, avatar)
-        // console.log("respone update application user",respone2);
-        // if (respone2.ok) {
-        //     alert("Usuario actualizado correctamente");
-        // }else{
-        //     alert("Error al actualizar el usuario");
-        // }
-
-
-
-
+            setStatus(Status.error);
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se ha podido actualizar el usuario', life: 3000 });
+        }}
+     
 
     }
 
@@ -211,7 +244,8 @@ export default function Panel(props: Iprops) {
 
                             <FileUpload id="image" name="image" chooseLabel=""
                                 onSelect={handleAvatar}
-                                mode="basic" accept="image/*" auto={true} />
+                                mode="basic" accept="image/*" auto={true} 
+                                disabled={true} />
 
                         </div>
                     </div>
@@ -269,22 +303,36 @@ export default function Panel(props: Iprops) {
                             <Password
                                 className="inputtext"
                                 id="password"
-                                value={password}
-                                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                                    if (e.key === "Enter") {
-                                        setPassword(e.currentTarget.value);
-                                        context.apiCalls.login();
-                                    }
-                                }}
+                                value={password}                               
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     setPassword(e.target.value)
                                 }
                                 toggleMask
                                 feedback={false}
-                            />
+                                placeholder="Cambiar contraseña"
+                            />                           
 
                         </span>
+                        <div  style={display}>
+                        <span className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-lock"></i>
+                            </span>
+                            <Password
+                                className="inputtext"
+                                id="password"
+                                value={password2}                                
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setPassword2(e.target.value)
+                                }
+                                toggleMask
+                                feedback={false}
+                                placeholder="Cambiar contraseña"
+                            />
+                            
 
+                        </span>
+                        </div>
                     </div>
                 </Card>
 
@@ -293,7 +341,7 @@ export default function Panel(props: Iprops) {
                     data={practiceData}
                     label={stepsData}
                 />
-
+            <Toast ref={toast} />
             </div>
         </div>
 

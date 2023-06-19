@@ -20,9 +20,7 @@ namespace aspnetapp.Migrations
                 values: new object[,]
                 {
                      
-                    {"4", "user4", "USER4", "user4@example.es",
-                    "USER4@EXAMPLE.ES", false, "AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw=", null, null, null, false, false, null,false, 0},
-                    {"5", "user5", "USER5", "user5@example.es", "USER5@EXAMPLE.ES",  false, "AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw=", null, null, null, false, false, null,false, 0},
+                    
                      {"6", "user6", "USER6", "user6@example.es", "USER6@EXAMPLE.ES", false, "AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==", null, null, null, false, false, null,false, 0},
                      {"7", "user7", "USER7", "user7@example.es", "USER7@EXAMPLE.ES",  false, "AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==", null, null, null, false, false, null,false, 0},
                      {"8", "user8", "USER8", "user8@example.es", "USER8@EXAMPLE.ES", false, "AQAAAAIAAYagAAAAEE0A7Ewgd3h9osBEANSfNlWshhxLJ0L96PtmV+dmHyggq5njh+VwUKXPRSLvs6jySw==", null, null, null, false, false, null,false, 0},
