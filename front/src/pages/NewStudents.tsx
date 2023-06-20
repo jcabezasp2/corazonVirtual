@@ -39,12 +39,15 @@ export default function NewStudents() {
         reader.onload = () => {
             const lineas = reader.result?.toString().split('\r\n');
             const headers = ['nombre', 'email', 'password'];
-            lineas?.shift()?.split(';').forEach((header) => {
-                if (!headers.includes(header)) return;
+            let firstLine = lineas ? lineas[0] : '';
+            firstLine.split(';').forEach((header) => {
+                if (headers.includes(header.toLowerCase())) lineas?.shift();
             });
+            
             setStudents([]);
             lineas?.forEach((linea) => {
                 const usuario = linea.split(';');
+                if( usuario[0] == '' || usuario[1] == '' || usuario[2] == '') return;
                 setStudents(students => [...students, usuario]);
             });
         }
