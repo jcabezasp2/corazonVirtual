@@ -159,9 +159,9 @@ export default function ToolForm(props: Iprops) {
 
 
     return (
-        <div className='col-12 tool-form'>
+        <div className='col-12 tool-form '>
 
-            <div className="col-12 panel-tool">
+            <div className="col-12 panel-tool ">
                 <div className="col-12 fila1">
                     <div className="col-5 input-tool-form">
                         <InputTxt name={name} handleName={handleName} labelname={labelname} />
@@ -184,12 +184,12 @@ export default function ToolForm(props: Iprops) {
                     </div>
                 </div>
             </div>
-            <div className="col-8" id="editor-toolform">
+            <div className="col-8" id="editor-toolform xl:col-6 lg:col-8 sm:12">
                 <TxtEditor description={description} handleDescription={handleDescription} />
             </div>
 
 
-            <div className="col-2">
+            <div className="col-2 button-toolform col-2 xl:col-2 lg:col-2 md:col-3 sm:col-3">
                 <SubmitButton
                     onclik={handleTool}
                     ctx={{ name: name, description: description, modelo: image }}

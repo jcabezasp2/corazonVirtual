@@ -243,7 +243,7 @@ const handleStep = async () => {
         <div id="stepform" className='p-3 col-10 '>
           
            
-            <div id="inputsform-stepform" className="row py-0 col-12">      
+            <div id="inputsform-stepform" className="row py-0 col-12 ">      
                 <div className='col-6 py-3' id="inputtxt-stepform">                
                     <InputTxt name={name} handleName={handleName} labelname={'Nombre del paso'}/>                        
                 </div>                
@@ -254,7 +254,7 @@ const handleStep = async () => {
             </div>             
             
             <div id="inputsform2-stepform" className='row  py-0 '>
-                <div className='col-5' id="inputselect-stepform">  
+                <div className='col-5 xl:col-5 lg:col-5 md:col-12 sm:col-12' id="inputselect-stepform">  
                     
                             <Select1
                              handleSelect={handleSelect}
@@ -263,7 +263,7 @@ const handleStep = async () => {
                              placeholder={"Selecciona una herramienta"}/>
                             
                 </div>    
-                <div className='col-4' id="toggle-stepform" > 
+                <div className='col-4 xl:col-4 lg:col-4 md:col-9 sm:col-9' id="toggle-stepform" > 
                 <Toggle
                     onText="Es un paso previo"
                     offText="No es un paso previo"
@@ -275,7 +275,7 @@ const handleStep = async () => {
                 </div>
                 </div>
                 <div id="inputsform3-stepform" className='row  py-0 '>
-                <div className='col-5 flex justify-content-center align-content-center' id="file-stepform" >
+                <div className='col-5 xl:col-5 lg:col-5 md:col-12 sm:col-12 flex justify-content-center align-content-center' id="file-stepform" >
                 <FileUpload name="image"               
                 onSelect={onUpload}
                  mode="basic" 
@@ -284,7 +284,7 @@ const handleStep = async () => {
                  chooseLabel='Cargar imagen' />
 
                 </div>
-                <div className='col-3 flex justify-content-center align-content-center' id="img-stepform" >
+                <div className='col-3 xl:col-3 lg:col-3 md:col-4 sm:col-4 flex justify-content-center align-content-center' id="img-stepform" >
                 <Image src={src} />
                 </div>
                 </div> 
@@ -300,9 +300,9 @@ const handleStep = async () => {
 
 
             <div className='pt-8 flex justify-content-center'>
-                <div className='col-2'>
+                <div className='col-2 col-2 xl:col-2 lg:col-2 md:col-3 sm:col-3'>
                 <SubmitButton
-                    // onclik={context.apiCalls.createStep}
+                    
                     onclik={handleStep}
                     ctx={ctx}
                     isLogin={false}

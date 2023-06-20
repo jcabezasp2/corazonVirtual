@@ -196,7 +196,7 @@ const handleProcedure = async () => {
           labelname={"Nombre del procedimiento"}
         />
       </div>
-      <div id="file-procedure" className=" col-6 file-procedure">
+      <div id="file-procedure" className=" col-4 file-procedure">
         <FileUpload
           name="image"         
           onSelect={onUpload}  
@@ -213,10 +213,10 @@ const handleProcedure = async () => {
          <Image src={src} />
        </div>
       </div>
-      <div id="picklist" className="p-field col-10"> 
+      <div id="picklist" className="p-field col-10 xl:col-10 lg:col-10 md:col-12 sm:col-12"> 
         <PickListt source={source} onChange={onChange} target={target} />
       </div>
-      <div  id="button-procedureform" className="col-2">
+      <div  id="button-procedureform" className="col-2 xl:col-2 lg:col-2 md:col-3 sm:col-3">
         <SubmitButton
           isLogin={false}
           disabled={valid}   

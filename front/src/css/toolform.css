@@ -1,3 +1,6 @@
+
+@media only screen and (max-width: 830px){
+   
 .tool-form{
     width: auto;
     height: auto;
@@ -21,14 +24,14 @@
 
 .input-tool-form{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     /* gap: 6rem !important; */
     
 }
 
 .input-tool-form>div>span>input{
-    width: 30rem !important;
+    width: 24rem !important;
 }
 
 #editor-toolform> div > div{
@@ -38,7 +41,7 @@
 
 .fila1{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center !important;
     align-items: center !important;
     gap: 1rem !important;
@@ -69,4 +72,166 @@
 
 #file-tool > div > span > svg{
     width: 2rem !important;
+}
+
+
+  }
+
+
+  
+  @media (min-width:831px) and (max-width: 1080px){
+
+
+    .tool-form{
+        width: auto;
+        height: auto;
+        margin-top: 5.5rem !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    
+    
+    .panel-tool{
+        display: flex;
+        flex-direction: column;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-top: 3rem;
+        
+    }
+    
+    .input-tool-form{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+    }
+    
+    .input-tool-form>div>span>input{
+        width: 16rem !important;
+    }
+    
+    #editor-toolform> div > div{
+        height: 5rem !important;
+        margin-bottom: 3rem !important;
+    }
+    
+    .fila1{
+        display: flex;
+        flex-direction: row;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 1rem !important;
+    
+    }
+    
+    .fila2{
+        display: flex;
+        flex-direction: row;
+        justify-content: center !important;
+        align-items: center !important; 
+        
+    
+    }
+    
+    #img-toolform > input{
+        width: 18rem !important;
+        text-align: center;
+    }
+    
+    #file-tool{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;  
+        
+    }
+    
+    #file-tool > div > span > svg{
+        width: 2rem !important;
+    }
+
+
+
+
+  }
+
+@media only screen and (min-width: 1081px){
+   
+
+.tool-form{
+    width: auto;
+    height: auto;
+    margin-top: 5.5rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+
+
+.panel-tool{
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 3rem;
+    
+}
+
+.input-tool-form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}
+
+.input-tool-form>div>span>input{
+    width: 25rem !important;
+}
+
+#editor-toolform> div > div{
+    height: 5rem !important;
+    margin-bottom: 3rem !important;
+}
+
+.fila1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1rem !important;
+
+}
+
+.fila2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: center !important; 
+    
+
+}
+
+#img-toolform > input{
+    width: 18rem !important;
+    text-align: center;
+}
+
+#file-tool{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;  
+    
+}
+
+#file-tool > div > span > svg{
+    width: 2rem !important;
+}
+
 }
