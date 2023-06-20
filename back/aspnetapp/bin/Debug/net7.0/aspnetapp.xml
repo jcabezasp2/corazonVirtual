@@ -751,18 +751,15 @@
              <response code="200">Returns Ok</response>
              <response code="400">If the user is null or the password is invalid</response>
         </member>
-        <member name="M:aspnetapp.Controllers.UsersController.UpdateUser(System.String,aspnetapp.Models.User)">
+        <member name="M:aspnetapp.Controllers.UsersController.UpdatePassword(System.String,aspnetapp.Models.UserPassword)">
              <summary>
-             uptade the user data
+             uptade the user password
              </summary>
              <remarks>
              Sample request:
             
-                 PUT /usuarios/1
+                 PATCH /usuarios/1
                  {
-                    "id": "e046c7d5-4a8a-4ad8-a53b-930bde50339a",
-                    "name": "name",
-                    "email": "email",
                     "password": "password",
                  }
             </remarks>

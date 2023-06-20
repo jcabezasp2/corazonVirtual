@@ -321,7 +321,6 @@ export const editStep = async (id: number,ctx: any) => {
 
 export const createStep = async (ctx : any) => {
     const apiKey = sessionStorage.getItem('apiKey');
-    console.log(ctx)
     const { name, description, image, duration, previousStep, tools } = ctx;
     let opciones: any = {
         method: 'POST',
@@ -725,6 +724,26 @@ export const deleteImage = async (path: string) => {
     const res = await fetch(`${constants.API_URL}images/${path}`, opciones);
     return res
 }
+
+// Function to add an observation to a practice
+export const addObservation = async (ctx : any) => {
+    const apiKey = sessionStorage.getItem('apiKey');
+    const id: number = ctx.id;
+    const observation: string = ctx.description;
+    const url = `${constants.API_URL}practicas/${id}/observation`;
+
+
+    const opciones: any = {
+        method: 'PUT',
+        headers: {
+            'Api-Key': apiKey,
+        },
+    };
+
+    const res = await fetch(`${url}?observation=${observation}`, opciones);
+    return res
+}
+
 
 
 

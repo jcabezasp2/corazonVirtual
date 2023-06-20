@@ -76,6 +76,7 @@ export default function SubmitButton(props : Iprops) {
         context.changeUSer(newUser);
         setStatus(Status.success);
       } else if (response.status === 200 || response.status === 201) {
+        setMessage("Operacion exitosa");
         setStatus(Status.success);
       } else if (response.status === 404) {
         setStatus(Status.info);

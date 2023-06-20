@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Table from "../components/Table";
 import { appContext } from "../App";
 import { Role } from "../assets/constants";
+import Modal from "../components/Modal";
+import ModalForm from "../components/form/ModalForm";
 import "./../css/practices.css"
 
 class Iprops {}
@@ -14,23 +16,25 @@ interface IPractice {
     Observaciones: string
 }
 
+
 export default function Practices(props: Iprops) {
   
     const navigate = useNavigate();
     const context = React.useContext(appContext);
 
     const [practices, setPractices] = React.useState([]);
-
+    const addObservation = context.apiCalls.addObservation;
     const initialize = async () => {
        const res = await context.apiCalls.getPractices();
+       const students = await context.apiCalls.getAllStudents();
        if(context.user.role == Role.Teacher){
         setPractices(res.map ((practice: any) => {
             return {
                 Fecha: practice.date.split("T")[0],
                 Paso: practice.stepId,
-                Estudiante: practice.studentId,
+                Estudiante: students.filter((e: { id: any; }) => e.id == practice.userId)[0]?.userName,
                 "Duracion(minutos)": (practice.duration / 60),
-                Observaciones: practice.observations,
+                Observaciones: <ModalForm content={{...practice}} onClik={addObservation} />,
                 };
             }));
        }else if (context.user.role == Role.Student){
@@ -39,7 +43,7 @@ export default function Practices(props: Iprops) {
                 Fecha: practice.date,
                 Paso: practice.stepId,
                 "Duracion(minutos)": (practice.duration / 60),
-                Observaciones: practice.observations,
+                Observaciones:<Modal content={practice.observations} />,
                 };
             }));
        }
