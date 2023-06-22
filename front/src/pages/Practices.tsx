@@ -22,7 +22,7 @@ const minutes = (date: any) => {
     const minutes = Math.ceil(date / 60);
 
     if(minutes > 60){
-        return "> 60"
+        return <span className="red">&gt; 60</span>
     }else{
         return minutes
     }
