@@ -4,3 +4,10 @@
     flex-direction: column;
     gap: 1em;
 }
+
+.studentObservations{
+    display:flex;
+    flex-direction: row;
+    gap: 1em;
+    justify-content: space-between;
+}

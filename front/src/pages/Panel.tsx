@@ -228,27 +228,6 @@ export default function Panel(props: Iprops) {
 
         <div className="panel col-12">
 
-
-            <div className=" col-2">
-                <Card className="avatar col-12" title={user.toUpperCase()} >
-                    <div className="card-avatar col-12">
-                        <div id="avatar-content" className="photo card flex justify-content-center ">
-
-                            {context.user.role === Role.Student ?
-                                <Image id="photo" src={avatar === "" ? "./src/img/graduation-cap-solid.svg" : avatar} alt="Estudiante" />
-                                :
-                                <Image id="photo" src={avatar === "" ? "./src/img/teacher.svg" : avatar} alt="Profesor" />
-                            }
-
-                            <FileUpload id="image" name="image" chooseLabel=""
-                                onSelect={handleAvatar}
-                                mode="basic" accept="image/*" auto={true} 
-                                disabled={true} />
-
-                        </div>
-                    </div>
-                </Card>
-            </div>
             <div className="panelcontent col-12">
                 <Card className="col-4 card-panel datos" title="Datos" footer={footer} >
                     <div className="flex card-form col-12">

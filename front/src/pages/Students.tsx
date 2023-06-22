@@ -26,13 +26,11 @@ export default function Students(props: Iprops) {
     const initialize = async () => {
         const res = await context.apiCalls.getAllStudents();
         const students = res.filter((student: any) => {
-            return student.role != Role.Student; //TODO cambiar en back para que devuelva el rol
+            return student.role != Role.Student; 
         }).map((student: any) => {
             return {
-                id: student.id,
                 Nombre: student.userName,
                 email: student.email,
-                Imagen: student.image,
             };
         });
         setStudents(students);

@@ -199,7 +199,7 @@ export default function Information(props: Iprops) {
           className="card"
           onClick={() => window.location.replace("https://unity.com/es")}
         >
-          <Image src="./src/img/unity-logo.png" alt="Logotipo de Unity" />
+          <Image src="./src/img/Unity-logo.png" alt="Logotipo de Unity" />
         </Card>
       </div>
     </div>

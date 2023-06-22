@@ -10,10 +10,38 @@ import "./../css/practices.css"
 
 class Iprops {}
 
+const parser = new DOMParser();
+
 interface IPractice {
     Fecha: Date
     "Duracion(minutos)": number
     Observaciones: string
+}
+
+const minutes = (date: any) => {
+    const minutes = Math.ceil(date / 60);
+
+    if(minutes > 60){
+        return "> 60"
+    }else{
+        return minutes
+    }
+}
+
+const stringTrunk = (content: any) => {
+    if(content.length > 50){
+        return content.substring(0, 50) + "..."
+    }else{
+        return content
+    }
+}
+
+const studentViewObservations = (content: any) => {
+
+return <div className="studentObservations">
+{<div dangerouslySetInnerHTML={{ __html: new XMLSerializer().serializeToString(parser.parseFromString(stringTrunk(content), 'text/html')) }} />}
+ <Modal content={content} />
+ </div>
 }
 
 
@@ -27,23 +55,24 @@ export default function Practices(props: Iprops) {
     const initialize = async () => {
        const res = await context.apiCalls.getPractices();
        const students = await context.apiCalls.getAllStudents();
+       const steps = await context.apiCalls.getSteps();
        if(context.user.role == Role.Teacher){
         setPractices(res.map ((practice: any) => {
             return {
                 Fecha: practice.date.split("T")[0],
-                Paso: practice.stepId,
+                Paso: steps.filter((e: { id: any; }) => e.id == practice.stepId)[0]?.name,
                 Estudiante: students.filter((e: { id: any; }) => e.id == practice.userId)[0]?.userName,
-                "Duracion(minutos)": (practice.duration / 60),
+                "Duracion(minutos)": minutes(practice.duration),
                 Observaciones: <ModalForm content={{...practice}} onClik={addObservation} />,
                 };
             }));
        }else if (context.user.role == Role.Student){
         setPractices(res.map ((practice: any) => {
             return {
-                Fecha: practice.date,
-                Paso: practice.stepId,
-                "Duracion(minutos)": (practice.duration / 60),
-                Observaciones:<Modal content={practice.observations} />,
+                Fecha: practice.date.split("T")[0],
+                Paso: steps.filter((e: { id: any; }) => e.id == practice.stepId)[0]?.name,
+                "Duracion(minutos)": minutes(practice.duration),
+                Observaciones: studentViewObservations(practice.observations),
                 };
             }));
        }
