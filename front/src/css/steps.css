@@ -25,3 +25,7 @@ gap: 1em;
 .p-datatable-scrollable-table>.p-datatable-thead{
     z-index: 0 !important;
 }
+
+#stepsView tr td:first-child, #stepsView tr th:first-child{
+    display:none;
+}
