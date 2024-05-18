@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8000/';
+export const API_URL = 'https://corazonvirtual.iesmontenaranco.com:8000/';
 
 export enum Status{
     'success',
